@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Submission confirmation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,p,dl,dd,dt,ol{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+<dc-import name="VendorHeader" active="status" hint-size="100%,72px"></dc-import>
+<main style="max-width: 720px; margin: 0 auto; padding: 48px 24px 64px; display: flex; flex-direction: column; gap: 24px">
+  <section style="background: #fff; border: 1px solid #E1E4EA; border-radius: 12px; padding: 32px clamp(20px, 5vw, 40px); display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+      <span style="width: 48px; height: 48px; border-radius: 50%; background: #E6F4EC; color: #1A6B40; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+      <h1 style="font-size: 24px; font-weight: 600">Your assessment has been submitted</h1>
+      <p style="font-size: 15px; color: #3A4456">Thank you, Amina. TracTrac has received your due diligence submission and supporting documents. A copy of this receipt has been emailed to everyone on your team.</p>
+    </div>
+    <dl style="display: grid; grid-template-columns: minmax(140px, auto) 1fr; gap: 12px 24px; border-top: 1px solid #EEF0F3; border-bottom: 1px solid #EEF0F3; padding: 20px 0">
+      <dt class="help" style="font-size: 14px">Organisation</dt><dd style="font-weight: 500">Northfield Agro Services Limited</dd>
+      <dt class="help" style="font-size: 14px">Assessment cycle</dt><dd style="font-weight: 500">2026 Partner Due Diligence · Cycle 2</dd>
+      <dt class="help" style="font-size: 14px">Reference number</dt><dd class="mono" style="font-weight: 500; font-size: 15px">TDD-2026-C2-0147</dd>
+      <dt class="help" style="font-size: 14px">Submitted</dt><dd style="font-weight: 500">5 Nov 2026, 4:31 PM WAT</dd>
+      <dt class="help" style="font-size: 14px">Submitted by</dt><dd style="font-weight: 500">Amina Bello, Head of Compliance</dd>
+      <dt class="help" style="font-size: 14px">Contents</dt><dd style="font-weight: 500">159 responses · 124 documents · 3 marked not applicable</dd>
+    </dl>
+    <div style="background: #F5F8FD; border: 1px solid #C7D7EE; border-radius: 8px; padding: 14px 16px; display: flex; gap: 12px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A54A6" stroke-width="1.75" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M12 21a9 9 0 110-18 9 9 0 010 18zM12 11v5M12 8h.01"></path></svg>
+      <p style="font-size: 14px"><span style="font-weight: 600">Submission is not approval.</span> Your documents and your organisation have not yet been assessed. TracTrac will review each item and confirm the outcome separately.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <h2 style="font-size: 16px; font-weight: 600">What happens next</h2>
+      <ol style="padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px">
+        <li style="display: flex; gap: 14px"><span style="width: 26px; height: 26px; border-radius: 50%; background: #EEF2F8; color: #12284C; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: none">1</span><span><span style="font-weight: 500; display: block">TracTrac reviews your evidence</span><span class="help">Reviewers check each document against its requirement. Your answers are locked during review.</span></span></li>
+        <li style="display: flex; gap: 14px"><span style="width: 26px; height: 26px; border-radius: 50%; background: #EEF2F8; color: #12284C; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: none">2</span><span><span style="font-weight: 500; display: block">You may be asked for more information</span><span class="help">We'll email you and show each request on your Submission Status page, with exactly what to provide.</span></span></li>
+        <li style="display: flex; gap: 14px"><span style="width: 26px; height: 26px; border-radius: 50%; background: #EEF2F8; color: #12284C; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: none">3</span><span><span style="font-weight: 500; display: block">You'll receive the review outcome</span><span class="help">At the end of the audit you'll also be asked for a signed management representation letter.</span></span></li>
+      </ol>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px">
+      <a class="btn btn-p" href="VendorStatus.dc.html">View submission status</a>
+      <a class="btn btn-s" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"></path></svg>Download receipt (PDF)</a>
+      <a class="btn btn-s" href="VendorDashboard.dc.html">Back to dashboard</a>
+    </div>
+  </section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

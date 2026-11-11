@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vendor start page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F5F2EE;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#14110F;font-size:15px;line-height:1.55}
+*{box-sizing:border-box}h1,h2,p,ol{margin:0}
+a{color:#14110F}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:8px;font:600 15px/1 'IBM Plex Sans',sans-serif;text-decoration:none}
+.btn-p{background:#F36A02;color:#14110F}.btn-p:hover{background:#F79A5B;color:#14110F}
+.btn:focus-visible,a:focus-visible{outline:3px solid #14110F;outline-offset:2px}
+.card{background:#FFFFFF;border:1px solid #DCD6CD;border-radius:8px}
+.muted{color:#6E6A65;font-size:14px}
+</style>
+</helmet>
+<div style="min-height: 100vh; padding: 32px 16px 64px">
+  <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 4px; flex-wrap: wrap">
+      <span style="display: flex; gap: 10px; align-items: center"><span style="width: 30px; height: 30px; border-radius: 7px; background: #14110F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">Due Diligence Portal</span></span>
+      <span class="muted" style="font-size: 13px">Amina Bello · <a href="#">Help</a> · <a href="VendorSimpleSignIn.dc.html">Sign out</a></span>
+    </div>
+
+    <section class="card" style="border-top: 8px solid #F36A02; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 600">Organisational Due Diligence Form</h1>
+        <p class="muted" style="margin-top: 4px">Northfield Agro Services Ltd · please complete by <span style="color: #14110F; font-weight: 600">15 December 2026</span></p>
+      </div>
+      <div>
+        <div style="height: 8px; background: #DCD6CD; border-radius: 99px; overflow: hidden" role="progressbar" aria-valuenow="47" aria-valuemin="0" aria-valuemax="100" aria-label="Form progress"><div style="width: 47%; height: 100%; background: #F36A02"></div></div>
+        <p class="muted" style="margin-top: 6px">About half done · your answers save automatically</p>
+      </div>
+      <div><a class="btn btn-p" href="VendorSimpleForm.dc.html">Continue where you left off</a></div>
+    </section>
+
+    <section class="card" style="padding: 8px 0">
+      <h2 style="font-size: 15px; font-weight: 600; padding: 14px 24px 8px">Sections</h2>
+      <ol style="list-style: none; padding: 0">
+        <sc-for list="{{secs}}" as="s" hint-placeholder-count="12">
+          <li><a href="VendorSimpleForm.dc.html" style="display: flex; gap: 14px; align-items: center; padding: 12px 24px; text-decoration: none; color: #14110F; border-top: 1px solid #EFEBE6">
+            <span style="width: 22px; color: #6E6A65; font-size: 14px">{{s.n}}</span>
+            <span style="flex: 1">{{s.title}}</span>
+            <span style="font-size: 14px; {{s.style}}">{{s.state}}</span>
+          </a></li>
+        </sc-for>
+      </ol>
+    </section>
+
+    <p class="muted" style="text-align: center; font-size: 13px">Questions about the form? Contact the TracTrac Partnership Manager.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const d = [['General Organizational Information', 12, 12], ['Legal and Compliance', 23, 18], ['Financial Health', 32, 14], ['Procurement and Vendor Management', 4, 4], ['Organizational Capacity and Capability', 27, 9], ['Donor Agreements and Programme Implementation', 10, 0], ['Quality Assurance and Risk Management', 18, 6], ['Ethical Standards and Policies', 7, 7], ['Corporate Governance', 19, 0], ['Stakeholder Engagement, CSR and Sustainability', 4, 4], ['References and Past Performance', 3, 1], ['Documentation Checklist', 22, 13]];
+    return {
+      secs: d.map(([title, t, done], i) => ({
+        n: i + 1, title,
+        state: done === t ? '✓ Done' : done ? (t - done) + ' left' : 'Not started',
+        style: done === t ? 'font-weight:600' : done ? '' : 'color:#6E6A65'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

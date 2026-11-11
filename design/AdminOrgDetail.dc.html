@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Organisation details</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p,dl,dd,dt{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn:focus-visible,.tab:focus-visible,.inp:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}.b-teal{background:#E2F3F1;color:#0B5E58}
+.inp{width:100%;min-height:40px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;color:inherit;background:#fff}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5B6577}
+.bar{height:6px;background:#E7EAF0;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:#0F766E;border-radius:99px}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:0 4px;height:44px;font:500 14px 'IBM Plex Sans',sans-serif;color:#5B6577;cursor:pointer}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:0 14px;height:38px;border-bottom:1px solid #E1E4EA;background:#F8F9FB}.tbl td{padding:10px 14px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="organisations" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 640px; min-width: 0; padding: 28px clamp(16px, 3vw, 36px) 64px; display: flex; flex-direction: column; gap: 20px">
+    <nav aria-label="Breadcrumb" class="help"><a href="AdminOrganisations.dc.html">Organisations</a> / <span style="color: #1B2433">Northfield Agro Services Ltd</span></nav>
+    <header style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: flex-start">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <h1 style="font-size: 24px; font-weight: 600">Northfield Agro Services Ltd</h1>
+        <p class="help" style="font-size: 14px">RC 1428817 · Private Firm · Kaduna, Nigeria · registered 9 Sep 2026</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+          <span class="help">Submission</span><span class="badge b-amber">Partial submission · 47%</span>
+          <span class="help" style="margin-left: 8px">Review</span><span class="badge b-amber">Information requested</span>
+          <span class="help" style="margin-left: 8px">Outcome</span><span class="badge b-grey">Not yet assessed</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
+        <button class="btn btn-s" type="button">Send reminder</button>
+        <a class="btn btn-s" href="AdminUpload.dc.html">Upload existing document</a>
+        <a class="btn btn-p" href="AdminReview.dc.html">Open submitted questionnaire</a>
+      </div>
+    </header>
+
+    <div role="tablist" aria-label="Organisation" style="display: flex; gap: 20px; border-bottom: 1px solid #E1E4EA; flex-wrap: wrap">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+        <button class="tab" role="tab" type="button" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{isOverview}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap"><h2 style="font-size: 15px; font-weight: 600">Submission progress by section</h2><span class="help">74 of 159 items · 52 documents received</span></div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px 24px">
+              <sc-for list="{{secs}}" as="s" hint-placeholder-count="12">
+                <div style="display: flex; flex-direction: column; gap: 4px"><div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{s.n}}. {{s.title}}</span><span class="help" style="flex: none">{{s.meta}}</span></div><div class="bar"><span style="width: {{s.pct}}"></span></div></div>
+              </sc-for>
+            </div>
+          </section>
+          <section class="card" style="overflow: hidden">
+            <div style="padding: 16px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid #E1E4EA"><h2 style="font-size: 15px; font-weight: 600">Missing requirements</h2><span class="help">70 documents · 13 answers</span></div>
+            <table class="tbl"><tbody>
+              <tr><td class="mono" style="width: 70px">2.4.2</td><td>Pension remittances</td><td><span class="badge b-grey">Not started</span></td></tr>
+              <tr><td class="mono">2.6.3</td><td>Related Party Transactions Policy</td><td><span class="badge b-grey">Not started</span></td></tr>
+              <tr><td class="mono">2.7.2</td><td>Anti-money laundering and counter-terrorism financing</td><td><span class="badge b-grey">Not started</span></td></tr>
+              <tr><td class="mono">2.1.3</td><td>Current Tax Clearance Certificate</td><td><span class="badge b-amber">Changes requested</span></td></tr>
+              <tr><td class="mono">3.5.2</td><td>Bank statements</td><td><span class="badge b-amber">Changes requested</span></td></tr>
+            </tbody></table>
+            <div style="padding: 12px 20px"><a href="AdminMonitoring.dc.html" style="font-size: 13px">See all 83 missing items →</a></div>
+          </section>
+        </div>
+        <aside style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 16px">
+          <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+            <h2 style="font-size: 15px; font-weight: 600">Organisation information</h2>
+            <dl style="display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 13px">
+              <dt class="help">Address</dt><dd>Plot 22, Industrial Layout, Kakuri, Kaduna South</dd>
+              <dt class="help">Incorporated</dt><dd>11 Mar 2014</dd>
+              <dt class="help">Website</dt><dd>northfieldagro.ng</dd>
+              <dt class="help">Verification</dt><dd><span class="badge b-green">Verified</span> CAC check 10 Sep</dd>
+            </dl>
+            <div><button class="btn btn-s btn-sm" type="button">Edit details</button></div>
+          </section>
+          <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+            <h2 style="font-size: 15px; font-weight: 600">Registered users</h2>
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+              <li style="display: flex; justify-content: space-between; gap: 8px"><span><span style="font-weight: 500">Amina Bello</span> · Owner</span><span class="help">Active today</span></li>
+              <li style="display: flex; justify-content: space-between; gap: 8px"><span><span style="font-weight: 500">Tunde Ojo</span> · Editor</span><span class="help">Active today</span></li>
+              <li style="display: flex; justify-content: space-between; gap: 8px"><span><span style="font-weight: 500">Grace Eze</span> · Editor</span><span class="help">Invite pending</span></li>
+            </ul>
+          </section>
+          <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+            <h2 style="font-size: 15px; font-weight: 600">Assessment cycles</h2>
+            <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="font-weight: 500">2026 Cycle 2</span><span class="badge b-amber">In progress</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span>2025 Partner Due Diligence</span><span class="badge b-green">Compliant</span></div>
+            <p class="help" style="font-size: 12px">2025 cycle used template v1.4 · read-only</p>
+          </section>
+        </aside>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isDocs}}" hint-placeholder-val="{{ false }}">
+      <section class="card" style="overflow: hidden">
+        <div style="overflow-x: auto">
+          <table class="tbl" style="min-width: 860px">
+            <thead><tr><th>Ref</th><th>Document</th><th>Requirement</th><th>Provided by</th><th>Received</th><th>Review</th></tr></thead>
+            <tbody>
+              <sc-for list="{{docs}}" as="d" hint-placeholder-count="8">
+                <tr><td class="mono">{{d.ref}}</td><td style="font-weight: 500">{{d.file}}</td><td class="help">{{d.req}}</td><td>{{d.by}}</td><td class="help">{{d.when}}</td><td><span class="badge {{d.cls}}">{{d.st}}</span></td></tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isHistory}}" hint-placeholder-val="{{ false }}">
+      <section class="card" style="padding: 20px">
+        <ol style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column">
+          <sc-for list="{{history}}" as="h" hint-placeholder-count="7">
+            <li style="display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EEF0F3"><span class="help" style="width: 130px; flex: none">{{h.when}}</span><span style="flex: 1"><span style="font-weight: 500">{{h.who}}</span> {{h.what}}</span></li>
+          </sc-for>
+        </ol>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isNotes}}" hint-placeholder-val="{{ false }}">
+      <section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+        <p class="help">Internal notes are visible to TracTrac staff only — never to the organisation.</p>
+        <div><label for="nn" style="font-weight: 500; display: block; margin-bottom: 6px">Add a note</label><textarea class="inp" id="nn" rows="3" placeholder="e.g. Called Amina on 4 Nov about pension schedules"></textarea><div style="margin-top: 8px"><button class="btn btn-p btn-sm" type="button">Save note</button></div></div>
+        <div style="border-top: 1px solid #EEF0F3; padding-top: 14px; display: flex; flex-direction: column; gap: 12px">
+          <div><p style="font-size: 13px"><span style="font-weight: 600">Chidi Okafor</span> <span class="help">· 3 Nov 2026</span></p><p>Received the 2023 audited accounts and Certificate of Incorporation by email from the Partnership Manager. Uploaded both against 3.1.2 and 2.1.1.</p></div>
+          <div><p style="font-size: 13px"><span style="font-weight: 600">Funmi Adeyemi</span> <span class="help">· 10 Sep 2026</span></p><p>Existing partner since 2025 cycle — prior outcome Compliant. Prioritise financial sections.</p></div>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1800}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { tab: 'overview' }; }
+  renderVals() {
+    const tab = this.state.tab;
+    const T = [['overview', 'Overview'], ['docs', 'Documents received (52)'], ['history', 'Review history'], ['notes', 'Internal notes (2)']];
+    const S = [[1, 'General Organizational Information', 12, 12], [2, 'Legal and Compliance', 23, 17], [3, 'Financial Health', 32, 14], [4, 'Procurement and Vendor Management', 4, 4], [5, 'Organizational Capacity and Capability', 27, 9], [6, 'Donor Agreements and Programme Implementation', 10, 0], [7, 'Quality Assurance and Risk Management', 18, 6], [8, 'Ethical Standards and Policies', 7, 7], [9, 'Corporate Governance', 19, 0], [10, 'Stakeholder Engagement, CSR and Sustainability', 4, 4], [11, 'References and Past Performance', 3, 1], [12, 'Documentation Checklist', 22, 13]];
+    return {
+      tabs: T.map(([k, label]) => ({ label, sel: k === tab ? 'true' : 'false', pick: () => this.setState({ tab: k }), style: k === tab ? 'color:#12284C;border-bottom-color:#12284C;font-weight:600' : '' })),
+      isOverview: tab === 'overview', isDocs: tab === 'docs', isHistory: tab === 'history', isNotes: tab === 'notes',
+      secs: S.map(([n, title, t, d]) => ({ n, title, meta: d + '/' + t, pct: Math.round((d / t) * 100) + '%' })),
+      docs: [
+        { ref: '2.1.1', file: 'Certificate_of_Incorporation.pdf', req: 'Certificate of Incorporation', by: 'TracTrac (Chidi Okafor)', when: '9 Oct 2026', st: 'Approved', cls: 'b-green' },
+        { ref: '2.1.2', file: 'TIN_Certificate_Northfield.pdf', req: 'Evidence of TIN', by: 'Amina Bello', when: '28 Oct 2026', st: 'Under review', cls: 'b-blue' },
+        { ref: '2.1.3', file: 'Tax_Clearance_2025.pdf', req: 'Current Tax Clearance Certificate', by: 'Amina Bello', when: '28 Oct 2026', st: 'Changes requested', cls: 'b-amber' },
+        { ref: '2.2.1', file: 'Memorandum_and_Articles_2014.pdf', req: 'Memorandum and Articles', by: 'Amina Bello', when: '12 Oct 2026', st: 'Approved', cls: 'b-green' },
+        { ref: '2.4.1', file: 'PAYE_Remittances_2024.pdf', req: 'Tax remittances', by: 'Tunde Ojo', when: '28 Oct 2026', st: 'Awaiting review', cls: 'b-grey' },
+        { ref: '3.1.2', file: 'Audited_Financial_Statements_2023.pdf', req: 'Audited financial statements', by: 'TracTrac (Chidi Okafor)', when: '9 Oct 2026', st: 'Under review', cls: 'b-blue' },
+        { ref: '3.5.2', file: 'Bank_Statements_Operating_Apr-Dec2025.pdf', req: 'Bank statements', by: 'Tunde Ojo', when: '30 Oct 2026', st: 'Changes requested', cls: 'b-amber' },
+        { ref: '5.1.2', file: 'Organisational_Structure_2026.pdf', req: 'Organizational chart', by: 'TracTrac (Chidi Okafor)', when: '9 Oct 2026', st: 'Approved', cls: 'b-green' }
+      ],
+      history: [
+        { when: '3 Nov 2026, 11:20', who: 'Chidi Okafor', what: 'requested changes on 3.5.2 Bank statements — Jan–Mar 2025 missing.' },
+        { when: '3 Nov 2026, 11:02', who: 'Chidi Okafor', what: 'requested changes on 2.1.3 Tax Clearance Certificate — expired.' },
+        { when: '30 Oct 2026, 16:45', who: 'Tunde Ojo', what: 'uploaded 14 documents in Section 3. Financial Health.' },
+        { when: '28 Oct 2026, 10:12', who: 'Amina Bello', what: 'uploaded 17 documents in Section 2. Legal and Compliance.' },
+        { when: '12 Oct 2026, 09:30', who: 'Chidi Okafor', what: 'approved 2.2.1 Memorandum and Articles of Association.' },
+        { when: '9 Oct 2026, 14:05', who: 'Chidi Okafor', what: 'uploaded 3 existing documents received by email (2.1.1, 3.1.2, 5.1.2).' },
+        { when: '10 Sep 2026, 08:50', who: 'Funmi Adeyemi', what: 'assigned 2026 Partner Due Diligence · Cycle 2 (template v2.0).' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

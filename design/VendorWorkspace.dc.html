@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Assessment workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-g{background:transparent;color:#1D4E89}.btn-g:hover{background:#EEF2F8}
+.btn-sm{min-height:32px;padding:0 10px;font-size:13px}
+.btn:focus-visible,.inp:focus-visible,.nav-b:focus-visible,.grp-b:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}.b-teal{background:#E2F3F1;color:#0B5E58}
+.inp{width:100%;min-height:40px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;color:inherit;background:#fff}
+textarea.inp{resize:vertical;min-height:84px}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.bar{height:6px;background:#E7EAF0;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:#0F766E;border-radius:99px}
+.nav-b{width:100%;display:flex;gap:10px;align-items:flex-start;text-align:left;background:transparent;border:0;border-radius:8px;padding:8px 10px;font:inherit;color:inherit;cursor:pointer}
+.nav-b:hover{background:#F4F5F7}
+.grp-b{width:100%;display:flex;gap:12px;align-items:center;background:transparent;border:0;padding:16px 20px;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:8px 10px;border-bottom:1px solid #E1E4EA;background:#F8F9FB}.tbl td{padding:6px 10px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+<dc-import name="VendorHeader" active="workspace" hint-size="100%,72px"></dc-import>
+<div style="max-width: 1360px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+  <aside style="flex: 1 1 290px; max-width: 100%; display: flex; flex-direction: column; gap: 12px">
+    <div class="card" style="padding: 18px; display: flex; flex-direction: column; gap: 12px">
+      <div><p class="help">Northfield Agro Services Ltd</p><p style="font-weight: 600">2026 Partner Due Diligence · Cycle 2</p><p class="help">Due 15 Dec 2026</p></div>
+      <div><div style="display: flex; justify-content: space-between; margin-bottom: 6px"><span style="font-size: 13px; font-weight: 500">Overall progress</span><span style="font-weight: 600">{{overallPct}}</span></div><div class="bar" style="height: 8px" role="progressbar" aria-valuenow="{{overallNum}}" aria-valuemin="0" aria-valuemax="100" aria-label="Overall progress"><span style="width: {{overallPct}}"></span></div><p class="help" style="margin-top: 6px">{{overallMeta}}</p></div>
+    </div>
+    <nav class="card" aria-label="Questionnaire sections" style="padding: 8px">
+      <button class="nav-b" type="button" onClick="{{toggleNav}}" aria-expanded="{{navOpenStr}}" style="justify-content: space-between; align-items: center; font-weight: 600"><span>Sections</span><span class="help" style="font-weight: 400">{{navToggleLabel}}</span></button>
+      <sc-if value="{{navOpen}}" hint-placeholder-val="{{ true }}">
+        <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px">
+          <sc-for list="{{nav}}" as="s" hint-placeholder-count="12">
+            <li><button class="nav-b" type="button" onClick="{{s.go}}" aria-current="{{s.current}}" style="{{s.style}}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 2px; stroke: {{s.color}}"><path d="{{s.icon}}"></path></svg>
+              <span style="flex: 1; min-width: 0; line-height: 1.35"><span style="display: block; font-size: 13px">{{s.n}}. {{s.title}}</span><span style="display: block; font-size: 12px; color: #5B6577">{{s.meta}}</span></span>
+            </button></li>
+          </sc-for>
+        </ol>
+      </sc-if>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center">
+      <nav aria-label="Breadcrumb" class="help"><a href="VendorDashboard.dc.html">Dashboard</a> / <span>2026 Partner Due Diligence</span> / <span style="color: #1B2433">Section {{secN}}</span></nav>
+      <div aria-live="polite" style="font-size: 13px">
+        <sc-if value="{{isSaving}}" hint-placeholder-val="{{ false }}"><span class="help" style="display: inline-flex; gap: 6px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 11-3-6.7"></path></svg>Saving…</span></sc-if>
+        <sc-if value="{{isSaved}}" hint-placeholder-val="{{ true }}"><span style="display: inline-flex; gap: 6px; align-items: center; color: #1A6B40"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>All changes saved · {{savedAt}}</span></sc-if>
+        <sc-if value="{{isError}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; gap: 8px; align-items: center; color: #A8201A">Unable to save. Check your connection. <button class="btn btn-s btn-sm" type="button" onClick="{{retry}}">Retry</button></span></sc-if>
+      </div>
+    </div>
+
+    <header class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+      <div>
+        <p class="help" style="font-weight: 500">Section {{secN}} of 12</p>
+        <h1 style="font-size: 24px; font-weight: 600; letter-spacing: -.01em">{{secTitle}}</h1>
+        <p style="margin-top: 6px; color: #3A4456; max-width: 760px">{{secIntro}}</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center">
+        <div style="flex: 1 1 260px"><div style="display: flex; justify-content: space-between; margin-bottom: 6px"><span style="font-size: 13px">Section progress</span><span style="font-size: 13px; font-weight: 600">{{secMeta}}</span></div><div class="bar"><span style="width: {{secPct}}"></span></div></div>
+        <sc-if value="{{notChecklist}}" hint-placeholder-val="{{ true }}">
+          <label style="display: inline-flex; gap: 8px; align-items: center; font-size: 13px; min-height: 40px"><input type="checkbox" checked="{{onlyOpen}}" onChange="{{toggleOnly}}" style="width: 18px; height: 18px; accent-color: #12284C">Show only items still to do</label>
+        </sc-if>
+      </div>
+      <sc-if value="{{secAttention}}" hint-placeholder-val="{{ false }}">
+        <div style="background: #FFFAF0; border: 1px solid #F0D29A; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #6B3A00">{{secAttention}}</div>
+      </sc-if>
+    </header>
+
+    <sc-if value="{{notChecklist}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+      <sc-for list="{{groups}}" as="g" hint-placeholder-count="4">
+        <section class="card" style="overflow: hidden">
+          <h2 style="margin: 0; font-size: 15px"><button class="grp-b" type="button" onClick="{{g.toggle}}" aria-expanded="{{g.openStr}}">
+            <span class="mono" style="color: #5B6577; width: 34px">{{g.key}}</span>
+            <span style="flex: 1; font-weight: 600">{{g.title}}</span>
+            <span class="help" style="font-weight: 400">{{g.meta}}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6577" stroke-width="2" aria-hidden="true"><path d="{{g.chev}}"></path></svg>
+          </button></h2>
+          <sc-if value="{{g.open}}" hint-placeholder-val="{{ true }}">
+            <div style="border-top: 1px solid #E1E4EA">
+            <sc-for list="{{g.items}}" as="it" hint-placeholder-count="3">
+              <div style="padding: 18px 20px; border-bottom: 1px solid #EEF0F3; display: flex; flex-direction: column; gap: 10px">
+                <div style="display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: flex-start">
+                  <span class="mono" style="color: #5B6577; padding-top: 2px; width: 44px">{{it.ref}}</span>
+                  <div style="flex: 1 1 300px; min-width: 0"><label for="f-{{it.id}}" style="font-weight: 500; display: block">{{it.title}}</label><p class="help">{{it.help}}</p></div>
+                  <div style="display: flex; gap: 8px; align-items: center"><span style="font-size: 12px; color: #5B6577">{{it.req}}</span><span class="badge {{it.badgeCls}}">{{it.badge}}</span></div>
+                </div>
+                <div style="padding-left: 56px; display: flex; flex-direction: column; gap: 8px">
+
+                  <sc-if value="{{it.isT}}" hint-placeholder-val="{{ false }}"><input class="inp" id="f-{{it.id}}" value="{{it.v}}" onChange="{{it.onText}}" style="max-width: 560px"></sc-if>
+                  <sc-if value="{{it.isL}}" hint-placeholder-val="{{ false }}"><textarea class="inp" id="f-{{it.id}}" rows="3" value="{{it.v}}" onChange="{{it.onText}}"></textarea></sc-if>
+                  <sc-if value="{{it.isN}}" hint-placeholder-val="{{ false }}"><input class="inp" id="f-{{it.id}}" type="number" min="0" value="{{it.v}}" onChange="{{it.onText}}" style="max-width: 200px"></sc-if>
+                  <sc-if value="{{it.isD}}" hint-placeholder-val="{{ false }}"><input class="inp" id="f-{{it.id}}" type="date" value="{{it.v}}" onChange="{{it.onText}}" style="max-width: 220px"></sc-if>
+                  <sc-if value="{{it.isS}}" hint-placeholder-val="{{ false }}"><select class="inp" id="f-{{it.id}}" value="{{it.v}}" onChange="{{it.onText}}" style="max-width: 320px"><option value="">Select a country</option><option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>Other</option></select></sc-if>
+
+                  <sc-if value="{{it.isC}}" hint-placeholder-val="{{ false }}">
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px 20px" role="group" aria-label="{{it.title}}">
+                      <sc-for list="{{it.opts}}" as="o" hint-placeholder-count="3"><label style="display: inline-flex; gap: 8px; align-items: center; min-height: 36px"><input type="checkbox" checked="{{o.on}}" onChange="{{o.toggle}}" style="width: 18px; height: 18px; accent-color: #12284C">{{o.label}}</label></sc-for>
+                    </div>
+                    <sc-if value="{{it.showOther}}" hint-placeholder-val="{{ false }}"><input class="inp" aria-label="Explain other organization type" placeholder="Please explain" value="{{it.other}}" onChange="{{it.onOther}}" style="max-width: 560px"></sc-if>
+                  </sc-if>
+
+                  <sc-if value="{{it.isY}}" hint-placeholder-val="{{ false }}">
+                    <div role="radiogroup" aria-label="{{it.title}}" style="display: inline-flex; border: 1px solid #C9CED8; border-radius: 8px; overflow: hidden; align-self: flex-start">
+                      <label style="display: flex; align-items: center; gap: 8px; padding: 0 20px; min-height: 40px; cursor: pointer; {{it.yesStyle}}"><input type="radio" name="yn-{{it.id}}" checked="{{it.isYes}}" onChange="{{it.setYes}}" style="accent-color: #12284C">Yes</label>
+                      <label style="display: flex; align-items: center; gap: 8px; padding: 0 20px; min-height: 40px; cursor: pointer; border-left: 1px solid #C9CED8; {{it.noStyle}}"><input type="radio" name="yn-{{it.id}}" checked="{{it.isNo}}" onChange="{{it.setNo}}" style="accent-color: #12284C">No</label>
+                    </div>
+                    <sc-if value="{{it.showDetail}}" hint-placeholder-val="{{ false }}">
+                      <div style="border-left: 3px solid #C7D3E6; padding: 4px 0 4px 14px; display: flex; flex-direction: column; gap: 6px">
+                        <label for="d-{{it.id}}" style="font-weight: 500">{{it.detailLabel}}</label>
+                        <textarea class="inp" id="d-{{it.id}}" rows="3" value="{{it.detail}}" onChange="{{it.onDetail}}"></textarea>
+                      </div>
+                    </sc-if>
+                  </sc-if>
+
+                  <sc-if value="{{it.isR}}" hint-placeholder-val="{{ false }}">
+                    <div style="overflow-x: auto; border: 1px solid #E1E4EA; border-radius: 8px">
+                      <table class="tbl" style="min-width: 560px">
+                        <thead><tr><sc-for list="{{it.cols}}" as="c" hint-placeholder-count="3"><th scope="col">{{c}}</th></sc-for><th><span style="position: absolute; left: -9999px">Actions</span></th></tr></thead>
+                        <tbody>
+                          <sc-for list="{{it.rows}}" as="row" hint-placeholder-count="2">
+                            <tr><sc-for list="{{row.cells}}" as="cell" hint-placeholder-count="3"><td><input class="inp" aria-label="{{cell.label}}" value="{{cell.val}}" onChange="{{cell.onChange}}" style="min-height: 36px"></td></sc-for><td style="width: 44px"><button class="btn btn-g btn-sm" type="button" aria-label="Remove row" onClick="{{row.onRemove}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></td></tr>
+                          </sc-for>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div><button class="btn btn-s btn-sm" type="button" onClick="{{it.onAddRow}}">+ Add another entry</button></div>
+                  </sc-if>
+
+                  <sc-if value="{{it.isF}}" hint-placeholder-val="{{ false }}">
+                    <sc-if value="{{it.tt}}" hint-placeholder-val="{{ false }}">
+                      <div style="border: 1px solid #C7D7EE; background: #F5F8FD; border-radius: 8px; padding: 10px 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A54A6" stroke-width="1.75" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg>
+                        <div style="flex: 1 1 220px; min-width: 0"><p style="font-weight: 500">{{it.tt.name}}</p><p style="font-size: 13px; color: #1A54A6">Already provided by TracTrac on {{it.tt.when}} · {{it.tt.size}}. You don't need to upload this again.</p></div>
+                        <button class="btn btn-g btn-sm" type="button">View</button>
+                      </div>
+                    </sc-if>
+                    <sc-for list="{{it.files}}" as="f" hint-placeholder-count="1">
+                      <div style="border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; {{f.boxStyle}}">
+                        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6577" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg>
+                          <div style="flex: 1 1 220px; min-width: 0"><p style="font-weight: 500; overflow-wrap: anywhere; {{f.nameStyle}}">{{f.name}}</p><p class="help">{{f.meta}}</p></div>
+                          <span class="badge {{f.badgeCls}}">{{f.badge}}</span>
+                          <button class="btn btn-g btn-sm" type="button">View</button>
+                          <sc-if value="{{f.canRemove}}" hint-placeholder-val="{{ false }}"><button class="btn btn-g btn-sm" type="button" onClick="{{f.onRemove}}" aria-label="Remove {{f.name}}">Remove</button></sc-if>
+                        </div>
+                        <sc-if value="{{f.isChg}}" hint-placeholder-val="{{ false }}">
+                          <div style="display: flex; flex-direction: column; gap: 8px">
+                            <p style="font-size: 13px"><span style="font-weight: 600">{{f.by}}:</span> {{f.note}}</p>
+                            <div><button class="btn btn-p btn-sm" type="button" onClick="{{it.onBrowse}}">Upload replacement</button></div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{it.uploading}}" hint-placeholder-val="{{ false }}">
+                      <div style="border: 1px solid #E1E4EA; border-radius: 8px; padding: 10px 12px; display: flex; gap: 12px; align-items: center">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6577" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg>
+                        <div style="flex: 1; min-width: 0"><div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: 500; overflow-wrap: anywhere">{{it.uploading.name}}</span><span class="help">Uploading {{it.uploading.pctLabel}}</span></div><div class="bar" style="margin-top: 6px" role="progressbar" aria-valuenow="{{it.uploading.pct}}" aria-valuemin="0" aria-valuemax="100" aria-label="Upload progress"><span style="width: {{it.uploading.pctLabel}}; background: #1D4E89"></span></div></div>
+                        <button class="btn btn-g btn-sm" type="button" onClick="{{it.onCancel}}">Cancel</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{it.na}}" hint-placeholder-val="{{ false }}">
+                      <div style="border: 1px solid #E1E4EA; background: #F8F9FB; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+                        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><label for="na-{{it.id}}" style="font-weight: 500; font-size: 13px">Marked not applicable — reason</label><button class="btn btn-g btn-sm" type="button" onClick="{{it.onUndoNa}}">Undo</button></div>
+                        <input class="inp" id="na-{{it.id}}" value="{{it.why}}" onChange="{{it.onWhy}}" placeholder="Briefly explain why this does not apply">
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{it.showDrop}}" hint-placeholder-val="{{ false }}">
+                      <div style="border: 1.5px dashed #AEB6C4; border-radius: 10px; background: #FAFBFC; padding: 14px 16px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: #EEF2F8; color: #1D4E89; display: flex; align-items: center; justify-content: center; flex: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"></path></svg></div>
+                        <div style="flex: 1 1 200px"><p style="font-weight: 500">Drag files here</p><p class="help">PDF, DOCX, XLSX, JPG or PNG · max 20 MB each · several files allowed</p></div>
+                        <button class="btn btn-s btn-sm" type="button" id="f-{{it.id}}" onClick="{{it.onBrowse}}">Browse files</button>
+                        <button class="btn btn-g btn-sm" type="button" onClick="{{it.onNa}}">Not applicable</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{it.showAdd}}" hint-placeholder-val="{{ false }}"><div><button class="btn btn-g btn-sm" type="button" onClick="{{it.onBrowse}}" style="padding-left: 0">+ Add another file</button></div></sc-if>
+                  </sc-if>
+
+                </div>
+              </div>
+            </sc-for>
+            </div>
+          </sc-if>
+        </section>
+      </sc-for>
+      <sc-if value="{{emptyFiltered}}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="padding: 32px; text-align: center"><p style="font-weight: 600">Nothing left to do in this section</p><p class="help">Every required item is answered or evidenced. Move on to the next section.</p></div>
+      </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isChecklist}}" hint-placeholder-val="{{ false }}">
+      <section class="card" style="overflow: hidden">
+        <div style="overflow-x: auto">
+          <table class="tbl" style="min-width: 640px">
+            <thead><tr><th scope="col" style="padding: 10px 16px">No.</th><th scope="col">Document</th><th scope="col">Linked requirement</th><th scope="col">Status</th><th scope="col"><span style="position: absolute; left: -9999px">Action</span></th></tr></thead>
+            <tbody>
+              <sc-for list="{{checklist}}" as="c" hint-placeholder-count="22">
+                <tr><td style="padding: 10px 16px; color: #5B6577">{{c.n}}</td><td style="font-weight: 500">{{c.doc}}</td><td><span class="mono">{{c.ref}}</span></td><td><span class="badge {{c.badgeCls}}">{{c.badge}}</span></td><td style="text-align: right"><sc-if value="{{c.missing}}" hint-placeholder-val="{{ false }}"><button class="btn btn-s btn-sm" type="button" onClick="{{c.go}}">Go to section {{c.sec}}</button></sc-if></td></tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </sc-if>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 8px 0 32px; border-top: 1px solid #E1E4EA; margin-top: 8px">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px">
+        <button class="btn btn-s" type="button" onClick="{{prev}}" disabled="{{isFirst}}">← Previous section</button>
+        <button class="btn btn-g" type="button" onClick="{{next}}" disabled="{{isLast}}">Next section →</button>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px">
+        <a class="btn btn-s" href="VendorDashboard.dc.html">Save and exit</a>
+        <sc-if value="{{isLast}}" hint-placeholder-val="{{ false }}"><a class="btn btn-p" href="VendorReview.dc.html">Review assessment →</a></sc-if>
+        <sc-if value="{{notLast}}" hint-placeholder-val="{{ true }}"><button class="btn btn-p" type="button" onClick="{{saveNext}}">Save and continue →</button></sc-if>
+      </div>
+    </div>
+  </main>
+</div>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="position: fixed; right: 24px; bottom: 24px; background: #1B2433; color: #fff; border-radius: 10px; padding: 12px 16px; display: flex; gap: 10px; align-items: center; box-shadow: 0 12px 32px rgba(16,24,40,.16); max-width: calc(100% - 48px)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7DD3C0" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg><span>{{toast}}</span></div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startSection":{"editor":"int","min":1,"max":12,"default":2},"saveError":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":2700}}'>
+const SECS = ['General Organizational Information', 'Legal and Compliance', 'Financial Health', 'Procurement and Vendor Management', 'Organizational Capacity and Capability', 'Donor Agreements and Programme Implementation', 'Quality Assurance and Risk Management', 'Ethical Standards and Policies', 'Corporate Governance', 'Stakeholder Engagement, CSR and Sustainability', 'References and Past Performance', 'Documentation Checklist'];
+const SUBS = {"1.0":"General Information","1.1":"Registration Details","1.2":"Authorized Representatives","2.1":"Legal Status of the Organization","2.2":"Constitutional Documents","2.3":"Compliance with Local Laws and Regulations","2.4":"Statutory Remittances and Permits","2.5":"Anti-Corruption Policies","2.6":"Fraud Prevention, Conflict of Interest and Related Parties","2.7":"Beneficial Ownership, Screening and Data Protection","2.8":"Litigation Status","3.1":"Financial Statements","3.2":"Solvency, Bank and Credit References","3.3":"Financial Records and Accounting","3.4":"Banking Details","3.5":"Bank Accounts and Reconciliations","3.6":"Financial Management Policies and Internal Controls","3.7":"Payroll and Staff Costs","3.8":"Cash and Staff Advances","3.9":"Income, Receivables and Liabilities","3.10":"Donor Fund Management","4.1":"Procurement Policies","4.2":"Vendor Records","4.3":"Contract Awards","5.1":"Company Structure","5.2":"Staff and Management Information","5.3":"Recruitment and Training","5.4":"Key Project Personnel","5.5":"Technical Expertise","5.6":"Strategy, Processes and Assets","5.7":"Equipment, Stock and Insurance","5.8":"Health, Safety, and Environmental (HSE) Policies","5.9":"Workplace Standards","6.1":"Donor/Partnership Agreements","6.2":"Programmes Executed","6.3":"Monitoring, Evaluation and Beneficiary Records","6.4":"Subcontractor and Sub-grantee Oversight","7.1":"Quality Management Systems","7.2":"Risk Management Plan","7.3":"Risk Reporting and Oversight","7.4":"Audit Follow-up and Assurance","7.5":"Security Protocols","7.6":"Information Technology and Records","8.1":"Ethical Conduct","8.2":"Other Ethics Policies and Reporting","8.3":"Safeguarding Policies","8.4":"Diversity and Inclusion","9.1":"Board of Directors","9.2":"Board and Management Committees","9.3":"Directors' Remuneration","9.4":"Board Evaluation, Training and Succession","9.5":"Shareholders and Annual General Meeting","10.1":"Stakeholder Engagement and Sustainability","11.1":"Client References","11.2":"Experience in Similar Projects"};
+const RAW = `1.0.1|Official Organization Name|State the official registered name of your organization.|t
+1.0.2|Acronym|State your organization's acronym (if any).|t
+1.0.3|Organization Address|State your organization's address.|l
+1.0.4|Organization Contact Information|Provide your organization's phone number, email address and website.|t
+1.0.5|Organization Type|Select all that apply. If Other, please explain.|c
+1.1.1|Business Registration Number|State your business registration number.|t
+1.1.2|Incorporation Date|State your date of incorporation.|d
+1.1.3|Country of Registration|State your country of registration.|s
+1.2.1|Authorized Representatives' Contact Information|Provide the names, titles and email addresses of your authorized representatives.|r
+1.2.2|Organizational Background, Nature of Business/Services Provided|Provide a brief description of the organization, including its geography, formation and operations.|l
+1.2.3|Previous experience in international development projects|Do you have any previous experience in implementing International Development Projects?|y
+1.2.4|Relationships with NGOs and donors|List any existing and/or previous relationships you have had with NGOs and donors.|l
+2.1.1|Copy of the Certificate of Incorporation|Attach a copy of your Certificate of Incorporation.|f
+2.1.2|Evidence of Tax Identification Number (TIN)|Attach evidence of your TIN.|f
+2.1.3|Current Tax Clearance Certificate|Attach your current Tax Clearance Certificate.|f
+2.2.1|Memorandum and Articles of Association (or Constitution)|Attach your Memorandum and Articles of Association or equivalent constitutional documents.|f
+2.3.1|Corporate Affairs Commission (CAC) registration (for Nigeria)|Attach your CAC registration.|f
+2.3.2|Compliance with Nigerian labour and tax laws|Describe the mechanisms in place for compliance with labour and tax obligations under Nigerian tax laws.|l
+2.4.1|Tax remittances|Attach evidence of filing and remittance of all taxes during the review period, including PAYE.|f
+2.4.2|Pension remittances|Attach evidence of monthly pension remittances for all staff and a current PenCom Compliance Certificate.|f
+2.4.3|Other statutory certificates|Attach current compliance certificates from NSITF, ITF and other statutory bodies.|f
+2.4.4|Business permits and licences|Attach business permits, operating licences and vehicle and equipment (tractor) registration.|f
+2.4.5|Tax audits and disputes|Give details of any tax audits, assessments or disputes with tax authorities during the last five years.|l
+2.5.1|Adherence to local and international anti-corruption laws (e.g. FCPA, UK Bribery Act)|Attach your organization’s anti-corruption policies and/or guidelines.|f
+2.5.2|Code of Conduct and Anti-Bribery Policy|Attach your organization’s code of conduct and anti-bribery policies and/or guidelines.|f
+2.6.1|Fraud Prevention and Detection Policy|Attach your organization's Fraud Prevention and Detection Policy.|f
+2.6.2|Conflict of Interest Policy|Attach your organization's Conflict of Interest Policy.|f
+2.6.3|Related Party Transactions Policy|Attach your organization's Related Party Transactions Policy.|f
+2.6.4|Schedule of related party transactions|Attach a schedule of all related party transactions entered during the review period.|f
+2.6.5|Insider Trading / Confidential information policy|Attach your Insider Trading Policy (or policy on the use of confidential information).|f
+2.7.1|Beneficial ownership|Attach your register of Persons with Significant Control (PSC) as filed with the CAC.|f
+2.7.2|Anti-money laundering and counter-terrorism financing|Attach your Anti-Money Laundering and Counter-Terrorism Financing Policy.|f
+2.7.3|Sanctions and debarment screening|Attach your procedure for screening staff, vendors and partners against sanctions and debarment lists.|f
+2.7.4|Data protection and privacy|Attach your Data Protection/Privacy Policy, showing how staff, farmer and beneficiary data is protected.|f
+2.8.1|Litigation status|Do you have any pending, current, or past legal issues, proceedings or disputes within the last five years?|y
+3.1.1|Audited financial statements|Has your organization been audited in the past 2 years?|y
+3.1.2|Audited financial statements (past 3 years)|Attach your organization’s audited financial statements for the past 3 years.|f
+3.2.1|Certificate/declaration of solvency|Attach a certificate or signed declaration of solvency for your organization.|f
+3.2.2|Bank reference letter|Attach a recent reference letter from your bank confirming the account details provided.|f
+3.2.3|Credit references|Attach credit references from your bank, lenders or major suppliers.|f
+3.3.1|Schedule of inflows and outflows|Attach a schedule of all inflows into and outflows from your accounts during the review period.|f
+3.3.2|General ledger|Attach the general ledger covering the review period.|f
+3.3.3|Trial balance|Attach the trial balance(s) covering the review period.|f
+3.3.4|Chart of accounts|Attach your organization's chart of accounts.|f
+3.3.5|Approved annual budgets|Attach your approved annual budget for each year within the review period.|f
+3.3.6|Schedule of expenditure|Attach a schedule of all expenditure incurred during the review period.|f
+3.3.7|Supporting documents for expenditure|Attach (or make available) supporting documents for the expenditure listed above.|f
+3.3.8|External audit management letters|Attach the management letters issued by your external auditors for the last two financial years.|f
+3.4.1|Official bank account details for verification|Provide your organization’s official bank details: bank, account name and account number.|l
+3.5.1|List of all bank accounts used by the organization|List every bank account used by your organization during the review period.|r
+3.5.2|Bank statements|Attach statements for all the bank accounts listed above, covering the review period.|f
+3.5.3|Bank reconciliation reports|Attach bank reconciliation reports for all the accounts listed above, covering the review period.|f
+3.5.4|Bank confirmation|Will your organization authorize its banks to provide statements and confirmations directly to the auditors?|y
+3.6.1|Financial policies, SOPs and internal control framework|Attach your financial policies, SOPs and internal control framework.|f
+3.6.2|Delegation of authority framework|Attach your delegation of authority framework, including the approval matrix.|f
+3.7.1|Payroll registers|Attach the monthly payroll registers for the review period, showing gross pay and deductions.|f
+3.7.2|Staff contracts and salary scale|Attach your approved salary scale and make employment contracts available.|f
+3.7.3|Timesheets / level of effort|Attach timesheets or level-of-effort records showing time charged to each donor-funded project.|f
+3.8.1|Petty cash policy and cash counts|Attach your petty cash policy and records of cash counts during the review period.|f
+3.8.2|Staff advances register|Attach the register of advances made to staff during the review period.|f
+3.9.1|Income and revenue records|Attach a schedule of all income received during the review period.|f
+3.9.2|Receivables and payables|Attach aged schedules of amounts owed to and by your organization at the end of the review period.|f
+3.9.3|Loans, guarantees and commitments|List any loans, overdrafts, guarantees or other significant commitments of your organization.|l
+3.10.1|Budget vs actual reports|Attach budget vs actual (variance) reports for each donor grant during the review period.|f
+3.10.2|Cost allocation method|Attach your method for allocating shared costs (e.g. rent, staff, vehicles) across projects.|f
+3.10.3|Exchange rate policy|Attach your policy on exchange rates used to record and report foreign-currency donor funds.|f
+3.10.4|Travel, per diem, vehicle and fuel policies|Attach your travel, per diem, vehicle use and fuel management policies.|f
+4.1.1|Procurement/supply chain policy and SOPs|Attach your procurement/supply chain policy and all related SOPs.|f
+4.2.1|Vendor master file|Attach your electronic vendor master file (e.g. Excel).|f
+4.3.1|Schedule of contracts awarded|Attach a schedule of all contracts awarded during the review period.|f
+4.3.2|Supporting documents for contract awards|Attach (or make available) the supporting documents and approvals for contract awards.|f
+5.1.1|Employees|How many employees does your organization employ?|n
+5.1.2|Organizational chart or company profile|Attach your organizational chart or company profile.|f
+5.1.3|Changes in management or financial staff|Have there been any changes in management or financial staff during the last 12 months?|y
+5.1.4|Anticipated headcount|What do you anticipate your employee headcount to be 12 months from now?|n
+5.1.5|Attrition rate (%)|What is the organization’s attrition rate?|n
+5.1.6|Senior-management staff|How many senior-management staff does the organization employ?|n
+5.1.7|Finance staff|How many finance staff does the organization employ?|n
+5.2.1|Departmental/unit heads|Attach a list of departmental/unit heads with their contact information.|f
+5.2.2|Employee list|Attach a list of all employees showing staff name, staff ID, address, email and telephone number.|f
+5.2.3|Staff handbook|Attach your organization's Staff Handbook.|f
+5.2.4|Performance management system|Attach details of your performance management system.|f
+5.3.1|Recruitment policy and background checks|Attach your recruitment policy and evidence of reference and background checks.|f
+5.3.2|Staff training records|Attach records of staff training during the review period.|f
+5.4.1|Key project personnel|Provide a list of key personnel that will work with us on the project.|r
+5.4.2|CVs of key personnel|Attach the CVs of the staff listed above.|f
+5.5.1|Evidence of previous similar work|Attach evidence of previous similar work (e.g. case studies, project reports).|f
+5.6.1|Current strategy document|Attach your organization's current strategy document.|f
+5.6.2|Core and supporting processes|Attach a list of your core and supporting processes, including documented SOPs.|f
+5.6.3|Key performance indicators|Attach the KPIs and performance ratings across all functions.|f
+5.6.4|Asset register|Attach a schedule of all assets owned or managed by your organization.|f
+5.7.1|Equipment logbooks|Attach logbooks for tractors and other equipment covering the review period.|f
+5.7.2|Asset verification and disposals|Attach the most recent physical verification report of your assets.|f
+5.7.3|Stock records|Attach stock records for spare parts, fuel and other consumables.|f
+5.7.4|Insurance policies|Attach your current insurance policies, including cover for assets and equipment.|f
+5.8.1|HSE policies and protocols|Attach a copy of your organization’s HSE Policy.|f
+5.9.1|Labour policies|Attach a copy of your organization’s Labour and Employment Policy.|f
+5.9.2|Compliance with international standards (e.g. ILO labour standards)|Explain the measures you have put in place to comply with international labour practices.|l
+6.1.1|Partnership/grant agreements|Attach all partnership or grant agreements between your organization and its donors.|f
+6.1.2|Proposals, budgets and workplans|Attach the proposal, budget and workplan relating to each agreement above.|f
+6.1.3|Reports submitted to donors|Attach all reports submitted to donors during the review period.|f
+6.2.1|Programs executed during the review period|List the programs executed, with a description, key milestones and results.|l
+6.2.2|Workplans and methodology|Attach sample workplans and approach for major projects in each year of the review period.|f
+6.2.3|Customer/beneficiary feedback reports|Attach customer or beneficiary feedback reports (if available).|f
+6.3.1|Beneficiary records|Attach lists of farmers/beneficiaries served during the review period.|f
+6.3.2|Monitoring and evaluation framework|Attach your results framework or logframe and indicator tracking tables.|f
+6.3.3|Complaints and grievance log|Attach your grievance mechanism and the log of complaints received.|f
+6.4.1|Subcontractors and sub-grantees|Attach a list of subcontractors and sub-grantees engaged during the review period.|f
+7.1.1|ISO certifications or equivalent (if applicable)|Attach your organization’s ISO/NIS certificate or equivalent.|f
+7.1.2|Procedures for quality assurance and monitoring|Briefly explain the quality management systems your organization has in place.|l
+7.2.1|Measures to mitigate risks (financial, operational, environmental)|Attach your Financial Policy, Operations Manual and Environmental Policy.|f
+7.2.2|Risk mitigation measures|Outline some of your organization’s risk mitigation measures.|l
+7.2.3|Risk management policy|Attach your organization’s Risk Management Policy.|f
+7.3.1|Risk assessment reports|Attach the risk assessment reports covering the review period.|f
+7.3.2|Quarterly assurance reports to the Board|Attach quarterly reports to the Board from internal audit, risk and compliance.|f
+7.3.3|Quarterly management reports to the Board|Attach the quarterly management reports made to the Board during the review period.|f
+7.3.4|Crisis communication/management plan|Attach your crisis communication/management plan (if any).|f
+7.4.1|Status of previous audit recommendations|Attach a tracker of recommendations from previous external audits and their status.|f
+7.4.2|Donor audits, monitoring visits and spot-checks|Attach reports of donor audits, monitoring visits and spot-checks during the review period.|f
+7.4.3|Internal audit|Attach your internal audit charter, plan and reports issued during the review period.|f
+7.4.4|Fraud and incident register|Attach your register of fraud, theft, losses and other incidents during the review period.|f
+7.5.1|Security plans for high-risk areas (if applicable)|If operating in conflict-prone or high-risk areas, attach your security protocols.|f
+7.6.1|Accounting system|State the accounting software you use, and list the staff who have access to it.|l
+7.6.2|IT and data security policy|Attach your IT and data security policy, including user access controls.|f
+7.6.3|Backup and business continuity|Attach your data backup and disaster recovery or business continuity plan.|f
+7.6.4|Records retention policy|Attach your records retention policy.|f
+8.1.1|Policies on whistleblower protection|Attach your organization’s Whistleblower Protection Policy.|f
+8.2.1|Bullying and harassment policy|Attach your organization's Bullying and Harassment Policy.|f
+8.2.2|Reporting policy|Attach your policy for reporting misconduct, incidents and ethics concerns.|f
+8.2.3|Code of conduct for the Board|Attach the Board code of conduct (if separate from the company code of conduct).|f
+8.2.4|Violations of the code of conduct|Give details of any violations of the code of conduct during the review period.|l
+8.3.1|Child Protection, Gender-Based Violence, and safeguarding mechanisms|Attach your policies on Gender-Based Violence, Child Protection and Safeguarding.|f
+8.4.1|Commitment to gender equality and non-discrimination|Attach your Gender Diversity and Inclusion policy.|f
+9.1.1|List of Directors|Attach a list of all Directors and their designations (e.g. Independent, Non-Executive).|f
+9.1.2|Board appointments/re-elections|Attach a list of Board appointments and re-elections during the review period.|f
+9.1.3|Directors' files|Attach each Director's file, including background checks from the appointment process.|f
+9.1.4|Directors' declarations of interest|Attach each Director's annual declaration of financial interests/independence.|f
+9.2.1|Board committees|Attach a list of Board committees, with chairpersons and members.|f
+9.2.2|Board and committee charters|Attach the charters of the Board and each Board committee.|f
+9.2.3|Management committees|Attach a list of management committees, with their charters and minutes.|f
+9.2.4|Board and committee meeting records|Attach agendas, papers and minutes of Board and committee meetings.|f
+9.3.1|Directors' remuneration policy|Attach your Directors' Remuneration Policy.|f
+9.3.2|Clawback policy|Attach your organization's Clawback Policy.|f
+9.3.3|Directors' remuneration schedule|Attach each Director's remuneration package and a breakdown of payments.|f
+9.3.4|External remuneration consultants|Attach any correspondence from external remuneration consultants (if any).|f
+9.4.1|Directors' evaluation policy|Attach your Directors' Evaluation Policy.|f
+9.4.2|Board evaluation reports|Attach previous Board evaluation reports.|f
+9.4.3|Succession planning policy|Attach your Succession Planning Policy.|f
+9.4.4|Director induction and training|Attach details of induction and training programs held for Directors.|f
+9.5.1|AGM procedures|Attach the procedures for the conduct of the Annual General Meeting (AGM).|f
+9.5.2|Minutes of shareholders’ meetings|Attach the minutes of AGMs held during the review period.|f
+9.5.3|Shareholders’ communications|Attach communications (e.g. letters) sent to shareholders.|f
+10.1.1|Stakeholder engagement policy|Attach your Stakeholder Engagement Policy.|f
+10.1.2|Corporate Social Responsibility (CSR)|Attach your CSR framework and reports made to stakeholders.|f
+10.1.3|Sustainability strategy and policies|Attach the strategy, policies and procedures that guide sustainability.|f
+10.1.4|Sustainability initiatives|Attach evidence of involvement in sustainability initiatives (if any).|f
+11.1.1|References from past clients or donors|Provide at least three references from past clients or donors, with contact details.|r
+11.1.2|Testimonials or certificates of satisfactory performance|Attach written testimonials or certificates of performance from past clients.|f
+11.2.1|Experience in similar projects|List previous NGO projects, donor names, scope of work and budgets executed.|l`;
+const ITEMS = RAW.split('\n').map((l) => { const p = l.split('|'); const r = p[0].split('.'); return { ref: p[0], title: p[1], help: p[2], t: p[3], sec: +r[0], sub: r[0] + '.' + r[1] }; });
+const BYREF = {}; ITEMS.forEach((i) => { BYREF[i.ref] = i; });
+const COND = { '1.2.4': '1.2.3', '3.1.2': '3.1.1' };
+const DETAIL = { '2.8.1': 'List and explain each matter, its current status and any financial exposure.', '5.1.3': 'Describe the changes and the roles affected.' };
+const OPTIONAL = { '1.0.2': 1, '6.2.3': 1, '7.1.1': 1, '7.3.4': 1, '7.5.1': 1, '8.2.3': 1, '9.3.4': 1, '10.1.4': 1 };
+const COLS = { '1.2.1': ['Name', 'Title', 'Email address'], '3.5.1': ['Bank', 'Account number', 'Currency'], '5.4.1': ['Name', 'Role on project', 'Years of experience'], '11.1.1': ['Organisation', 'Contact person', 'Email or phone'] };
+const DONE = { 1: 0, 2: 0, 3: 13, 4: 4, 5: 9, 6: 0, 7: 6, 8: 7, 9: 0, 10: 4, 11: 1 };
+const INTRO = {
+  1: 'Basic facts about your organisation. Use the details exactly as they appear on your registration documents.',
+  2: 'Upload your legal, tax and statutory compliance documents. Where TracTrac already holds a document it is marked as provided, so you don’t need to upload it again.',
+  3: 'Financial records should cover the review period, 1 Jan 2024 – 30 Jun 2026. Large ledgers can be split across several files.',
+  12: 'This checklist fills itself from the documents you upload in Sections 1–11. Use it to confirm nothing is missing before you submit.'
+};
+const CHECK = [['Certificate of Incorporation', '2.1.1'], ['CAC Registration (Nigeria-specific)', '2.3.1'], ['Audited Financial Statements (last 2–3 years)', '3.1.2'], ['Bank Verification Documents', '3.2.2'], ['Certificate/Declaration of Solvency', '3.2.1'], ['Evidence of Tax Identification Number (TIN)', '2.1.2'], ['Tax Clearance Certificate', '2.1.3'], ['Contracts from Funding History', '6.1.1'], ['Credit References', '3.2.3'], ['Case Studies and Project Reports from Similar Work', '5.5.1'], ['Code of Conduct', '2.5.2'], ['Anti-Bribery Policy', '2.5.2'], ['Anti-Fraud and Corruption Policy', '2.6.1'], ['Child-Safeguarding and Gender-Based Violence Policies', '8.3.1'], ['Diversity and Inclusion Policy', '8.4.1'], ['Anti-terrorism and Money Laundering Policies', '2.7.2'], ['Health and Safety Policy', '5.8.1'], ['Labour Policy', '5.9.1'], ['ISO Certificate or Equivalent', '7.1.1'], ['Risk Management Policy', '7.2.3'], ['References from previous clients', '11.1.1'], ['Certificates of Performance/Testimonials', '11.1.2']];
+const CHG_BY = 'Chidi Okafor, TracTrac · 3 Nov 2026';
+const fileOf = (name, size, st, when) => ({ name, size, st, when: when || '28 Oct 2026' });
+const OVR = {
+  '1.0.1': { v: 'Northfield Agro Services Limited' }, '1.0.2': { v: 'NASL' }, '1.0.3': { v: 'Plot 22, Industrial Layout, Kakuri, Kaduna South, Kaduna State' },
+  '1.0.4': { v: '[phone] · info@northfieldagro.ng · northfieldagro.ng' }, '1.0.5': { c: ['Private Firm'] }, '1.1.1': { v: 'RC 1428817' }, '1.1.2': { v: '2014-03-11' }, '1.1.3': { v: 'Nigeria' },
+  '1.2.1': { rows: [['Amina Bello', 'Head of Compliance', 'amina.bello@northfieldagro.ng'], ['Tunde Ojo', 'Finance Manager', 'tunde.ojo@northfieldagro.ng']] },
+  '1.2.2': { v: 'Northfield provides tractor hire, mechanised land preparation and equipment maintenance to smallholder farmers in Kaduna, Niger and Plateau States from three service hubs. Founded in 2014.' },
+  '1.2.3': { v: 'Yes' }, '1.2.4': { v: 'Mechanisation service provider to [donor-funded programme], 2021–2023; land-preparation subcontractor to [NGO partner], 2024–present.' },
+  '2.1.1': { tt: { name: 'Certificate_of_Incorporation.pdf', size: '1.2 MB', when: '9 Oct 2026' } },
+  '2.1.2': { files: [fileOf('TIN_Certificate_Northfield.pdf', '412 KB', 'rev')] },
+  '2.1.3': { files: [Object.assign(fileOf('Tax_Clearance_2025.pdf', '356 KB', 'chg'), { note: 'This TCC expired on 31 Dec 2025. Please upload the 2026 Tax Clearance Certificate.' })] },
+  '2.2.1': { files: [fileOf('Memorandum_and_Articles_2014.pdf', '2.1 MB', 'ok', '12 Oct 2026')] },
+  '2.3.1': { files: [fileOf('CAC_Certificate_RC1428817.pdf', '640 KB', 'up')] },
+  '2.3.2': { v: 'Payroll runs monthly with PAYE and pension deductions remitted by the 10th of the following month. An external tax consultant reviews all filings quarterly.' },
+  '2.4.1': { files: [fileOf('PAYE_Remittances_2024.pdf', '1.4 MB', 'up'), fileOf('PAYE_Remittances_2025.pdf', '1.6 MB', 'up'), fileOf('VAT_Returns_Jan2024-Jun2026.pdf', '3.2 MB', 'up', '30 Oct 2026')] },
+  '2.4.3': { files: [fileOf('NSITF_and_ITF_Certificates_2026.pdf', '880 KB', 'up')] },
+  '2.4.4': { files: [fileOf('Operating_Licence_Kaduna_2026.pdf', '520 KB', 'up'), fileOf('Tractor_Registration_Schedule.xlsx', '96 KB', 'up')] },
+  '2.4.5': { v: 'No tax audits, assessments or disputes in the last five years.' },
+  '2.5.1': { files: [fileOf('Anti-Corruption_Policy_v3.pdf', '310 KB', 'up')] },
+  '2.5.2': { files: [fileOf('Code_of_Conduct_and_Anti-Bribery_2025.pdf', '760 KB', 'up')] },
+  '2.6.1': { files: [fileOf('Fraud_Prevention_Policy.pdf', '290 KB', 'up')] },
+  '2.6.2': { files: [fileOf('Conflict_of_Interest_Policy.pdf', '240 KB', 'up')] },
+  '2.6.5': { na: true, why: 'Private company, not listed on any exchange. Use of confidential information is covered in Code of Conduct, section 7.' },
+  '2.7.1': { files: [fileOf('PSC_Register_CAC_Filing.pdf', '410 KB', 'up')] },
+  '2.7.4': { files: [fileOf('Data_Protection_Policy_NDPA.pdf', '350 KB', 'up')] },
+  '2.8.1': { v: 'No' },
+  '3.1.1': { v: 'Yes' }, '3.1.2': { tt: { name: 'Audited_Financial_Statements_2023.pdf', size: '4.8 MB', when: '9 Oct 2026' } },
+  '3.5.2': { files: [Object.assign(fileOf('Bank_Statements_Operating_Apr-Dec2025.pdf', '2.3 MB', 'chg', '30 Oct 2026'), { note: 'Statements for January to March 2025 are missing for the main operating account. Please add them.' })] }
+};
+const ST = { up: ['Document uploaded', 'b-teal'], rev: ['Under review', 'b-blue'], ok: ['Approved', 'b-green'], chg: ['Changes requested', 'b-amber'] };
+const slug = (s) => s.replace(/\(.*?\)/g, '').replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 42);
+const nowStr = () => { const d = new Date(); let h = d.getHours(); const m = String(d.getMinutes()).padStart(2, '0'); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + m + ' ' + ap; };
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const items = {};
+    const sample = { t: '[Sample answer]', l: '[Sample answer]', n: '42', d: '2026-01-15', s: 'Nigeria', y: 'No' };
+    for (let s = 1; s <= 11; s++) {
+      ITEMS.filter((i) => i.sec === s && !COND[i.ref]).slice(0, DONE[s]).forEach((i, k) => {
+        if (i.t === 'f') items[i.ref] = { files: [fileOf(slug(i.title) + '.pdf', (180 + ((k * 137) % 900)) + ' KB', 'up', '2 Nov 2026')] };
+        else if (i.t === 'r') items[i.ref] = { rows: [['[Name]', '[Detail]', '[Contact]']] };
+        else items[i.ref] = { v: sample[i.t] };
+      });
+    }
+    Object.keys(OVR).forEach((k) => { items[k] = OVR[k]; });
+    this.state = { sec: null, items, up: {}, closed: {}, onlyOpen: false, save: 'saved', savedAt: '4:12 PM', toast: '', navOpen: true };
+    this.timers = [];
+  }
+  componentWillUnmount() { this.timers.forEach((t) => clearTimeout(t)); clearInterval(this.iv); }
+  cur() { return this.state.sec ?? this.props.startSection ?? 2; }
+  touch() {
+    clearTimeout(this.saveT);
+    this.setState({ save: 'saving' });
+    this.saveT = setTimeout(() => this.setState({ save: this.props.saveError ? 'error' : 'saved', savedAt: nowStr() }), 900);
+    this.timers.push(this.saveT);
+  }
+  showToast(msg) { clearTimeout(this.toastT); this.setState({ toast: msg }); this.toastT = setTimeout(() => this.setState({ toast: '' }), 2800); this.timers.push(this.toastT); }
+  upd(ref, patch) { const e = this.state.items[ref] || {}; this.setState({ items: Object.assign({}, this.state.items, { [ref]: Object.assign({}, e, patch) }) }); this.touch(); }
+  go(sec) { this.setState({ sec, onlyOpen: false }); try { window.scrollTo(0, 0); } catch (e) {} }
+  upload(i) {
+    const ref = i.ref, name = slug(i.title) + '_2026.pdf';
+    this.setState({ up: Object.assign({}, this.state.up, { [ref]: { name, pct: 0 } }) });
+    const tick = () => {
+      const u = this.state.up[ref]; if (!u) return;
+      const pct = Math.min(100, u.pct + 20);
+      if (pct < 100) { this.setState({ up: Object.assign({}, this.state.up, { [ref]: { name, pct } }) }); const t = setTimeout(tick, 300); this.timers.push(t); return; }
+      const up = Object.assign({}, this.state.up); delete up[ref];
+      const e = this.state.items[ref] || {};
+      const files = (e.files || []).filter((f) => f.st !== 'chg').concat([fileOf(name, '640 KB', 'up', 'Today')]);
+      this.setState({ up, items: Object.assign({}, this.state.items, { [ref]: Object.assign({}, e, { files, na: false }) }) });
+      this.touch(); this.showToast(name + ' uploaded');
+    };
+    const t = setTimeout(tick, 300); this.timers.push(t);
+  }
+  visible(i) { const p = COND[i.ref]; return !p || (this.state.items[p] || {}).v === 'Yes'; }
+  done(i) {
+    const e = this.state.items[i.ref] || {};
+    if (i.t === 'f') return !!e.tt || (e.na && !!(e.why || '').trim()) || (!!(e.files || []).length && !(e.files || []).some((f) => f.st === 'chg'));
+    if (i.t === 'c') return !!(e.c || []).length;
+    if (i.t === 'r') return (e.rows || []).some((r) => (r[0] || '').trim());
+    if (i.t === 'y') return !!e.v && !(e.v === 'Yes' && DETAIL[i.ref] && !(e.detail || '').trim());
+    return !!(e.v || '').toString().trim();
+  }
+  attention(i) { return ((this.state.items[i.ref] || {}).files || []).some((f) => f.st === 'chg'); }
+  stats(s) { const list = ITEMS.filter((i) => i.sec === s && this.visible(i)); return { total: list.length, done: list.filter((i) => this.done(i)).length, att: list.filter((i) => this.attention(i)).length }; }
+  checkRows() { return CHECK.map(([doc, ref], k) => { const i = BYREF[ref]; const ok = this.done(i); const att = this.attention(i); const e = this.state.items[ref] || {}; return { n: k + 1, doc, ref, sec: i.sec, missing: !ok, badge: e.na ? 'Not applicable' : ok ? 'Provided via ' + ref : att ? 'Changes requested' : 'Missing', badgeCls: ok ? (e.na ? 'b-grey' : 'b-green') : att ? 'b-amber' : 'b-grey', go: () => this.go(i.sec) }; }); }
+
+  itemVals(i) {
+    const e = this.state.items[i.ref] || {};
+    const ref = i.ref, done = this.done(i), t = i.t;
+    const v = { id: ref.replace(/\./g, '-'), ref, title: i.title, help: i.help, req: OPTIONAL[ref] ? 'If applicable' : 'Required', isT: t === 't', isL: t === 'l', isN: t === 'n', isD: t === 'd', isS: t === 's', isC: t === 'c', isY: t === 'y', isR: t === 'r', isF: t === 'f', v: e.v || '' };
+    v.onText = (ev) => this.upd(ref, { v: ev.target.value });
+    if (t === 'f') {
+      const files = e.files || [], up = this.state.up[ref];
+      const chg = files.some((f) => f.st === 'chg'), allOk = files.length && files.every((f) => f.st === 'ok'), rev = files.some((f) => f.st === 'rev');
+      const b = e.tt ? ['Provided by TracTrac', 'b-blue'] : chg ? ST.chg : allOk ? ST.ok : rev ? ST.rev : files.length ? ST.up : e.na ? ['Not applicable', 'b-grey'] : ['Not started', 'b-grey'];
+      v.badge = b[0]; v.badgeCls = b[1];
+      v.tt = e.tt || false;
+      v.files = files.map((f, idx) => ({
+        name: f.name, meta: f.size + ' · uploaded ' + f.when, badge: ST[f.st][0], badgeCls: ST[f.st][1], isChg: f.st === 'chg', note: f.note, by: CHG_BY,
+        canRemove: f.st === 'up', nameStyle: f.st === 'chg' ? 'text-decoration:line-through;color:#5B6577' : '',
+        boxStyle: f.st === 'chg' ? 'border:1px solid #F0D29A;background:#FFFAF0' : 'border:1px solid #E1E4EA;background:#fff',
+        onRemove: () => { this.upd(ref, { files: files.filter((x, j) => j !== idx) }); this.showToast(f.name + ' removed'); }
+      }));
+      v.uploading = up ? { name: up.name, pct: up.pct, pctLabel: up.pct + '%' } : false;
+      v.na = !!e.na; v.why = e.why || '';
+      v.showDrop = !e.tt && !files.length && !e.na && !up;
+      v.showAdd = !e.tt && files.length > 0 && !chg && !up;
+      v.onBrowse = () => this.upload(i);
+      v.onCancel = () => { const u = Object.assign({}, this.state.up); delete u[ref]; this.setState({ up: u }); };
+      v.onNa = () => this.upd(ref, { na: true });
+      v.onUndoNa = () => this.upd(ref, { na: false, why: '' });
+      v.onWhy = (ev) => this.upd(ref, { why: ev.target.value });
+    } else {
+      v.badge = done ? 'Answered' : 'Not started'; v.badgeCls = done ? 'b-teal' : 'b-grey';
+    }
+    if (t === 'y') {
+      v.isYes = e.v === 'Yes'; v.isNo = e.v === 'No';
+      const on = 'background:#12284C;color:#fff;font-weight:500', off = 'background:#fff;color:#1B2433';
+      v.yesStyle = v.isYes ? on : off; v.noStyle = v.isNo ? on : off;
+      v.setYes = () => this.upd(ref, { v: 'Yes' }); v.setNo = () => this.upd(ref, { v: 'No' });
+      v.showDetail = v.isYes && !!DETAIL[ref]; v.detailLabel = DETAIL[ref] || ''; v.detail = e.detail || '';
+      v.onDetail = (ev) => this.upd(ref, { detail: ev.target.value });
+      if (COND[ref + '']) v.showDetail = false;
+    }
+    if (t === 'c') {
+      const sel = e.c || [];
+      v.opts = ['Nonprofit', 'Private Firm', 'Other'].map((label) => ({ label, on: sel.indexOf(label) > -1, toggle: () => this.upd(ref, { c: sel.indexOf(label) > -1 ? sel.filter((x) => x !== label) : sel.concat([label]) }) }));
+      v.showOther = sel.indexOf('Other') > -1; v.other = e.other || '';
+      v.onOther = (ev) => this.upd(ref, { other: ev.target.value });
+    }
+    if (t === 'r') {
+      const cols = COLS[ref] || ['Name', 'Detail', 'Contact'];
+      const rows = e.rows && e.rows.length ? e.rows : [cols.map(() => '')];
+      v.cols = cols;
+      v.rows = rows.map((r, ri) => ({
+        cells: cols.map((c, ci) => ({ label: c + ', row ' + (ri + 1), val: r[ci] || '', onChange: (ev) => { const nr = rows.map((x) => x.slice()); nr[ri][ci] = ev.target.value; this.upd(ref, { rows: nr }); } })),
+        onRemove: () => this.upd(ref, { rows: rows.filter((x, j) => j !== ri) })
+      }));
+      v.onAddRow = () => this.upd(ref, { rows: rows.concat([cols.map(() => '')]) });
+    }
+    return v;
+  }
+
+  renderVals() {
+    const sec = this.cur();
+    const nav = SECS.map((title, k) => {
+      const n = k + 1;
+      let st = n === 12 ? (() => { const r = this.checkRows(); return { total: r.length, done: r.filter((x) => !x.missing).length, att: 0 }; })() : this.stats(n);
+      const complete = st.done === st.total, started = st.done > 0;
+      const icon = complete ? 'M12 21a9 9 0 110-18 9 9 0 010 18zM8 12.5l2.5 2.5L16 9.5' : st.att ? 'M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z' : started ? 'M12 21a9 9 0 110-18 9 9 0 010 18zM12 3a9 9 0 010 18' : 'M12 21a9 9 0 110-18 9 9 0 010 18z';
+      return {
+        n, title, icon,
+        color: complete ? '#1A6B40' : st.att || started ? '#B26A00' : '#8A93A3',
+        meta: complete ? 'Complete' : st.att ? (st.total - st.done) + ' to do · ' + st.att + ' needs attention' : started ? (st.total - st.done) + ' of ' + st.total + ' to do' : 'Not started · ' + st.total + ' items',
+        current: n === sec ? 'step' : 'false',
+        style: n === sec ? 'background:#EEF2F8;box-shadow:inset 3px 0 0 #12284C;font-weight:600' : '',
+        go: () => this.go(n), st
+      };
+    });
+    let tot = 0, dn = 0; nav.slice(0, 11).forEach((s) => { tot += s.st.total; dn += s.st.done; });
+    const pct = Math.round((dn / tot) * 100);
+    const cs = nav[sec - 1].st;
+    const isChecklist = sec === 12;
+    let groups = [];
+    if (!isChecklist) {
+      const subs = [];
+      ITEMS.filter((i) => i.sec === sec && this.visible(i)).forEach((i) => { let g = subs.find((x) => x.key === i.sub); if (!g) { g = { key: i.sub, list: [] }; subs.push(g); } g.list.push(i); });
+      groups = subs.map((g) => {
+        const d = g.list.filter((i) => this.done(i)).length;
+        const shown = this.state.onlyOpen ? g.list.filter((i) => !this.done(i) || this.attention(i)) : g.list;
+        const open = !this.state.closed[g.key];
+        return { key: g.key, title: SUBS[g.key], meta: d + ' of ' + g.list.length + ' complete', open, openStr: open ? 'true' : 'false', chev: open ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6', toggle: () => this.setState({ closed: Object.assign({}, this.state.closed, { [g.key]: open }) }), items: shown.map((i) => this.itemVals(i)), n: shown.length };
+      }).filter((g) => g.n > 0);
+    }
+    const save = this.state.save;
+    return {
+      nav, navOpen: this.state.navOpen, navOpenStr: this.state.navOpen ? 'true' : 'false', navToggleLabel: this.state.navOpen ? 'Hide' : 'Show all 12',
+      toggleNav: () => this.setState({ navOpen: !this.state.navOpen }),
+      overallPct: pct + '%', overallNum: pct, overallMeta: dn + ' of ' + tot + ' required items complete',
+      secN: sec, secTitle: sec + '. ' + SECS[sec - 1], secIntro: INTRO[sec] || 'Answer each item or upload the requested evidence. If an item does not apply, mark it Not applicable and say why.',
+      secMeta: cs.done + ' of ' + cs.total + (isChecklist ? ' documents provided' : ' complete'), secPct: Math.round((cs.done / cs.total) * 100) + '%',
+      secAttention: cs.att ? cs.att + (cs.att === 1 ? ' item needs' : ' items need') + ' your attention: TracTrac has requested changes. Look for the amber rows below.' : '',
+      isChecklist, notChecklist: !isChecklist, groups, emptyFiltered: !isChecklist && this.state.onlyOpen && groups.length === 0,
+      checklist: isChecklist ? this.checkRows() : [],
+      onlyOpen: this.state.onlyOpen, toggleOnly: () => this.setState({ onlyOpen: !this.state.onlyOpen }),
+      isSaving: save === 'saving', isSaved: save === 'saved', isError: save === 'error', savedAt: this.state.savedAt,
+      retry: () => { this.setState({ save: 'saving' }); const t = setTimeout(() => this.setState({ save: 'saved', savedAt: nowStr() }), 700); this.timers.push(t); },
+      isFirst: sec === 1, isLast: sec === 12, notLast: sec !== 12,
+      prev: () => this.go(Math.max(1, sec - 1)), next: () => this.go(Math.min(12, sec + 1)),
+      saveNext: () => { this.touch(); this.showToast('Section ' + sec + ' saved'); this.go(Math.min(12, sec + 1)); },
+      toast: this.state.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

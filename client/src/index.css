@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Due Diligence Portal — TracTrac colours (due-diligence-final/FINAL.md). */
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    background: theme('colors.sand.50');
+    color: theme('colors.ink');
+  }
+
+  /* Links are ink and underlined; never orange. */
+  a {
+    color: theme('colors.ink');
+    text-decoration: underline;
+  }
+}
+
+@layer components {
+  /* Focus ring on every interactive control: 3px ink, 2px offset. */
+  .focus-ring {
+    @apply focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-ink;
+  }
+
+  .vs-card {
+    @apply bg-white border border-sand rounded-control;
+  }
+  /* Header cards carry an orange stripe on top. */
+  .vs-card-top {
+    @apply border-t-8 border-t-brand;
+  }
+
+  /* Buttons. Primary is orange with INK text (white on orange fails contrast). */
+  .vs-btn {
+    @apply focus-ring inline-flex items-center justify-center gap-2 min-h-11 px-[22px] rounded-control border border-transparent text-15 font-semibold leading-none no-underline cursor-pointer whitespace-nowrap;
+  }
+  .vs-btn-lg {
+    @apply min-h-12 px-6;
+  }
+  .vs-btn-sm {
+    @apply min-h-10 px-4 text-14;
+  }
+  .vs-btn-xs {
+    @apply min-h-[34px] px-3 text-13;
+  }
+  .vs-btn-primary {
+    @apply bg-brand text-ink hover:bg-brand-light hover:text-ink;
+  }
+  .vs-btn-outline {
+    @apply bg-white text-ink border-stone hover:bg-sand-50 hover:text-ink;
+  }
+  .vs-btn-ghost {
+    @apply bg-transparent text-ink underline hover:bg-sand-50 hover:text-ink;
+  }
+  .vs-btn:disabled {
+    @apply bg-sand text-stone border-transparent cursor-not-allowed no-underline;
+  }
+
+  .vs-link {
+    @apply focus-ring bg-transparent border-0 p-0 text-14 text-ink underline cursor-pointer;
+    font-family: inherit;
+  }
+
+  /* Inputs: an underline that turns orange on focus, or a box with an orange focus border. */
+  .vs-line {
+    @apply w-full bg-transparent border-0 border-b border-stone rounded-none px-0.5 py-2 text-ink;
+    font: inherit;
+  }
+  .vs-line:focus {
+    @apply outline-none border-b-2 border-brand pb-[7px];
+  }
+  .vs-box {
+    @apply w-full bg-white border border-stone rounded-md px-3 py-2.5 text-ink;
+    font: inherit;
+  }
+  textarea.vs-box {
+    @apply resize-y;
+  }
+  .vs-box:focus {
+    @apply outline outline-2 outline-offset-0 outline-brand border-brand;
+  }
+  .vs-line:disabled,
+  .vs-box:disabled {
+    @apply cursor-not-allowed;
+  }
+  /* Small fields on admin pages (search, selects, setup forms). */
+  .vs-select {
+    @apply focus-ring min-h-10 px-3 py-2 border border-stone rounded-control bg-white text-14 text-ink;
+    font-family: inherit;
+  }
+
+  .vs-chip-x {
+    @apply focus-ring w-7 h-7 rounded-full inline-flex items-center justify-center bg-transparent border-0 text-stone cursor-pointer hover:bg-sand-50;
+  }
+  .vs-check {
+    @apply focus-ring w-[18px] h-[18px] flex-none accent-brand;
+  }
+
+  /* Secondary text (only on white or sand-50, never on sand). */
+  .vs-muted {
+    @apply text-14 text-stone;
+  }
+}

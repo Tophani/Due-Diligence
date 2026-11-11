@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F5F2EE;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#14110F;font-size:15px;line-height:1.55}
+*{box-sizing:border-box}h1,p{margin:0}
+a{color:#14110F}
+.card{background:#FFFFFF;border:1px solid #DCD6CD;border-radius:8px}
+.muted{color:#6E6A65;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:8px;font:600 15px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;width:100%}
+.btn-p{background:#F36A02;color:#14110F}.btn-p:hover{background:#F79A5B;color:#14110F}
+.lnk{background:none;border:0;padding:0;font:inherit;font-size:14px;color:#14110F;text-decoration:underline;cursor:pointer}
+.ul{width:100%;border:0;border-bottom:1px solid #6E6A65;padding:8px 2px;font:inherit;color:inherit;background:transparent;border-radius:0}
+.ul:focus{outline:none;border-bottom:2px solid #F36A02;padding-bottom:7px}
+.btn:focus-visible,.lnk:focus-visible,a:focus-visible{outline:3px solid #14110F;outline-offset:2px}
+.lbl{display:block;font-size:14px;font-weight:500}
+</style>
+</helmet>
+<div style="min-height: 100vh; padding: 48px 16px; display: flex; align-items: center; justify-content: center">
+  <div style="width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; gap: 10px; align-items: center; padding: 0 4px">
+      <span style="width: 34px; height: 34px; border-radius: 8px; background: #14110F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span>
+      <span style="display: flex; flex-direction: column; line-height: 1.2"><span style="font-weight: 600">Due Diligence Form</span><span class="muted" style="font-size: 12px">TracTrac Mechanization Services Limited</span></span>
+    </div>
+
+    <section class="card" style="border-top: 8px solid #F36A02; padding: 20px; display: flex; flex-direction: column; gap: 18px">
+      <sc-if value="{{isEmail}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <div><h1 style="font-size: 22px; font-weight: 600">Sign in</h1><p class="muted" style="margin-top: 4px">For TracTrac vendors, partners and staff. We'll email you a code, so there's no password to remember.</p></div>
+          <div><label class="lbl" for="em">Work email</label><input class="ul" id="em" type="email" autocomplete="email" value="amina.bello@northfieldagro.ng"></div>
+          <button class="btn btn-p" type="button" onClick="{{toCode}}">Email me a sign-in code</button>
+          <p class="muted">New organisation? <button class="lnk" type="button" onClick="{{toRegister}}">Register here</button></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isCode}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <div><h1 style="font-size: 22px; font-weight: 600">Check your email</h1><p class="muted" style="margin-top: 4px">We sent a 6-digit code to amina.bello@northfieldagro.ng. It works for 10 minutes.</p></div>
+          <div><label class="lbl" for="cd">Code</label><input class="ul" id="cd" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="482913" style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; letter-spacing: .3em"></div>
+          <a class="btn btn-p" href="VendorSimpleStart.dc.html">Sign in</a>
+          <p class="muted">Didn't get it? <button class="lnk" type="button">Send again</button> · <button class="lnk" type="button" onClick="{{toEmail}}">Use another email</button></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isRegister}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <div><h1 style="font-size: 22px; font-weight: 600">Register your organisation</h1><p class="muted" style="margin-top: 4px">Just the basics. The form asks for everything else.</p></div>
+          <div><label class="lbl" for="rn">Your name</label><input class="ul" id="rn" autocomplete="name"></div>
+          <div><label class="lbl" for="re">Work email</label><input class="ul" id="re" type="email" autocomplete="email"></div>
+          <div><label class="lbl" for="ro">Organisation name</label><input class="ul" id="ro" autocomplete="organization"></div>
+          <button class="btn btn-p" type="button" onClick="{{toCode}}">Continue</button>
+          <p class="muted">Already registered? <button class="lnk" type="button" onClick="{{toEmail}}">Sign in</button></p>
+        </div>
+      </sc-if>
+    </section>
+    <p class="muted" style="text-align: center; font-size: 5px">Your documents are only visible to you and the TracTrac staff.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { m: 'email' }; }
+  renderVals() {
+    const m = this.state.m, go = (x) => () => this.setState({ m: x });
+    return { isEmail: m === 'email', isCode: m === 'code', isRegister: m === 'register', toCode: go('code'), toEmail: go('email'), toRegister: go('register') };
+  }
+}
+</script>
+</body>
+</html>

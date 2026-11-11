@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Assessment status</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p,ol{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed}
+.btn:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}.b-red{background:#FCE8E6;color:#A8201A}.b-teal{background:#E2F3F1;color:#0B5E58}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.bar{height:8px;background:#E7EAF0;border-radius:99px;overflow:hidden;display:flex}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+<dc-import name="VendorHeader" active="status" hint-size="100%,72px"></dc-import>
+<main style="max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+    <div><p class="help" style="font-size: 14px">2026 Partner Due Diligence · Cycle 2 · <span class="mono">TDD-2026-C2-0147</span></p><h1 style="font-size: 24px; font-weight: 600">Submission status</h1></div>
+    <span class="badge {{stageCls}}" style="height: 28px; font-size: 13px">{{stageLabel}}</span>
+  </div>
+
+  <section class="card" style="padding: 22px 24px">
+    <ol aria-label="Review progress" style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+        <li aria-current="{{s.current}}" style="display: flex; flex-direction: column; gap: 8px">
+          <div style="height: 4px; border-radius: 99px; {{s.barStyle}}"></div>
+          <div style="display: flex; gap: 8px; align-items: center"><span style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex: none; {{s.dotStyle}}">{{s.mark}}</span><span style="font-weight: 500; font-size: 13px; {{s.labelStyle}}">{{s.label}}</span></div>
+          <span class="help" style="font-size: 12px; padding-left: 30px">{{s.date}}</span>
+        </li>
+      </sc-for>
+    </ol>
+  </section>
+
+  <sc-if value="{{hasRequests}}" hint-placeholder-val="{{ true }}">
+    <section style="display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+        <div><h2 style="font-size: 18px; font-weight: 600">{{reqTitle}}</h2><p class="help" style="font-size: 14px">Respond by <span style="color: #1B2433; font-weight: 600">19 Nov 2026</span>. Only these items are unlocked — everything else stays as submitted.</p></div>
+        <span class="help">{{answeredMeta}}</span>
+      </div>
+      <sc-for list="{{requests}}" as="r" hint-placeholder-count="3">
+        <article class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; {{r.cardStyle}}">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center">
+            <span class="mono" style="color: #5B6577">{{r.ref}}</span>
+            <h3 style="font-size: 15px; font-weight: 600; flex: 1 1 260px">{{r.title}}</h3>
+            <span class="badge {{r.cls}}">{{r.badge}}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px">
+            <div style="background: #F8F9FB; border-radius: 8px; padding: 12px 14px"><p class="help" style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em">Reviewer comment</p><p style="margin-top: 4px">{{r.comment}}</p><p class="help" style="margin-top: 6px">Chidi Okafor, TracTrac · {{r.when}}</p></div>
+            <div style="background: #F8F9FB; border-radius: 8px; padding: 12px 14px"><p class="help" style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em">Action required</p><p style="margin-top: 4px">{{r.action}}</p><p class="help" style="margin-top: 6px">Affected: <span style="color: #1B2433">{{r.doc}}</span></p></div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+            <sc-if value="{{r.open}}" hint-placeholder-val="{{ true }}"><button class="btn btn-p btn-sm" type="button" onClick="{{r.respond}}">{{r.cta}}</button><button class="btn btn-s btn-sm" type="button">Reply with a question</button></sc-if>
+            <sc-if value="{{r.doneNow}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; gap: 6px; align-items: center; color: #0B5E58; font-size: 13px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>{{r.doneText}}</span><button class="btn btn-s btn-sm" type="button" onClick="{{r.undo}}">Undo</button></sc-if>
+          </div>
+        </article>
+      </sc-for>
+      <div style="display: flex; justify-content: flex-end; gap: 12px; align-items: center; flex-wrap: wrap">
+        <span class="help">{{sendHint}}</span>
+        <button class="btn btn-p" type="button" disabled="{{cannotSend}}">Send responses to TracTrac</button>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{isCompleted}}" hint-placeholder-val="{{ false }}">
+    <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 10px; border-color: #A9D8BC">
+      <h2 style="font-size: 18px; font-weight: 600">Review completed on 12 Dec 2026</h2>
+      <p style="color: #3A4456">TracTrac has finished reviewing your evidence. The outcome letter sets out the result and any conditions.</p>
+      <div><a class="btn btn-p" href="#">Download outcome letter (PDF)</a></div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{isQuiet}}" hint-placeholder-val="{{ false }}">
+    <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 6px">
+      <h2 style="font-size: 16px; font-weight: 600">Nothing needed from you right now</h2>
+      <p class="help" style="font-size: 14px">We'll email you if a reviewer needs anything. You can still view what you submitted.</p>
+    </section>
+  </sc-if>
+
+  <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px"><h2 style="font-size: 16px; font-weight: 600">Document review progress</h2><span class="help">124 documents submitted</span></div>
+    <div class="bar" role="img" aria-label="{{barLabel}}"><span style="width: {{okPct}}; background: #1A6B40"></span><span style="width: {{chgPct}}; background: #D08A1E"></span><span style="width: {{revPct}}; background: #6E95D3"></span></div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 13px">
+      <span style="display: inline-flex; gap: 8px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 2px; background: #1A6B40"></span>Approved <span style="font-weight: 600">{{ok}}</span></span>
+      <span style="display: inline-flex; gap: 8px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 2px; background: #D08A1E"></span>Changes requested <span style="font-weight: 600">{{chg}}</span></span>
+      <span style="display: inline-flex; gap: 8px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 2px; background: #6E95D3"></span>Awaiting review <span style="font-weight: 600">{{rev}}</span></span>
+    </div>
+    <div><a href="VendorWorkspace.dc.html">View submitted answers (read-only) →</a></div>
+  </section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"stage":{"editor":"enum","options":["submitted","review","info","resubmit","completed"],"default":"info"},"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { done: {} }; }
+  renderVals() {
+    const stage = this.props.stage ?? 'info';
+    const order = ['submitted', 'review', 'info', 'resubmit', 'completed'];
+    const labels = ['Submitted', 'Under review', 'Additional information requested', 'Resubmission required', 'Review completed'];
+    const dates = ['5 Nov 2026', 'Started 7 Nov 2026', '12 Nov 2026', '', ''];
+    const si = order.indexOf(stage);
+    const steps = labels.map((label, i) => {
+      const past = i < si, cur = i === si;
+      const skip = stage !== 'resubmit' && i === 3 && si > 3;
+      return {
+        label, current: cur ? 'step' : 'false', date: skip ? 'Not needed' : (i <= si ? dates[i] : ''),
+        mark: past ? '✓' : String(i + 1),
+        barStyle: past || cur ? 'background:#12284C' : 'background:#E1E4EA',
+        dotStyle: past ? 'background:#12284C;color:#fff' : cur ? 'background:#fff;color:#12284C;box-shadow:inset 0 0 0 2px #12284C' : 'background:#EEF0F3;color:#5B6577',
+        labelStyle: cur ? 'color:#12284C' : past ? '' : 'color:#5B6577'
+      };
+    });
+    const badge = { submitted: ['Submitted', 'b-grey'], review: ['Under review', 'b-blue'], info: ['Additional information requested', 'b-amber'], resubmit: ['Resubmission required', 'b-red'], completed: ['Review completed', 'b-green'] }[stage];
+    const reqs = [
+      { id: 'a', ref: '2.4.2', title: 'Pension remittances', doc: 'PenCom_Compliance_Certificate_2026.pdf', comment: 'The certificate is valid, but we also need the monthly remittance schedules for the review period.', action: 'Add monthly pension remittance schedules for Jan 2024 – Jun 2026.', cta: 'Add files', when: '12 Nov 2026', type: 'Additional information', doneText: 'Pension_Schedules_2024-2026.pdf added' },
+      { id: 'b', ref: '3.3.2', title: 'General ledger', doc: 'General_Ledger_FY2025.xlsx', comment: 'The export has no cost-centre column, so we can’t trace expenditure to projects.', action: 'Replace with a general ledger export that includes cost centres.', cta: 'Upload replacement', when: '12 Nov 2026', type: 'Replacement document', doneText: 'General_Ledger_FY2025_with_CC.xlsx uploaded' },
+      { id: 'c', ref: '6.2.1', title: 'Programs executed during the review period', doc: 'Written response', comment: 'Please state the budget for each programme you listed.', action: 'Update your written answer with a budget per programme.', cta: 'Update answer', when: '12 Nov 2026', type: 'Clarification', doneText: 'Answer updated' }
+    ];
+    const showReq = stage === 'info' || stage === 'resubmit';
+    const d = this.state.done;
+    const requests = reqs.map((r) => {
+      const ok = !!d[r.id];
+      return Object.assign({}, r, {
+        open: !ok, doneNow: ok,
+        badge: ok ? 'Response ready' : (stage === 'resubmit' && r.id === 'b' ? 'Rejected — resubmit' : r.type),
+        cls: ok ? 'b-teal' : (stage === 'resubmit' && r.id === 'b' ? 'b-red' : 'b-amber'),
+        cardStyle: ok ? 'border-color:#A7D8D1' : 'border-color:#F0D29A',
+        respond: () => this.setState({ done: Object.assign({}, d, { [r.id]: true }) }),
+        undo: () => this.setState({ done: Object.assign({}, d, { [r.id]: false }) })
+      });
+    });
+    const n = reqs.filter((r) => d[r.id]).length;
+    const counts = stage === 'completed' ? [124, 0, 0] : stage === 'submitted' ? [0, 0, 124] : stage === 'review' ? [38, 0, 86] : [61, 3, 60];
+    const pct = (x) => Math.round((x / 124) * 1000) / 10 + '%';
+    return {
+      stageLabel: badge[0], stageCls: badge[1], steps,
+      hasRequests: showReq, isCompleted: stage === 'completed', isQuiet: stage === 'submitted' || stage === 'review',
+      reqTitle: stage === 'resubmit' ? 'TracTrac needs you to resubmit 3 items' : 'TracTrac has asked for more information on 3 items',
+      requests, answeredMeta: n + ' of 3 ready to send',
+      cannotSend: n < 3, sendHint: n < 3 ? 'Respond to every item to send' : 'Ready to send — TracTrac will be notified',
+      ok: counts[0], chg: counts[1], rev: counts[2], okPct: pct(counts[0]), chgPct: pct(counts[1]), revPct: pct(counts[2]),
+      barLabel: counts[0] + ' approved, ' + counts[1] + ' changes requested, ' + counts[2] + ' awaiting review'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Submitted</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F5F2EE;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#14110F;font-size:15px;line-height:1.55}
+*{box-sizing:border-box}h1,h2,p,ol{margin:0}
+a{color:#14110F}
+.card{background:#FFFFFF;border:1px solid #DCD6CD;border-radius:8px}
+.muted{color:#6E6A65;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:8px;font:600 15px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.btn-p{background:#F36A02;color:#14110F}.btn-p:hover{background:#F79A5B;color:#14110F}
+.btn-o{background:#FFFFFF;color:#14110F;border-color:#6E6A65}.btn-o:hover{background:#F5F2EE}
+.btn:focus-visible,a:focus-visible{outline:3px solid #14110F;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; padding: 32px 16px 64px">
+  <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px">
+      <a href="VendorSimpleStart.dc.html" style="display: flex; gap: 10px; align-items: center; text-decoration: none"><span style="width: 30px; height: 30px; border-radius: 7px; background: #14110F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">Due Diligence Portal</span></a>
+      <span class="muted" style="font-size: 13px">Amina Bello · <a href="#">Help</a></span>
+    </div>
+
+    <section class="card" style="border-top: 8px solid #F36A02; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+      <span style="width: 44px; height: 44px; border-radius: 50%; background: #F36A02; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#14110F" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+      <h1 style="font-size: 24px; font-weight: 600">{{title}}</h1>
+      <p>{{lead}}</p>
+      <p class="muted">Reference <span style="font-family: 'IBM Plex Mono', monospace; color: #14110F">TDD-2026-C2-0147</span> · submitted 5 Nov 2026 · a copy was emailed to you</p>
+      <p style="font-size: 14px; background: #F5F2EE; border-radius: 6px; padding: 10px 12px">Submitting doesn't mean your organisation has been approved. TracTrac will let you know the outcome.</p>
+    </section>
+
+    <section class="card" style="padding: 20px 28px; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="font-size: 16px; font-weight: 600">What happens next</h2>
+      <ol style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
+          <li style="display: flex; gap: 12px; align-items: center" aria-current="{{s.current}}"><span style="width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex: none; {{s.dot}}">{{s.mark}}</span><span style="{{s.text}}">{{s.label}}</span></li>
+        </sc-for>
+      </ol>
+      <p class="muted">If TracTrac needs anything else, they'll email you directly.</p>
+    </section>
+
+    <div style="display: flex; gap: 10px; flex-wrap: wrap"><a class="btn btn-o" href="VendorSimpleForm.dc.html">View what you submitted</a><a class="btn btn-o" href="VendorSimpleStart.dc.html">Back to start</a></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"stage":{"editor":"enum","options":["submitted","reviewing","finished"],"default":"submitted"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const stage = this.props.stage ?? 'submitted';
+    const order = ['submitted', 'reviewing', 'finished'];
+    const labels = ['Submitted', 'TracTrac reviews your documents', 'Review finished'];
+    const si = order.indexOf(stage);
+    return {
+      title: stage === 'finished' ? 'TracTrac has finished reviewing your form' : 'Thank you, your form has been submitted',
+      lead: stage === 'finished' ? 'You’ll receive the outcome by email.' : 'Your answers are now locked while TracTrac checks your documents.',
+      steps: labels.map((label, i) => ({
+        label, current: i === si ? 'step' : 'false',
+        mark: i < si || i === 0 || (i === si && stage === 'finished') ? '✓' : String(i + 1),
+        dot: i <= si ? 'background:#F36A02;color:#14110F' : 'background:#F5F2EE;color:#6E6A65;box-shadow:inset 0 0 0 1px #DCD6CD',
+        text: i === si ? 'font-weight:600' : i < si ? '' : 'color:#6E6A65'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Upload existing documents</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-g{background:transparent;color:#1D4E89}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed}
+.btn:focus-visible,.inp:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}.b-teal{background:#E2F3F1;color:#0B5E58}
+.inp{width:100%;min-height:40px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;color:inherit;background:#fff}
+.lbl{display:block;font-weight:500;margin-bottom:6px}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.step{width:26px;height:26px;border-radius:50%;background:#12284C;color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="uploads" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 640px; min-width: 0; padding: 28px clamp(16px, 3vw, 36px) 64px; display: flex; flex-direction: column; gap: 20px">
+    <div><p class="help" style="font-size: 14px">For documents TracTrac received by email, in person or from a previous cycle</p><h1 style="font-size: 24px; font-weight: 600">Upload existing documents</h1></div>
+
+    <sc-if value="{{saved}}" hint-placeholder-val="{{ false }}">
+      <section class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px; border-color: #A9D8BC; max-width: 760px">
+        <div style="display: flex; gap: 10px; align-items: center"><span style="width: 32px; height: 32px; border-radius: 50%; background: #E6F4EC; color: #1A6B40; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span><h2 style="font-size: 17px; font-weight: 600">{{fileCount}} saved against {{reqRef}} {{reqTitle}}</h2></div>
+        <p>Northfield Agro Services Ltd will now see this requirement as <span class="badge b-blue">Provided by TracTrac</span> and won't be asked to upload it again.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap"><a class="btn btn-p" href="AdminOrgDetail.dc.html">View organisation</a><button class="btn btn-s" type="button" onClick="{{reset}}">Upload another</button></div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <form class="card" style="flex: 999 1 520px; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; gap: 14px"><span class="step">1</span><div style="flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px">
+          <div><label class="lbl" for="org">Organisation</label><select class="inp" id="org"><option>Northfield Agro Services Ltd</option><option>Savannah Tillage Partners</option><option>Harvest Bridge Foundation</option></select></div>
+          <div><label class="lbl" for="cy">Assessment cycle</label><select class="inp" id="cy"><option>2026 Partner Due Diligence · Cycle 2</option></select></div>
+        </div></div>
+
+        <div style="display: flex; gap: 14px"><span class="step">2</span><div style="flex: 1"><label class="lbl" for="sec">Questionnaire section</label><select class="inp" id="sec" value="{{sec}}" onChange="{{onSec}}"><sc-for list="{{secOpts}}" as="s" hint-placeholder-count="12"><option value="{{s.v}}">{{s.label}}</option></sc-for></select></div></div>
+
+        <div style="display: flex; gap: 14px"><span class="step">3</span><fieldset style="flex: 1; border: 0; padding: 0; margin: 0; min-width: 0"><legend class="lbl">Question or evidence requirement</legend>
+          <div style="border: 1px solid #E1E4EA; border-radius: 8px; max-height: 340px; overflow-y: auto">
+            <sc-for list="{{reqs}}" as="r" hint-placeholder-count="8">
+              <label style="display: flex; gap: 12px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #EEF0F3; cursor: pointer; {{r.style}}"><input type="radio" name="req" checked="{{r.on}}" onChange="{{r.pick}}" style="accent-color: #12284C"><span class="mono" style="width: 44px; color: #5B6577">{{r.ref}}</span><span style="flex: 1">{{r.title}}</span><span class="badge {{r.cls}}">{{r.st}}</span></label>
+            </sc-for>
+          </div>
+          <p class="help" style="margin-top: 6px">Status shows what the organisation has already provided, so you don't duplicate their upload.</p>
+        </fieldset></div>
+
+        <div style="display: flex; gap: 14px"><span class="step">4</span><div style="flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0">
+          <span class="lbl" style="margin: 0">Files</span>
+          <div style="border: 1.5px dashed #AEB6C4; border-radius: 10px; background: #FAFBFC; padding: 16px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4E89" stroke-width="1.75" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"></path></svg>
+            <div style="flex: 1 1 200px"><p style="font-weight: 500">Drag one or more files here</p><p class="help">PDF, DOCX, XLSX, JPG or PNG · max 20 MB each</p></div>
+            <button class="btn btn-s btn-sm" type="button" onClick="{{addFile}}">Browse files</button>
+          </div>
+          <sc-for list="{{files}}" as="f" hint-placeholder-count="2">
+            <div style="border: 1px solid #E1E4EA; border-radius: 8px; padding: 8px 12px; display: flex; gap: 12px; align-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6577" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg><span style="flex: 1; min-width: 0; overflow-wrap: anywhere"><span style="font-weight: 500">{{f.name}}</span> <span class="help">· {{f.size}}</span></span><span class="badge b-teal">Ready</span><button class="btn btn-g btn-sm" type="button" onClick="{{f.remove}}" aria-label="Remove {{f.name}}">Remove</button></div>
+          </sc-for>
+        </div></div>
+
+        <div style="display: flex; gap: 14px"><span class="step">5</span><div style="flex: 1; display: flex; flex-direction: column; gap: 14px">
+          <div><label class="lbl" for="src">How was it received?</label><select class="inp" id="src"><option>Email to Partnership Manager</option><option>Hard copy</option><option>Previous assessment cycle</option></select></div>
+          <div><label class="lbl" for="note">Internal note <span class="help" style="font-weight: 400">(optional, TracTrac only)</span></label><textarea class="inp" id="note" rows="3">PenCom certificate and 2024–2025 schedules emailed by Tunde Ojo on 4 Nov.</textarea></div>
+          <label style="display: flex; gap: 10px; align-items: flex-start"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #12284C; margin-top: 2px"><span>Show to the organisation as <span style="font-weight: 500">"Provided by TracTrac"</span> so they don't upload it again</span></label>
+          <div><label class="lbl" for="rs">Review status after saving</label><select class="inp" id="rs" style="max-width: 320px"><option>Awaiting review</option><option>Approved</option></select></div>
+        </div></div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #EEF0F3; padding-top: 16px"><a class="btn btn-s" href="AdminDashboard.dc.html">Cancel</a><button class="btn btn-p" type="button" disabled="{{cannotSave}}" onClick="{{save}}">Save document</button></div>
+      </form>
+
+      <aside class="card" style="flex: 1 1 280px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+        <h2 style="font-size: 15px; font-weight: 600">Recently uploaded by staff</h2>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 13px">
+          <li><p style="font-weight: 500">Certificate_of_Incorporation.pdf</p><p class="help">Northfield · 2.1.1 · Chidi Okafor · 9 Oct</p></li>
+          <li><p style="font-weight: 500">Audited_Financial_Statements_2023.pdf</p><p class="help">Northfield · 3.1.2 · Chidi Okafor · 9 Oct</p></li>
+          <li><p style="font-weight: 500">Organisational_Structure_2026.pdf</p><p class="help">Northfield · 5.1.2 · Chidi Okafor · 9 Oct</p></li>
+          <li><p style="font-weight: 500">Bank_Reference_Letter.pdf</p><p class="help">Harvest Bridge · 3.2.2 · Funmi Adeyemi · 6 Oct</p></li>
+        </ul>
+      </aside>
+    </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+const SECS = ['General Organizational Information', 'Legal and Compliance', 'Financial Health', 'Procurement and Vendor Management', 'Organizational Capacity and Capability', 'Donor Agreements and Programme Implementation', 'Quality Assurance and Risk Management', 'Ethical Standards and Policies', 'Corporate Governance', 'Stakeholder Engagement, CSR and Sustainability', 'References and Past Performance', 'Documentation Checklist'];
+const REQ = {
+  2: [['2.1.1', 'Certificate of Incorporation', 'tt'], ['2.1.2', 'Evidence of TIN', 'rev'], ['2.1.3', 'Current Tax Clearance Certificate', 'chg'], ['2.2.1', 'Memorandum and Articles of Association', 'ok'], ['2.3.1', 'CAC registration', 'up'], ['2.4.1', 'Tax remittances', 'up'], ['2.4.2', 'Pension remittances', 'no'], ['2.4.3', 'Other statutory certificates', 'up'], ['2.4.4', 'Business permits and licences', 'up'], ['2.6.3', 'Related Party Transactions Policy', 'no'], ['2.6.4', 'Schedule of related party transactions', 'no'], ['2.7.2', 'Anti-money laundering and counter-terrorism financing', 'no'], ['2.7.3', 'Sanctions and debarment screening', 'no']],
+  3: [['3.1.2', 'Audited financial statements', 'tt'], ['3.2.1', 'Certificate/declaration of solvency', 'up'], ['3.2.2', 'Bank reference letter', 'up'], ['3.5.2', 'Bank statements', 'chg'], ['3.5.3', 'Bank reconciliation reports', 'no'], ['3.6.1', 'Financial policies, SOPs and internal control framework', 'no'], ['3.7.1', 'Payroll registers', 'no']],
+  5: [['5.1.2', 'Organizational chart or company profile', 'tt'], ['5.2.2', 'Employee list', 'no'], ['5.2.3', 'Staff handbook', 'no'], ['5.4.2', 'CVs of key personnel', 'no']]
+};
+const ST = { tt: ['Provided by TracTrac', 'b-blue'], rev: ['Under review', 'b-blue'], chg: ['Changes requested', 'b-amber'], ok: ['Approved', 'b-green'], up: ['Uploaded by vendor', 'b-teal'], no: ['Not provided', 'b-grey'] };
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { sec: '2', req: '2.4.2', files: [{ name: 'PenCom_Compliance_Certificate_2026.pdf', size: '540 KB' }, { name: 'Pension_Schedules_2024-2025.pdf', size: '1.9 MB' }], saved: false }; }
+  renderVals() {
+    const { sec, req, files, saved } = this.state;
+    const list = REQ[sec] || [];
+    const r = list.find((x) => x[0] === req);
+    return {
+      sec, secOpts: SECS.map((s, k) => ({ v: String(k + 1), label: (k + 1) + '. ' + s })),
+      onSec: (e) => { const s = e.target.value; const l = REQ[s] || []; this.setState({ sec: s, req: l.length ? l[0][0] : '' }); },
+      reqs: list.map(([ref, title, st]) => ({ ref, title, st: ST[st][0], cls: ST[st][1], on: ref === req, pick: () => this.setState({ req: ref }), style: ref === req ? 'background:#F5F8FD' : '' })),
+      files: files.map((f, k) => Object.assign({}, f, { remove: () => this.setState({ files: files.filter((x, j) => j !== k) }) })),
+      addFile: () => this.setState({ files: files.concat([{ name: 'Scanned_Document_' + (files.length + 1) + '.pdf', size: '720 KB' }]) }),
+      cannotSave: !r || files.length === 0,
+      save: () => this.setState({ saved: true }), reset: () => this.setState({ saved: false, files: [] }),
+      saved, editing: !saved,
+      fileCount: files.length === 1 ? '1 file' : files.length + ' files', reqRef: r ? r[0] : '', reqTitle: r ? r[1] : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Organisations</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-g{background:transparent;color:#1D4E89}.btn-g:hover{background:#EEF2F8}
+.btn-sm{min-height:32px;padding:0 10px;font-size:13px}
+.btn:focus-visible,.inp:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}.b-red{background:#FCE8E6;color:#A8201A}
+.inp{width:100%;min-height:40px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;color:inherit;background:#fff}
+.lbl{display:block;font-weight:500;margin-bottom:6px}
+.help{color:#5B6577;font-size:13px}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:0 14px;height:40px;border-bottom:1px solid #E1E4EA;background:#F8F9FB;white-space:nowrap}.tbl td{padding:11px 14px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; position: relative">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="organisations" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 640px; min-width: 0; padding: 28px clamp(16px, 3vw, 36px) 64px; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+      <div><p class="help" style="font-size: 14px">14 organisations · 12 in the active cycle</p><h1 style="font-size: 24px; font-weight: 600">Organisations</h1></div>
+      <div style="display: flex; gap: 8px"><button class="btn btn-s" type="button">Export list</button><button class="btn btn-p" type="button" onClick="{{openAdd}}">+ Add organisation</button></div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <input class="inp" type="search" placeholder="Search by name, contact or email" aria-label="Search organisations" value="{{q}}" onChange="{{onSearch}}" style="max-width: 320px">
+      <select class="inp" aria-label="Verification status" value="{{ver}}" onChange="{{onVer}}" style="max-width: 220px"><option value="all">All verification statuses</option><option>Verified</option><option>Pending verification</option><option>Details mismatch</option></select>
+      <select class="inp" aria-label="Assessment cycle" style="max-width: 220px"><option>All cycles</option><option>2026 Cycle 2</option><option>No active cycle</option></select>
+    </div>
+    <section class="card" style="overflow: hidden">
+      <div style="overflow-x: auto">
+        <table class="tbl" style="min-width: 1060px">
+          <thead><tr><th scope="col">Organisation</th><th scope="col">Registered</th><th scope="col">Primary contact</th><th scope="col">Email</th><th scope="col">Assessment cycle</th><th scope="col">Submission</th><th scope="col">Verification</th><th scope="col"><span style="position: absolute; left: -9999px">Actions</span></th></tr></thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="14">
+              <tr>
+                <td><a href="AdminOrgDetail.dc.html" style="font-weight: 500; color: #1B2433; text-decoration: none">{{r.name}}</a><div class="help" style="font-size: 12px">{{r.rc}}</div></td>
+                <td class="help">{{r.reg}}</td>
+                <td>{{r.contact}}</td>
+                <td class="help">{{r.email}}</td>
+                <td>{{r.cycle}}</td>
+                <td><span class="badge {{r.subCls}}">{{r.sub}}</span></td>
+                <td><span class="badge {{r.verCls}}">{{r.ver}}</span></td>
+                <td style="white-space: nowrap; text-align: right"><a class="btn btn-g btn-sm" href="AdminOrgDetail.dc.html">View</a><button class="btn btn-g btn-sm" type="button" onClick="{{openAdd}}">Edit</button><sc-if value="{{r.noCycle}}" hint-placeholder-val="{{ false }}"><button class="btn btn-s btn-sm" type="button">Assign cycle</button></sc-if></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <sc-if value="{{adding}}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); display: flex; justify-content: flex-end">
+      <section role="dialog" aria-labelledby="addt" style="width: min(460px, 100%); background: #fff; height: 100%; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 12px 32px rgba(16,24,40,.16)">
+        <div style="display: flex; justify-content: space-between; align-items: center"><h2 id="addt" style="font-size: 18px; font-weight: 600">Add organisation</h2><button class="btn btn-g btn-sm" type="button" onClick="{{closeAdd}}" aria-label="Close">Close</button></div>
+        <p class="help">Create a record for an organisation that hasn't self-registered. They'll receive an invitation to set up their account.</p>
+        <div><label class="lbl" for="an">Registered name</label><input class="inp" id="an" value="Kano Harvest Logistics Ltd"></div>
+        <div><label class="lbl" for="arc">CAC / registration number</label><input class="inp" id="arc" value="RC 2210934"></div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <div><label class="lbl" for="acn">Primary contact</label><input class="inp" id="acn" value="Musa Abdullahi"></div>
+          <div><label class="lbl" for="act">Job title</label><input class="inp" id="act" value="Managing Director"></div>
+        </div>
+        <div><label class="lbl" for="ae">Contact email</label><input class="inp" id="ae" type="email" value="m.abdullahi@kanoharvest.ng"></div>
+        <div><label class="lbl" for="acy">Assign to assessment cycle</label><select class="inp" id="acy"><option>2026 Partner Due Diligence · Cycle 2</option><option>Don't assign yet</option></select><p class="help" style="margin-top: 4px">Joining after the first-submission deadline: they'll show as Not started until 30 days after assignment.</p></div>
+        <label style="display: flex; gap: 10px; align-items: center"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #12284C">Email an invitation to the primary contact now</label>
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: auto; padding-top: 16px; border-top: 1px solid #EEF0F3"><button class="btn btn-s" type="button" onClick="{{closeAdd}}">Cancel</button><button class="btn btn-p" type="button" onClick="{{closeAdd}}">Add and invite</button></div>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+const ORGS = [
+  ['Northfield Agro Services Ltd', 'RC 1428817', '9 Sep 2026', 'Amina Bello', 'amina.bello@northfieldagro.ng', 'Partial submission', 'Verified'],
+  ['Savannah Tillage Partners', 'RC 988201', '11 Sep 2026', 'Ibrahim Musa', 'i.musa@savannahtillage.ng', 'Submission complete', 'Verified'],
+  ['Benue Valley Farmers Cooperative', 'Coop Reg. BN/1182', '2 Oct 2026', 'Ngozi Agu', 'ngozi.agu@bvfc.org.ng', 'Defaulter', 'Pending verification'],
+  ['Harvest Bridge Foundation', 'CAC/IT/77310', '15 Sep 2026', 'Kemi Adebayo', 'kemi@harvestbridge.org', 'Partial submission', 'Verified'],
+  ['Lakeside Equipment & Spares Ltd', 'RC 702115', '9 Sep 2026', 'Samuel Danjuma', 's.danjuma@lakeside-equip.ng', 'Submission complete', 'Verified'],
+  ['Riverine Seeds Nigeria Ltd', 'RC 1311487', '20 Sep 2026', 'Halima Yusuf', 'halima.y@riverineseeds.ng', 'Partial submission', 'Details mismatch'],
+  ['AgroReach Development Initiative', 'CAC/IT/90122', '12 Sep 2026', 'Peter Nwosu', 'p.nwosu@agroreach.org', 'Submission complete', 'Verified'],
+  ['Plateau Fleet Maintenance Ltd', 'RC 1550032', '14 Oct 2026', 'Joy Pam', 'joy.pam@plateaufleet.ng', 'Defaulter', 'Pending verification'],
+  ['Sahel Agri-Logistics Ltd', 'RC 1094420', '18 Sep 2026', 'Bello Garba', 'b.garba@sahelagri.ng', 'Partial submission', 'Verified'],
+  ['GreenRow Mechanisation Hub', 'RC 1267765', '10 Sep 2026', 'Esther Okon', 'esther@greenrow.ng', 'Submission complete', 'Verified'],
+  ['Kogi Smallholder Support Network', 'CAC/IT/101447', '25 Sep 2026', 'Daniel Ojo', 'd.ojo@kssn.org.ng', 'Partial submission', 'Pending verification'],
+  ['Delta Tractor Services Ltd', 'RC 1721009', '3 Nov 2026', 'Fatima Lawal', 'f.lawal@deltatractor.ng', 'Not started', 'Pending verification'],
+  ['Ogun Valley Implements Ltd', 'RC 845530', '14 Mar 2025', 'Yemi Adeola', 'yemi@ogunvalley.ng', 'No active cycle', 'Verified'],
+  ['Northern Plains Agro Cooperative', 'Coop Reg. KD/0931', '2 Apr 2025', 'Sani Bala', 'sani.bala@npac.org.ng', 'No active cycle', 'Verified']
+];
+const SUB = { 'Defaulter': 'b-red', 'Not started': 'b-grey', 'Partial submission': 'b-amber', 'Submission complete': 'b-green', 'No active cycle': 'b-grey' };
+const VER = { 'Verified': 'b-green', 'Pending verification': 'b-grey', 'Details mismatch': 'b-amber' };
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { q: '', ver: 'all', adding: false }; }
+  renderVals() {
+    const { q, ver } = this.state;
+    let rows = ORGS.map((o) => ({ name: o[0], rc: o[1], reg: o[2], contact: o[3], email: o[4], sub: o[5], subCls: SUB[o[5]], ver: o[6], verCls: VER[o[6]], cycle: o[5] === 'No active cycle' ? '—' : '2026 Cycle 2', noCycle: o[5] === 'No active cycle' }));
+    if (q) rows = rows.filter((r) => (r.name + r.contact + r.email).toLowerCase().indexOf(q.toLowerCase()) > -1);
+    if (ver !== 'all') rows = rows.filter((r) => r.ver === ver);
+    return {
+      rows, q, ver,
+      onSearch: (e) => this.setState({ q: e.target.value }), onVer: (e) => this.setState({ ver: e.target.value }),
+      adding: this.state.adding, openAdd: () => this.setState({ adding: true }), closeAdd: () => this.setState({ adding: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Assessment monitoring</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed}
+.btn:focus-visible,.chip:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}.b-red{background:#FCE8E6;color:#A8201A}
+.help{color:#5B6577;font-size:13px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid #C9CED8;background:#fff;font:500 13px 'IBM Plex Sans',sans-serif;color:#1B2433;cursor:pointer}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:0 14px;height:40px;border-bottom:1px solid #E1E4EA;background:#F8F9FB;white-space:nowrap}.tbl td{padding:11px 14px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+.tbl th.grp{height:28px;font-weight:600;color:#1B2433;border-bottom:0;background:#F1F3F6}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="monitoring" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 640px; min-width: 0; padding: 28px clamp(16px, 3vw, 36px) 64px; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+      <div><p class="help" style="font-size: 14px">2026 Partner Due Diligence · Cycle 2</p><h1 style="font-size: 24px; font-weight: 600">Assessment monitoring</h1></div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap"><button class="btn btn-s" type="button">Export to Excel</button><button class="btn btn-p" type="button" disabled="{{noneSel}}">{{remindLabel}}</button></div>
+    </div>
+
+    <section class="card" style="padding: 16px 20px; display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: center">
+      <div style="flex: 1 1 300px"><p style="font-weight: 600; font-size: 13px">{{ruleTitle}}</p><p class="help">{{ruleText}}</p></div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: #4E5768">
+        <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 9px; height: 9px; border-radius: 50%; background: #C4321F"></span>No required documents</span>
+        <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 9px; height: 9px; border-radius: 50%; background: #D08A1E"></span>Some submitted</span>
+        <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 9px; height: 9px; border-radius: 50%; background: #1A6B40"></span>All applicable submitted</span>
+        <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 9px; height: 9px; border-radius: 50%; background: #1A54A6"></span>Under review</span>
+      </div>
+    </section>
+
+    <div role="group" aria-label="Filter organisations" style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{chips}}" as="c" hint-placeholder-count="7">
+        <button class="chip" type="button" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}" style="{{c.style}}"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{c.dot}}"></span>{{c.label}} <span style="font-weight: 600">{{c.count}}</span></button>
+      </sc-for>
+    </div>
+
+    <section class="card" style="overflow: hidden">
+      <div style="overflow-x: auto">
+        <table class="tbl" style="min-width: 1080px">
+          <thead>
+            <tr><th class="grp" colspan="2"></th><th class="grp" colspan="2">1 · Submission completeness</th><th class="grp" colspan="2" style="border-left: 1px solid #E1E4EA">2 · Evidence review</th><th class="grp" style="border-left: 1px solid #E1E4EA">3 · Compliance outcome</th><th class="grp"></th></tr>
+            <tr><th style="width: 40px"><input type="checkbox" aria-label="Select all shown" checked="{{allSel}}" onChange="{{toggleAll}}" style="width: 16px; height: 16px; accent-color: #12284C"></th><th>Organisation</th><th>Status</th><th>Required documents</th><th style="border-left: 1px solid #E1E4EA">Status</th><th>Reviewed</th><th style="border-left: 1px solid #E1E4EA">Outcome</th><th><span style="position: absolute; left: -9999px">Action</span></th></tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+              <tr>
+                <td><input type="checkbox" aria-label="Select {{r.name}}" checked="{{r.sel}}" onChange="{{r.toggle}}" style="width: 16px; height: 16px; accent-color: #12284C"></td>
+                <td><a href="AdminOrgDetail.dc.html" style="font-weight: 500; color: #1B2433; text-decoration: none">{{r.name}}</a><div class="help" style="font-size: 12px">Last activity {{r.last}}</div></td>
+                <td><span class="badge {{r.subCls}}"><span style="width: 7px; height: 7px; border-radius: 50%; background: currentColor"></span>{{r.sub}}</span></td>
+                <td>{{r.docs}} <span class="help">of {{r.req}}</span></td>
+                <td style="border-left: 1px solid #EEF0F3"><span class="badge {{r.revCls}}">{{r.rev}}</span></td>
+                <td class="help">{{r.reviewed}}</td>
+                <td style="border-left: 1px solid #EEF0F3"><span class="badge {{r.outCls}}">{{r.out}}</span></td>
+                <td style="text-align: right"><a class="btn btn-s btn-sm" href="{{r.href}}">{{r.action}}</a></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px; text-align: center"><p style="font-weight: 600">No organisations in this group</p><p class="help">Choose another filter above.</p></div></sc-if>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"beforeDefaulterDate":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1400}}'>
+const ORGS = [
+  ['Northfield Agro Services Ltd', 'P', 52, 121, 'Information requested', '18 of 52', '—', 'Today'],
+  ['Savannah Tillage Partners', 'C', 121, 121, 'Under review', '74 of 121', '—', 'Yesterday'],
+  ['Benue Valley Farmers Cooperative', 'D', 0, 121, '—', '—', '—', '2 Oct'],
+  ['Harvest Bridge Foundation', 'P', 96, 121, 'Awaiting review', '0 of 96', '—', '3 Nov'],
+  ['Lakeside Equipment & Spares Ltd', 'C', 118, 118, 'Review completed', '118 of 118', 'Compliant', '28 Oct'],
+  ['Riverine Seeds Nigeria Ltd', 'P', 27, 121, 'Awaiting review', '0 of 27', '—', '1 Nov'],
+  ['AgroReach Development Initiative', 'C', 121, 121, 'Changes requested', '121 of 121', '—', '4 Nov'],
+  ['Plateau Fleet Maintenance Ltd', 'D', 0, 121, '—', '—', '—', '14 Oct'],
+  ['Sahel Agri-Logistics Ltd', 'P', 71, 121, 'Under review', '40 of 71', '—', '2 Nov'],
+  ['GreenRow Mechanisation Hub', 'C', 121, 121, 'Review completed', '121 of 121', 'Conditionally compliant', '30 Oct'],
+  ['Kogi Smallholder Support Network', 'P', 6, 121, 'Awaiting review', '0 of 6', '—', '25 Oct'],
+  ['Delta Tractor Services Ltd', 'N', 0, 121, '—', '—', '—', '3 Nov']
+];
+const REV = { 'Information requested': 'b-amber', 'Changes requested': 'b-amber', 'Under review': 'b-blue', 'Awaiting review': 'b-grey', 'Review completed': 'b-green', '—': 'b-grey' };
+const OUT = { 'Compliant': 'b-green', 'Conditionally compliant': 'b-amber', 'Non-compliant': 'b-red', '—': 'b-grey' };
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { f: 'all', sel: {} }; }
+  renderVals() {
+    const early = !!this.props.beforeDefaulterDate;
+    const subOf = (c) => (c === 'D' ? (early ? ['Not started', 'b-grey'] : ['Defaulter', 'b-red']) : c === 'N' ? ['Not started', 'b-grey'] : c === 'P' ? ['Partial submission', 'b-amber'] : ['Submission complete', 'b-green']);
+    const all = ORGS.map((o) => { const s = subOf(o[1]); return { name: o[0], code: o[1], sub: s[0], subCls: s[1], docs: o[2], req: o[3], rev: o[4], revCls: REV[o[4]], reviewed: o[5], out: o[6] === '—' ? (o[1] === 'C' || o[1] === 'P' ? 'Pending' : '—') : o[6], outCls: OUT[o[6]], last: o[7] }; });
+    const F = {
+      all: () => true, D: (r) => r.sub === 'Defaulter', N: (r) => r.sub === 'Not started', P: (r) => r.code === 'P', C: (r) => r.code === 'C',
+      R: (r) => r.rev === 'Under review', X: (r) => r.rev === 'Changes requested' || r.rev === 'Information requested'
+    };
+    const defs = [['all', 'All', '#12284C'], ['D', 'Defaulters', '#C4321F'], ['N', 'Not started', '#AEB6C4'], ['P', 'Partial submissions', '#D08A1E'], ['C', 'Complete submissions', '#1A6B40'], ['R', 'Under review', '#1A54A6'], ['X', 'Changes requested', '#8A4B00']];
+    const f = this.state.f, sel = this.state.sel;
+    const rows = all.filter(F[f]).map((r) => Object.assign(r, {
+      sel: !!sel[r.name], toggle: () => this.setState({ sel: Object.assign({}, sel, { [r.name]: !sel[r.name] }) }),
+      action: r.code === 'D' || r.code === 'N' ? 'Remind' : r.rev === 'Awaiting review' || r.rev === 'Under review' ? 'Review' : 'Open',
+      href: r.rev === 'Awaiting review' || r.rev === 'Under review' ? 'AdminReview.dc.html' : 'AdminOrgDetail.dc.html'
+    }));
+    const n = Object.keys(sel).filter((k) => sel[k]).length;
+    const allSel = rows.length > 0 && rows.every((r) => sel[r.name]);
+    return {
+      chips: defs.map(([k, label, dot]) => ({ label, dot, count: all.filter(F[k]).length, pressed: f === k ? 'true' : 'false', pick: () => this.setState({ f: k }), style: f === k ? 'background:#12284C;color:#fff;border-color:#12284C' : '' })),
+      rows, empty: rows.length === 0, allSel,
+      toggleAll: () => { const s = Object.assign({}, sel); rows.forEach((r) => { s[r.name] = !allSel; }); this.setState({ sel: s }); },
+      noneSel: n === 0, remindLabel: n ? 'Send reminder to ' + n + ' selected' : 'Send reminder',
+      ruleTitle: early ? 'Before the defaulter date (31 Oct 2026)' : 'Defaulter rule for this cycle',
+      ruleText: early ? 'Organisations with no documents show as Not started until the first-submission deadline passes.' : 'No required documents by the first-submission deadline (31 Oct 2026) = Defaulter. Organisations assigned after that date show Not started for 30 days.'
+    };
+  }
+}
+</script>
+</body>
+</html>

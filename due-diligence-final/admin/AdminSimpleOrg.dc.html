@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin organisation files</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F5F2EE;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#14110F;font-size:15px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,p{margin:0}
+a{color:#14110F}
+.card{background:#FFFFFF;border:1px solid #DCD6CD;border-radius:8px}
+.muted{color:#6E6A65;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:0 14px;border-radius:8px;font:600 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#F36A02;color:#14110F}.btn-p:hover{background:#F79A5B;color:#14110F}
+.btn-o{background:#FFFFFF;color:#14110F;border-color:#6E6A65}.btn-o:hover{background:#F5F2EE}
+.lnk{background:none;border:0;padding:0;font:inherit;font-size:13px;color:#14110F;text-decoration:underline;cursor:pointer}
+.btn:focus-visible,a:focus-visible,.sec-b:focus-visible,.lnk:focus-visible{outline:3px solid #14110F;outline-offset:2px}
+.sec-b{width:100%;display:flex;gap:14px;align-items:center;background:none;border:0;padding:14px 20px;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.sec-b:hover{background:#FBFAF8}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6E6A65}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+  <header style="background: #FFFFFF; border-bottom: 1px solid #DCD6CD; padding: 0 24px; min-height: 60px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
+    <span style="display: flex; gap: 10px; align-items: center"><span style="width: 30px; height: 30px; border-radius: 7px; background: #14110F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">Due Diligence Portal <span class="muted" style="font-weight: 400">· Admin</span></span></span>
+    <nav aria-label="Admin" style="display: flex; gap: 4px; flex: 1; font-size: 14px">
+      <a href="AdminSimpleHome.dc.html" style="padding: 18px 12px; text-decoration: none; color: #6E6A65">Home</a>
+      <a href="AdminSimpleOrg.dc.html" aria-current="page" style="padding: 18px 12px 15px; text-decoration: none; font-weight: 600; border-bottom: 3px solid #F36A02">Organisations</a>
+      <a href="AdminSimpleSetup.dc.html" style="padding: 18px 12px; text-decoration: none; color: #6E6A65">Setup</a>
+    </nav>
+    <span class="muted" style="font-size: 13px">Chidi Okafor · <a href="VendorSimpleSignIn.dc.html">Sign out</a></span>
+  </header>
+
+  <main style="max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; display: flex; flex-direction: column; gap: 14px">
+    <a href="AdminSimpleHome.dc.html" style="font-size: 14px">← All organisations</a>
+    <section class="card" style="border-top: 8px solid #F36A02; padding: 22px 24px; display: flex; flex-wrap: wrap; gap: 14px 24px; justify-content: space-between; align-items: flex-start">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="font-size: 22px; font-weight: 600">Northfield Agro Services Ltd</h1>
+        <p class="muted">Amina Bello · amina.bello@northfieldagro.ng · RC 1428817</p>
+        <p style="font-size: 14px; margin-top: 4px">In progress · 47% complete · 52 files · <span style="font-weight: 600">{{notReviewed}} not yet reviewed</span></p>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
+        <button class="btn btn-o" type="button" onClick="{{remind}}">{{remindLabel}}</button>
+        <a class="btn btn-p" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"></path></svg>Download all files (ZIP)</a>
+      </div>
+    </section>
+
+    <section class="card" style="overflow: hidden">
+      <sc-for list="{{secs}}" as="s" hint-placeholder-count="12">
+        <div style="border-top: 1px solid #EFEBE6">
+          <button class="sec-b" type="button" onClick="{{s.toggle}}" aria-expanded="{{s.openStr}}">
+            <span style="width: 22px; color: #6E6A65; font-size: 14px">{{s.n}}</span>
+            <span style="flex: 1; font-weight: 500">{{s.title}}</span>
+            <span style="font-size: 14px; {{s.metaStyle}}">{{s.meta}}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6E6A65" stroke-width="2" aria-hidden="true"><path d="{{s.chev}}"></path></svg>
+          </button>
+          <sc-if value="{{s.open}}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 0 20px 12px 56px">
+              <sc-if value="{{s.empty}}" hint-placeholder-val="{{ false }}"><p class="muted" style="padding: 8px 0 4px">{{s.emptyText}}</p></sc-if>
+              <sc-for list="{{s.items}}" as="it" hint-placeholder-count="6">
+                <div style="padding: 12px 0; border-top: 1px solid #EFEBE6; display: flex; flex-direction: column; gap: 8px">
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center">
+                    <span class="mono" style="width: 40px">{{it.ref}}</span>
+                    <span style="flex: 1 1 240px; font-weight: 500; font-size: 14px">{{it.title}}</span>
+                    <sc-if value="{{it.canReview}}" hint-placeholder-val="{{ false }}"><button class="btn btn-o" type="button" onClick="{{it.review}}">Mark as reviewed</button></sc-if>
+                    <sc-if value="{{it.reviewed}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; display: inline-flex; gap: 6px; align-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F36A02" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Reviewed by Chidi, 11 Nov · <button class="lnk" type="button" onClick="{{it.undo}}">Undo</button></span></sc-if>
+                  </div>
+                  <sc-for list="{{it.files}}" as="f" hint-placeholder-count="1">
+                    <div style="margin-left: 52px; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; padding: 8px 10px; border: 1px solid #DCD6CD; border-radius: 6px">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6A65" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg>
+                      <span style="flex: 1 1 200px; font-size: 14px; overflow-wrap: anywhere">{{f.name}} <span class="muted" style="font-size: 13px">· {{f.meta}}</span></span>
+                      <a class="btn btn-o" href="#" style="min-height: 32px; font-size: 13px" aria-label="Download {{f.name}}">Download</a>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{it.na}}" hint-placeholder-val="{{ false }}"><p class="muted" style="margin-left: 52px">Doesn't apply: {{it.why}}</p></sc-if>
+                  <sc-if value="{{it.missing}}" hint-placeholder-val="{{ false }}"><div style="margin-left: 52px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap"><span class="muted">Not uploaded yet</span><button class="btn btn-o" type="button" onClick="{{it.upload}}" style="min-height: 32px; font-size: 13px">Upload a file</button></div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+const SECS = [['General Organizational Information', 'Written answers'], ['Legal and Compliance', null], ['Financial Health', '14 files'], ['Procurement and Vendor Management', '4 files'], ['Organizational Capacity and Capability', '6 files'], ['Donor Agreements and Programme Implementation', 'Nothing yet'], ['Quality Assurance and Risk Management', '4 files'], ['Ethical Standards and Policies', '6 files'], ['Corporate Governance', 'Nothing yet'], ['Stakeholder Engagement, CSR and Sustainability', '4 files'], ['References and Past Performance', '1 file'], ['Documentation Checklist', 'Built from sections 1–11']];
+const SEC2 = [
+  ['2.1.1', 'Certificate of Incorporation', [['Certificate_of_Incorporation.pdf', '1.2 MB · added by TracTrac (Chidi), 9 Oct']], true],
+  ['2.1.2', 'Evidence of TIN', [['TIN_Certificate_Northfield.pdf', '412 KB · Amina Bello, 28 Oct']], false],
+  ['2.1.3', 'Current Tax Clearance Certificate', [['Tax_Clearance_Certificate_2026.pdf', '356 KB · Amina Bello, 28 Oct']], false],
+  ['2.2.1', 'Memorandum and Articles of Association', [['Memorandum_and_Articles_2014.pdf', '2.1 MB · Amina Bello, 12 Oct']], true],
+  ['2.3.1', 'CAC registration', [['CAC_Certificate_RC1428817.pdf', '640 KB · Amina Bello, 28 Oct']], false],
+  ['2.4.1', 'Tax remittances', [['PAYE_Remittances_2024.pdf', '1.4 MB · Tunde Ojo, 28 Oct'], ['PAYE_Remittances_2025.pdf', '1.6 MB · Tunde Ojo, 28 Oct']], false],
+  ['2.4.2', 'Pension remittances', [], false],
+  ['2.5.2', 'Code of Conduct and Anti-Bribery Policy', [['Code_of_Conduct_2025.pdf', '760 KB · Amina Bello, 28 Oct']], false],
+  ['2.6.3', 'Related Party Transactions Policy', [], false],
+  ['2.6.5', 'Insider Trading / Confidential information policy', 'na', false],
+  ['2.7.2', 'Anti-money laundering and counter-terrorism financing', [], false]
+];
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const st = {};
+    SEC2.forEach((x) => { st[x[0]] = { files: x[2] === 'na' ? [] : x[2].slice(), na: x[2] === 'na', rev: x[3] }; });
+    this.state = { open: { 2: true }, st, reminded: false };
+  }
+  renderVals() {
+    const { open, st } = this.state;
+    const set = (ref, patch) => this.setState({ st: Object.assign({}, st, { [ref]: Object.assign({}, st[ref], patch) }) });
+    const notRev2 = SEC2.filter((x) => st[x[0]].files.length && !st[x[0]].rev).length;
+    const items = SEC2.map(([ref, title]) => {
+      const e = st[ref], has = e.files.length > 0;
+      return { ref, title,
+        files: e.files.map(([name, meta]) => ({ name, meta })),
+        canReview: has && !e.rev, reviewed: has && e.rev, na: e.na, why: 'private company, not listed', missing: !has && !e.na,
+        review: () => set(ref, { rev: true }), undo: () => set(ref, { rev: false }),
+        upload: () => set(ref, { files: [[title.replace(/[^A-Za-z0-9]+/g, '_') + '_received.pdf', '540 KB · added by TracTrac (Chidi), today']], rev: true }) };
+    });
+    const notReviewed = 27 + notRev2;
+    return {
+      notReviewed, remind: () => this.setState({ reminded: true }), remindLabel: this.state.reminded ? 'Reminder sent' : 'Send reminder',
+      secs: SECS.map(([title, meta], k) => {
+        const n = k + 1, isOpen = !!open[n];
+        const m = n === 2 ? (notRev2 ? notRev2 + ' not yet reviewed' : 'All reviewed') : meta;
+        return { n, title, meta: m, metaStyle: /not yet/.test(m) ? 'font-weight:600' : 'color:#6E6A65', open: isOpen, openStr: isOpen ? 'true' : 'false', chev: isOpen ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6',
+          toggle: () => this.setState({ open: Object.assign({}, open, { [n]: !isOpen }) }),
+          items: n === 2 ? items : [], empty: n !== 2, emptyText: n === 1 ? 'Written answers only. Open the vendor’s form to read them.' : meta };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

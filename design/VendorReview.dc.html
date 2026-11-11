@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Review before submission</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed}
+.btn:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-grey{background:#EEF0F3;color:#4E5768}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:10px 16px;border-bottom:1px solid #E1E4EA;background:#F8F9FB}.tbl td{padding:12px 16px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+<dc-import name="VendorHeader" active="workspace" hint-size="100%,72px"></dc-import>
+<main style="max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-direction: column; gap: 24px">
+  <div>
+    <nav aria-label="Breadcrumb" class="help"><a href="VendorDashboard.dc.html">Dashboard</a> / <a href="VendorWorkspace.dc.html">2026 Partner Due Diligence</a> / <span style="color: #1B2433">Review and submit</span></nav>
+    <h1 style="font-size: 24px; font-weight: 600; margin-top: 8px">Review and submit</h1>
+    <p class="help" style="font-size: 14px">Northfield Agro Services Ltd · 2026 Partner Due Diligence · Cycle 2 · due 15 Dec 2026</p>
+  </div>
+
+  <sc-if value="{{blocked}}" hint-placeholder-val="{{ true }}">
+    <div style="background: #FFFAF0; border: 1px solid #F0D29A; border-radius: 10px; padding: 16px 20px; display: flex; gap: 12px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8A4B00" stroke-width="1.75" aria-hidden="true" style="flex: none"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"></path></svg>
+      <div><p style="font-weight: 600">85 required items still need a response before you can submit</p><p style="color: #6B3A00; font-size: 13px">Answer each item, upload the evidence, or mark it Not applicable with a reason. Your work is saved — you can return any time before 15 Dec 2026.</p></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ready}}" hint-placeholder-val="{{ false }}">
+    <div style="background: #F1F9F4; border: 1px solid #A9D8BC; border-radius: 10px; padding: 16px 20px; display: flex; gap: 12px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A6B40" stroke-width="2" aria-hidden="true" style="flex: none"><path d="M12 21a9 9 0 110-18 9 9 0 010 18zM8 12.5l2.5 2.5L16 9.5"></path></svg>
+      <div><p style="font-weight: 600">Every required item is complete</p><p style="color: #1A5A37; font-size: 13px">Check the summary below, confirm the declaration and submit. You can't edit answers while TracTrac is reviewing.</p></div>
+    </div>
+  </sc-if>
+
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px" aria-label="Summary">
+    <sc-for list="{{tiles}}" as="t" hint-placeholder-count="4">
+      <div class="card" style="padding: 16px 18px"><p class="help">{{t.label}}</p><p style="font-size: 24px; font-weight: 600; {{t.style}}">{{t.value}}</p></div>
+    </sc-for>
+  </section>
+
+  <sc-if value="{{blocked}}" hint-placeholder-val="{{ true }}">
+    <section class="card" style="overflow: hidden">
+      <div style="padding: 18px 20px; border-bottom: 1px solid #E1E4EA"><h2 style="font-size: 16px; font-weight: 600">What's still needed</h2><p class="help">Grouped by the kind of action. Select an item to go straight to it.</p></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))">
+        <sc-for list="{{needs}}" as="g" hint-placeholder-count="3">
+          <div style="padding: 18px 20px; border-right: 1px solid #EEF0F3; border-bottom: 1px solid #EEF0F3; display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; justify-content: space-between; align-items: center"><h3 style="font-size: 14px; font-weight: 600">{{g.title}}</h3><span class="badge {{g.cls}}">{{g.count}}</span></div>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{g.items}}" as="i" hint-placeholder-count="4">
+                <li><a href="VendorWorkspace.dc.html" style="display: flex; gap: 10px; text-decoration: none; color: #1B2433; padding: 6px 8px; border-radius: 6px; background: #F8F9FB"><span class="mono" style="color: #5B6577; width: 42px; flex: none">{{i.ref}}</span><span style="flex: 1">{{i.title}}</span></a></li>
+              </sc-for>
+            </ul>
+            <p class="help">{{g.more}}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+
+  <section class="card" style="overflow: hidden">
+    <div style="padding: 18px 20px; border-bottom: 1px solid #E1E4EA"><h2 style="font-size: 16px; font-weight: 600">Section summary</h2></div>
+    <div style="overflow-x: auto">
+      <table class="tbl" style="min-width: 720px">
+        <thead><tr><th scope="col">Section</th><th scope="col">Questions answered</th><th scope="col">Documents</th><th scope="col">Status</th><th scope="col"><span style="position: absolute; left: -9999px">Action</span></th></tr></thead>
+        <tbody>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+            <tr><td><span style="font-weight: 500">{{r.n}}. {{r.title}}</span></td><td>{{r.q}}</td><td>{{r.d}}</td><td><span class="badge {{r.cls}}">{{r.status}}</span></td><td style="text-align: right"><a class="btn btn-s btn-sm" href="VendorWorkspace.dc.html">{{r.action}}</a></td></tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+    <h2 style="font-size: 16px; font-weight: 600">Declaration</h2>
+    <label style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 1px solid #E1E4EA; border-radius: 8px; background: #F8F9FB; cursor: pointer">
+      <input type="checkbox" checked="{{declared}}" onChange="{{toggleDeclare}}" style="width: 20px; height: 20px; margin-top: 1px; accent-color: #12284C; flex: none">
+      <span>I confirm that the information and documents in this assessment are accurate and complete to the best of my knowledge, and that I am authorised to submit them on behalf of <span style="font-weight: 600">Northfield Agro Services Limited</span>. I understand TracTrac may request further records and a signed management representation letter.</span>
+    </label>
+    <p class="help">Submitting as Amina Bello, Head of Compliance · {{today}}</p>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; border-top: 1px solid #EEF0F3; padding-top: 16px">
+      <a class="btn btn-s" href="VendorWorkspace.dc.html">← Back to questionnaire</a>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px">
+        <sc-if value="{{canSubmit}}" hint-placeholder-val="{{ false }}"><a class="btn btn-p" href="VendorConfirmation.dc.html" style="min-height: 48px; padding: 0 24px; font-size: 15px">Submit assessment</a></sc-if>
+        <sc-if value="{{cannotSubmit}}" hint-placeholder-val="{{ true }}"><button class="btn btn-p" type="button" disabled style="min-height: 48px; padding: 0 24px; font-size: 15px" aria-describedby="why">Submit assessment</button></sc-if>
+        <p class="help" id="why">{{whyDisabled}}</p>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"scenario":{"editor":"enum","options":["outstanding","ready"],"default":"outstanding"},"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { declared: false }; }
+  renderVals() {
+    const ready = (this.props.scenario ?? 'outstanding') === 'ready';
+    const d = [[1, 'General Organizational Information', 12, 12, 0, 0], [2, 'Legal and Compliance', 4, 3, 19, 14], [3, 'Financial Health', 5, 3, 27, 11], [4, 'Procurement and Vendor Management', 0, 0, 4, 4], [5, 'Organizational Capacity and Capability', 8, 4, 19, 5], [6, 'Donor Agreements and Programme Implementation', 1, 0, 9, 0], [7, 'Quality Assurance and Risk Management', 3, 2, 15, 4], [8, 'Ethical Standards and Policies', 1, 1, 6, 6], [9, 'Corporate Governance', 0, 0, 19, 0], [10, 'Stakeholder Engagement, CSR and Sustainability', 0, 0, 4, 4], [11, 'References and Past Performance', 2, 0, 1, 1], [12, 'Documentation Checklist', 0, 0, 22, 13]];
+    const rows = d.map(([n, title, q, qd, f, fd]) => {
+      if (ready) { qd = q; fd = f; }
+      const total = q + f, done = qd + fd, complete = done === total;
+      return { n, title, q: q ? qd + ' of ' + q : '—', d: f ? fd + ' of ' + f : '—', status: complete ? 'Complete' : done ? (total - done) + ' outstanding' : 'Not started', cls: complete ? 'b-green' : done ? 'b-amber' : 'b-grey', action: complete ? 'Review answers' : 'Go to section' };
+    });
+    const ok = this.state.declared;
+    return {
+      ready, blocked: !ready, rows,
+      tiles: ready
+        ? [{ label: 'Sections complete', value: '12 of 12', style: 'color:#1A6B40' }, { label: 'Questions answered', value: '38 of 38', style: '' }, { label: 'Documents provided', value: '121 of 121', style: '' }, { label: 'Marked not applicable', value: '3', style: '' }]
+        : [{ label: 'Sections complete', value: '4 of 12', style: '' }, { label: 'Outstanding questions', value: '13', style: '' }, { label: 'Missing documents', value: '70', style: '' }, { label: 'Need attention', value: '2', style: 'color:#8A4B00' }],
+      needs: [
+        { title: 'Changes requested by TracTrac', count: '2', cls: 'b-amber', items: [{ ref: '2.1.3', title: 'Current Tax Clearance Certificate' }, { ref: '3.5.2', title: 'Bank statements — Jan–Mar 2025 missing' }], more: 'Replace these first — they block review.' },
+        { title: 'Missing documents', count: '70', cls: 'b-grey', items: [{ ref: '2.4.2', title: 'Pension remittances' }, { ref: '2.6.3', title: 'Related Party Transactions Policy' }, { ref: '2.7.2', title: 'Anti-money laundering and counter-terrorism financing' }, { ref: '3.5.3', title: 'Bank reconciliation reports' }], more: '+ 66 more across Sections 3, 5, 6, 7, 9 and 11' },
+        { title: 'Unanswered questions', count: '13', cls: 'b-grey', items: [{ ref: '3.5.4', title: 'Bank confirmation' }, { ref: '5.1.3', title: 'Changes in management or financial staff' }, { ref: '6.2.1', title: 'Programs executed during the review period' }, { ref: '7.6.1', title: 'Accounting system' }], more: '+ 9 more across Sections 5, 7, 8 and 11' }
+      ],
+      declared: ok, toggleDeclare: () => this.setState({ declared: !ok }),
+      canSubmit: ready && ok, cannotSubmit: !(ready && ok),
+      whyDisabled: !ready ? 'Available once all required items are complete' : ok ? 'You can’t edit answers while TracTrac reviews them' : 'Tick the declaration to submit',
+      today: '5 Nov 2026'
+    };
+  }
+}
+</script>
+</body>
+</html>

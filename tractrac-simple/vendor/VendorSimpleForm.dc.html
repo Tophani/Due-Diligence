@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simple form section</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F0F2F5;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:15px;line-height:1.55}
+*{box-sizing:border-box}h1,h2,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:8px}
+.muted{color:#5B6577;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:8px;font:500 15px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-o{background:#fff;color:#1D4E89;border-color:#C9CED8}.btn-o:hover{background:#F5F8FD}
+.lnk{background:none;border:0;padding:0;font:inherit;font-size:14px;color:#1D4E89;text-decoration:underline;cursor:pointer}
+.ul{width:100%;border:0;border-bottom:1px solid #AEB6C4;padding:8px 2px;font:inherit;color:inherit;background:transparent;border-radius:0}
+.ul:focus{outline:none;border-bottom:2px solid #12284C;padding-bottom:7px}
+.box{width:100%;border:1px solid #C9CED8;border-radius:6px;padding:10px 12px;font:inherit;color:inherit;resize:vertical}
+.box:focus{outline:2px solid #12284C;outline-offset:0;border-color:#12284C}
+.btn:focus-visible,.lnk:focus-visible,.chip-x:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.chip-x{background:none;border:0;cursor:pointer;color:#5B6577;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.chip-x:hover{background:#E4E7EC}
+</style>
+</helmet>
+<div style="min-height: 100vh; padding: 32px 16px 64px">
+  <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px">
+      <a href="VendorSimpleStart.dc.html" style="display: flex; gap: 10px; align-items: center; text-decoration: none; color: #1B2433"><span style="width: 30px; height: 30px; border-radius: 7px; background: #12284C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">TracTrac</span></a>
+      <span class="muted" style="font-size: 13px" aria-live="polite">{{saveText}}</span>
+    </div>
+
+    <section class="card" style="border-top: 8px solid #12284C; padding: 24px 28px; display: flex; flex-direction: column; gap: 12px">
+      <p class="muted">Section {{sec}} of 12</p>
+      <h1 style="font-size: 24px; font-weight: 600">{{secTitle}}</h1>
+      <p style="color: #3A4456">{{intro}}</p>
+      <div style="height: 6px; background: #E7EAF0; border-radius: 99px; overflow: hidden" role="progressbar" aria-valuenow="{{sec}}" aria-valuemin="1" aria-valuemax="12" aria-label="Section progress"><div style="height: 100%; background: #0F766E; width: {{pagePct}}"></div></div>
+      <p style="font-size: 13px; color: #B42318">* Required</p>
+    </section>
+
+    <sc-for list="{{entries}}" as="e" hint-placeholder-count="10">
+      <sc-if value="{{e.isHead}}" hint-placeholder-val="{{ false }}">
+        <h2 style="font-size: 17px; font-weight: 600; padding: 14px 4px 0">{{e.title}}</h2>
+      </sc-if>
+      <sc-if value="{{e.isQ}}" hint-placeholder-val="{{ true }}">
+        <div class="card" style="padding: 22px 28px; display: flex; flex-direction: column; gap: 12px; {{e.cardStyle}}">
+          <div>
+            <label for="q-{{e.id}}" style="font-weight: 500; display: block">{{e.title}}<span style="color: #B42318">{{e.star}}</span></label>
+            <p class="muted" style="margin-top: 2px">{{e.help}}</p>
+          </div>
+
+          <sc-if value="{{e.isT}}" hint-placeholder-val="{{ false }}"><input class="ul" id="q-{{e.id}}" value="{{e.v}}" onChange="{{e.onText}}" placeholder="Your answer"></sc-if>
+          <sc-if value="{{e.isN}}" hint-placeholder-val="{{ false }}"><input class="ul" id="q-{{e.id}}" type="number" min="0" value="{{e.v}}" onChange="{{e.onText}}" placeholder="Your answer" style="max-width: 200px"></sc-if>
+          <sc-if value="{{e.isD}}" hint-placeholder-val="{{ false }}"><input class="ul" id="q-{{e.id}}" type="date" value="{{e.v}}" onChange="{{e.onText}}" style="max-width: 220px"></sc-if>
+          <sc-if value="{{e.isL}}" hint-placeholder-val="{{ false }}"><textarea class="box" id="q-{{e.id}}" rows="3" value="{{e.v}}" onChange="{{e.onText}}" placeholder="Your answer"></textarea></sc-if>
+          <sc-if value="{{e.isS}}" hint-placeholder-val="{{ false }}"><select class="box" id="q-{{e.id}}" value="{{e.v}}" onChange="{{e.onText}}" style="max-width: 280px"><option value="">Choose</option><option>Nigeria</option><option>Ghana</option><option>Other</option></select></sc-if>
+
+          <sc-if value="{{e.isC}}" hint-placeholder-val="{{ false }}">
+            <div role="group" aria-label="{{e.title}}" style="display: flex; flex-direction: column; gap: 4px">
+              <sc-for list="{{e.opts}}" as="o" hint-placeholder-count="3"><label style="display: flex; gap: 12px; align-items: center; min-height: 40px; cursor: pointer"><input type="checkbox" checked="{{o.on}}" onChange="{{o.toggle}}" style="width: 18px; height: 18px; accent-color: #12284C">{{o.label}}</label></sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{e.isY}}" hint-placeholder-val="{{ false }}">
+            <div role="radiogroup" aria-label="{{e.title}}" style="display: flex; flex-direction: column; gap: 4px">
+              <label style="display: flex; gap: 12px; align-items: center; min-height: 40px; cursor: pointer"><input type="radio" name="yn-{{e.id}}" checked="{{e.isYes}}" onChange="{{e.setYes}}" style="width: 18px; height: 18px; accent-color: #12284C">Yes</label>
+              <label style="display: flex; gap: 12px; align-items: center; min-height: 40px; cursor: pointer"><input type="radio" name="yn-{{e.id}}" checked="{{e.isNo}}" onChange="{{e.setNo}}" style="width: 18px; height: 18px; accent-color: #12284C">No</label>
+            </div>
+            <sc-if value="{{e.showDetail}}" hint-placeholder-val="{{ false }}"><div><label for="d-{{e.id}}" class="muted" style="display: block; margin-bottom: 6px">{{e.detailLabel}}</label><textarea class="box" id="d-{{e.id}}" rows="3" value="{{e.detail}}" onChange="{{e.onDetail}}"></textarea></div></sc-if>
+          </sc-if>
+
+          <sc-if value="{{e.isR}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <sc-for list="{{e.rows}}" as="row" hint-placeholder-count="2">
+                <div style="display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: flex-end">
+                  <sc-for list="{{row.cells}}" as="cell" hint-placeholder-count="3"><input class="ul" aria-label="{{cell.label}}" placeholder="{{cell.ph}}" value="{{cell.val}}" onChange="{{cell.onChange}}" style="flex: 1 1 160px; width: auto"></sc-for>
+                  <button class="chip-x" type="button" aria-label="Remove this entry" onClick="{{row.onRemove}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+                </div>
+              </sc-for>
+              <div><button class="lnk" type="button" onClick="{{e.onAddRow}}">+ Add another</button></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{e.isF}}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{e.tt}}" hint-placeholder-val="{{ false }}"><p style="font-size: 14px; color: #1A54A6; display: flex; gap: 8px; align-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>TracTrac already has this document. Nothing to do here.</p></sc-if>
+            <sc-if value="{{e.chg}}" hint-placeholder-val="{{ false }}"><p style="font-size: 14px; color: #B42318; background: #FEF3F2; border-radius: 6px; padding: 10px 12px">{{e.chg}}</p></sc-if>
+            <sc-if value="{{e.hasFiles}}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{e.files}}" as="f" hint-placeholder-count="1">
+                  <span style="display: inline-flex; gap: 8px; align-items: center; border: 1px solid #DADDE3; border-radius: 6px; padding: 4px 4px 4px 10px; font-size: 14px; background: #fff; max-width: 100%; {{f.style}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6577" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg><span style="overflow-wrap: anywhere">{{f.name}}</span><button class="chip-x" type="button" aria-label="Remove {{f.name}}" onClick="{{f.remove}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{e.na}}" hint-placeholder-val="{{ false }}"><div><label for="na-{{e.id}}" class="muted" style="display: block">Why doesn't this apply to you?</label><input class="ul" id="na-{{e.id}}" value="{{e.why}}" onChange="{{e.onWhy}}" placeholder="Short explanation"><button class="lnk" type="button" onClick="{{e.undoNa}}" style="margin-top: 8px">I'll upload a file instead</button></div></sc-if>
+            <sc-if value="{{e.canAdd}}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center">
+                <button class="btn btn-o" type="button" id="q-{{e.id}}" onClick="{{e.add}}" style="min-height: 40px; padding: 0 16px; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"></path></svg>{{e.addLabel}}</button>
+                <sc-if value="{{e.canNa}}" hint-placeholder-val="{{ false }}"><button class="lnk" type="button" onClick="{{e.setNa}}">This doesn't apply to us</button></sc-if>
+              </div>
+            </sc-if>
+          </sc-if>
+        </div>
+      </sc-if>
+    </sc-for>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 8px">
+      <div style="display: flex; gap: 10px">
+        <sc-if value="{{hasBack}}" hint-placeholder-val="{{ true }}"><button class="btn btn-o" type="button" onClick="{{back}}">Back</button></sc-if>
+        <sc-if value="{{hasNext}}" hint-placeholder-val="{{ true }}"><button class="btn btn-p" type="button" onClick="{{next}}">Next</button></sc-if>
+        <sc-if value="{{isLast}}" hint-placeholder-val="{{ false }}"><a class="btn btn-p" href="VendorReview.dc.html">Next</a></sc-if>
+      </div>
+      <a href="VendorSimpleStart.dc.html" style="font-size: 14px">Save and finish later</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startSection":{"editor":"int","min":1,"max":3,"default":2},"$preview":{"width":1440,"height":2600}}'>
+const SECS = ['General Organizational Information', 'Legal and Compliance', 'Financial Health'];
+const INTRO = {
+  1: 'Basic facts about your organisation, as they appear on your registration documents.',
+  2: 'Your legal, tax and compliance documents. If a document doesn’t apply to you, say so and give a short reason.',
+  3: 'Financial records for 1 January 2024 to 30 June 2026. Large files can be uploaded in several parts.'
+};
+const SUBS = { '1.0': 'General Information', '1.1': 'Registration Details', '1.2': 'Authorized Representatives', '2.1': 'Legal Status of the Organization', '2.2': 'Constitutional Documents', '2.3': 'Compliance with Local Laws and Regulations', '2.4': 'Statutory Remittances and Permits', '2.5': 'Anti-Corruption Policies', '2.6': 'Fraud Prevention, Conflict of Interest and Related Parties', '2.7': 'Beneficial Ownership, Screening and Data Protection', '2.8': 'Litigation Status', '3.1': 'Financial Statements', '3.2': 'Solvency, Bank and Credit References', '3.3': 'Financial Records and Accounting', '3.4': 'Banking Details', '3.5': 'Bank Accounts and Reconciliations', '3.6': 'Financial Management Policies and Internal Controls', '3.7': 'Payroll and Staff Costs', '3.8': 'Cash and Staff Advances', '3.9': 'Income, Receivables and Liabilities', '3.10': 'Donor Fund Management' };
+const RAW = `1.0.1|Official organization name|As shown on your Certificate of Incorporation.|t
+1.0.2|Acronym|If you have one.|t
+1.0.3|Organization address||l
+1.0.4|Phone, email and website||t
+1.0.5|Organization type|Select all that apply.|c
+1.1.1|Business registration number||t
+1.1.2|Date of incorporation||d
+1.1.3|Country of registration||s
+1.2.1|Authorized representatives|Name, title and email for each person.|r
+1.2.2|About your organization|A short description: where you work, when you were formed and what you do.|l
+1.2.3|Do you have previous experience implementing international development projects?||y
+1.2.4|List your current or previous relationships with NGOs and donors||l
+2.1.1|Certificate of Incorporation||f
+2.1.2|Evidence of Tax Identification Number (TIN)||f
+2.1.3|Current Tax Clearance Certificate||f
+2.2.1|Memorandum and Articles of Association (or Constitution)||f
+2.3.1|CAC registration (for Nigeria)||f
+2.3.2|How do you make sure you comply with Nigerian labour and tax laws?||l
+2.4.1|Evidence of tax filing and remittance during the review period|Including PAYE.|f
+2.4.2|Monthly pension remittances and current PenCom Compliance Certificate||f
+2.4.3|Other statutory certificates|For example NSITF and ITF.|f
+2.4.4|Business permits and licences|Including vehicle and tractor registration.|f
+2.4.5|Any tax audits, assessments or disputes in the last five years?|Write “None” if there were none.|l
+2.5.1|Anti-corruption policy||f
+2.5.2|Code of Conduct and Anti-Bribery Policy||f
+2.6.1|Fraud Prevention and Detection Policy||f
+2.6.2|Conflict of Interest Policy||f
+2.6.3|Related Party Transactions Policy||f
+2.6.4|Schedule of related party transactions during the review period||f
+2.6.5|Insider Trading or Confidential Information Policy||f
+2.7.1|Register of Persons with Significant Control (PSC)|As filed with the CAC.|f
+2.7.2|Anti-Money Laundering and Counter-Terrorism Financing Policy||f
+2.7.3|Sanctions and debarment screening procedure||f
+2.7.4|Data Protection / Privacy Policy||f
+2.8.1|Any pending, current or past legal issues or disputes in the last five years?||y
+3.1.1|Has your organization been audited in the past 2 years?||y
+3.1.2|Audited financial statements for the past 3 years||f
+3.2.1|Certificate or declaration of solvency||f
+3.2.2|Bank reference letter||f
+3.2.3|Credit references||f
+3.3.1|Schedule of inflows and outflows||f
+3.3.2|General ledger||f
+3.3.3|Trial balance||f
+3.3.4|Chart of accounts||f
+3.3.5|Approved annual budgets||f
+3.3.6|Schedule of expenditure||f
+3.3.7|Supporting documents for expenditure||f
+3.3.8|External audit management letters|Last two financial years.|f
+3.4.1|Official bank details|Bank, account name and account number.|l
+3.5.1|Bank accounts used during the review period|Bank, account number and currency for each.|r
+3.5.2|Bank statements for the accounts above||f
+3.5.3|Bank reconciliation reports||f
+3.5.4|Will you authorize your banks to send statements directly to the auditors?||y
+3.6.1|Financial policies, SOPs and internal control framework||f
+3.6.2|Delegation of authority framework||f
+3.7.1|Monthly payroll registers||f
+3.7.2|Salary scale and staff contracts||f
+3.7.3|Timesheets or level-of-effort records||f
+3.8.1|Petty cash policy and cash counts||f
+3.8.2|Staff advances register||f
+3.9.1|Income and revenue records||f
+3.9.2|Aged schedules of receivables and payables||f
+3.9.3|Loans, guarantees and other commitments||l
+3.10.1|Budget vs actual reports for each donor grant||f
+3.10.2|Method for allocating shared costs||f
+3.10.3|Exchange rate policy||f
+3.10.4|Travel, per diem, vehicle and fuel policies||f`;
+const ITEMS = RAW.split('\n').map((l) => { const p = l.split('|'); const r = p[0].split('.'); return { ref: p[0], title: p[1], help: p[2], t: p[3], sec: +r[0], sub: r[0] + '.' + r[1] }; });
+const COND = { '1.2.4': '1.2.3', '3.1.2': '3.1.1' };
+const DETAIL = { '2.8.1': 'Please list and explain each one.' };
+const OPTIONAL = { '1.0.2': 1 };
+const COLS = { '1.2.1': ['Name', 'Title', 'Email'], '3.5.1': ['Bank', 'Account number', 'Currency'] };
+const START = {
+  '1.0.1': { v: 'Northfield Agro Services Limited' }, '1.0.2': { v: 'NASL' }, '1.0.3': { v: 'Plot 22, Industrial Layout, Kakuri, Kaduna South, Kaduna State' }, '1.0.4': { v: 'info@northfieldagro.ng · northfieldagro.ng' },
+  '1.0.5': { c: ['Private Firm'] }, '1.1.1': { v: 'RC 1428817' }, '1.1.2': { v: '2014-03-11' }, '1.1.3': { v: 'Nigeria' },
+  '1.2.1': { rows: [['Amina Bello', 'Head of Compliance', 'amina.bello@northfieldagro.ng'], ['Tunde Ojo', 'Finance Manager', 'tunde.ojo@northfieldagro.ng']] },
+  '1.2.2': { v: 'We provide tractor hire, land preparation and equipment maintenance to smallholder farmers in Kaduna, Niger and Plateau States. Founded in 2014.' }, '1.2.3': { v: 'Yes' }, '1.2.4': { v: '[Programme name], 2021–2023; [NGO partner], 2024–present.' },
+  '2.1.1': { tt: true }, '2.1.2': { files: ['TIN_Certificate_Northfield.pdf'] },
+  '2.1.3': { files: ['Tax_Clearance_2025.pdf'], chg: 'TracTrac: this certificate expired on 31 Dec 2025. Please remove it and add your 2026 Tax Clearance Certificate.' },
+  '2.2.1': { files: ['Memorandum_and_Articles_2014.pdf'] }, '2.3.1': { files: ['CAC_Certificate_RC1428817.pdf'] },
+  '2.3.2': { v: 'Payroll runs monthly with PAYE and pension remitted by the 10th. An external tax consultant reviews filings quarterly.' },
+  '2.4.1': { files: ['PAYE_Remittances_2024.pdf', 'PAYE_Remittances_2025.pdf'] }, '2.4.3': { files: ['NSITF_and_ITF_Certificates_2026.pdf'] }, '2.4.4': { files: ['Operating_Licence_Kaduna_2026.pdf'] },
+  '2.4.5': { v: 'None.' }, '2.5.1': { files: ['Anti-Corruption_Policy_v3.pdf'] }, '2.5.2': { files: ['Code_of_Conduct_2025.pdf'] }, '2.6.1': { files: ['Fraud_Prevention_Policy.pdf'] }, '2.6.2': { files: ['Conflict_of_Interest_Policy.pdf'] },
+  '2.6.5': { na: true, why: 'Private company, not listed. Covered by our Code of Conduct.' }, '2.7.1': { files: ['PSC_Register_CAC_Filing.pdf'] }, '2.7.4': { files: ['Data_Protection_Policy.pdf'] }, '2.8.1': { v: 'No' },
+  '3.1.1': { v: 'Yes' }, '3.1.2': { tt: true }, '3.2.1': { files: ['Solvency_Declaration_2026.pdf'] }, '3.2.2': { files: ['Bank_Reference_Letter.pdf'] },
+  '3.5.2': { files: ['Bank_Statements_Apr-Dec2025.pdf'], chg: 'TracTrac: statements for January to March 2025 are missing. Please add them.' }
+};
+const slug = (s) => s.replace(/\(.*?\)/g, '').replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 36);
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { sec: null, items: JSON.parse(JSON.stringify(START)), saved: 'All changes saved' }; this.timers = []; }
+  componentWillUnmount() { this.timers.forEach((t) => clearTimeout(t)); }
+  cur() { return this.state.sec ?? this.props.startSection ?? 2; }
+  upd(ref, patch) {
+    const e = this.state.items[ref] || {};
+    this.setState({ items: Object.assign({}, this.state.items, { [ref]: Object.assign({}, e, patch) }), saved: 'Saving…' });
+    clearTimeout(this.st); this.st = setTimeout(() => this.setState({ saved: 'All changes saved' }), 800); this.timers.push(this.st);
+  }
+  go(n) { this.setState({ sec: n }); try { window.scrollTo(0, 0); } catch (x) {} }
+  renderVals() {
+    const sec = this.cur(), S = this.state.items;
+    const visible = (i) => !COND[i.ref] || (S[COND[i.ref]] || {}).v === 'Yes';
+    const entries = [];
+    let lastSub = '';
+    ITEMS.filter((i) => i.sec === sec && visible(i)).forEach((i) => {
+      if (i.sub !== lastSub) { lastSub = i.sub; entries.push({ isHead: true, isQ: false, title: SUBS[i.sub] }); }
+      const e = S[i.ref] || {}, ref = i.ref, t = i.t;
+      const q = { isHead: false, isQ: true, id: ref.replace(/\./g, '-'), title: i.title, help: i.help, star: OPTIONAL[ref] ? '' : ' *',
+        isT: t === 't', isN: t === 'n', isD: t === 'd', isL: t === 'l', isS: t === 's', isC: t === 'c', isY: t === 'y', isR: t === 'r', isF: t === 'f',
+        v: e.v || '', onText: (ev) => this.upd(ref, { v: ev.target.value }), cardStyle: e.chg ? 'border-color:#F3B8B2' : '' };
+      if (t === 'c') { const sel = e.c || []; q.opts = ['Nonprofit', 'Private Firm', 'Other'].map((label) => ({ label, on: sel.indexOf(label) > -1, toggle: () => this.upd(ref, { c: sel.indexOf(label) > -1 ? sel.filter((x) => x !== label) : sel.concat([label]) }) })); }
+      if (t === 'y') { q.isYes = e.v === 'Yes'; q.isNo = e.v === 'No'; q.setYes = () => this.upd(ref, { v: 'Yes' }); q.setNo = () => this.upd(ref, { v: 'No' }); q.showDetail = q.isYes && !!DETAIL[ref]; q.detailLabel = DETAIL[ref] || ''; q.detail = e.detail || ''; q.onDetail = (ev) => this.upd(ref, { detail: ev.target.value }); }
+      if (t === 'r') {
+        const cols = COLS[ref] || ['Name', 'Detail', 'Contact'];
+        const rows = e.rows && e.rows.length ? e.rows : [cols.map(() => '')];
+        q.rows = rows.map((r, ri) => ({ cells: cols.map((c, ci) => ({ label: c + ' ' + (ri + 1), ph: c, val: r[ci] || '', onChange: (ev) => { const nr = rows.map((x) => x.slice()); nr[ri][ci] = ev.target.value; this.upd(ref, { rows: nr }); } })), onRemove: () => this.upd(ref, { rows: rows.filter((x, j) => j !== ri) }) }));
+        q.onAddRow = () => this.upd(ref, { rows: rows.concat([cols.map(() => '')]) });
+      }
+      if (t === 'f') {
+        const files = e.files || [];
+        q.tt = !!e.tt; q.chg = e.chg || false; q.na = !!e.na; q.why = e.why || '';
+        q.hasFiles = files.length > 0;
+        q.files = files.map((name, k) => ({ name, style: e.chg && k === 0 ? 'text-decoration:line-through;color:#5B6577' : '', remove: () => { const nf = files.filter((x, j) => j !== k); this.upd(ref, { files: nf, chg: e.chg && k === 0 ? '' : e.chg }); } }));
+        q.canAdd = !e.tt && !e.na; q.canNa = files.length === 0;
+        q.addLabel = files.length ? 'Add another file' : 'Add file';
+        q.add = () => this.upd(ref, { files: files.filter((x, k) => !(e.chg && k === 0)).concat([slug(i.title) + '_2026.pdf']), chg: '' });
+        q.setNa = () => this.upd(ref, { na: true }); q.undoNa = () => this.upd(ref, { na: false, why: '' }); q.onWhy = (ev) => this.upd(ref, { why: ev.target.value });
+      }
+      entries.push(q);
+    });
+    return {
+      sec, secTitle: SECS[sec - 1], intro: INTRO[sec], pagePct: Math.round((sec / 12) * 100) + '%', entries, saveText: this.state.saved,
+      hasBack: sec > 1, hasNext: sec < 3, isLast: sec === 3,
+      back: () => this.go(sec - 1), next: () => this.go(sec + 1)
+    };
+  }
+}
+</script>
+</body>
+</html>

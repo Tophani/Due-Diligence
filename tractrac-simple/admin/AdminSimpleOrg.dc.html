@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simple admin organisation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F0F2F5;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:15px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:8px}
+.muted{color:#5B6577;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:0 14px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-o{background:#fff;color:#1D4E89;border-color:#C9CED8}.btn-o:hover{background:#F5F8FD}
+.btn-g{background:transparent;color:#1D4E89}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed;border-color:transparent}
+.btn:focus-visible,a:focus-visible,.sec-b:focus-visible,.box:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.sec-b{width:100%;display:flex;gap:14px;align-items:center;background:none;border:0;padding:14px 20px;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.sec-b:hover{background:#FAFBFC}
+.box{width:100%;border:1px solid #C9CED8;border-radius:6px;padding:8px 10px;font:inherit;font-size:14px;color:inherit}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5B6577}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+  <header style="background: #fff; border-bottom: 1px solid #E1E4EA; padding: 0 24px; min-height: 60px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
+    <span style="display: flex; gap: 10px; align-items: center"><span style="width: 30px; height: 30px; border-radius: 7px; background: #12284C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">TracTrac Admin</span></span>
+    <nav aria-label="Admin" style="display: flex; gap: 4px; flex: 1; font-size: 14px">
+      <a href="AdminSimpleHome.dc.html" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; color: #4E5768">Home</a>
+      <a href="AdminSimpleOrg.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; background: #EEF2F8; color: #12284C; font-weight: 600">Organisations</a>
+      <a href="AdminSimpleSetup.dc.html" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; color: #4E5768">Setup</a>
+    </nav>
+    <span class="muted" style="font-size: 13px">Funmi Adeyemi</span>
+  </header>
+
+  <main style="max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; display: flex; flex-direction: column; gap: 14px">
+    <a href="AdminSimpleHome.dc.html" style="font-size: 14px">← All organisations</a>
+    <section class="card" style="padding: 22px 24px; display: flex; flex-wrap: wrap; gap: 14px 24px; justify-content: space-between; align-items: flex-start">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="font-size: 22px; font-weight: 600">Northfield Agro Services Ltd</h1>
+        <p class="muted">Amina Bello · amina.bello@northfieldagro.ng · RC 1428817</p>
+        <p style="font-size: 14px; margin-top: 4px">In progress · 47% complete · <span style="font-weight: 600">{{waiting}} documents waiting for your review</span></p>
+      </div>
+      <button class="btn btn-o" type="button" onClick="{{remind}}">{{remindLabel}}</button>
+    </section>
+
+    <section class="card" style="overflow: hidden">
+      <sc-for list="{{secs}}" as="s" hint-placeholder-count="12">
+        <div style="border-top: 1px solid #F0F2F5">
+          <button class="sec-b" type="button" onClick="{{s.toggle}}" aria-expanded="{{s.openStr}}">
+            <span style="width: 22px; color: #5B6577; font-size: 14px">{{s.n}}</span>
+            <span style="flex: 1; font-weight: 500">{{s.title}}</span>
+            <span style="font-size: 14px; {{s.metaStyle}}">{{s.meta}}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6577" stroke-width="2" aria-hidden="true"><path d="{{s.chev}}"></path></svg>
+          </button>
+          <sc-if value="{{s.open}}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 0 20px 12px 56px">
+              <sc-if value="{{s.empty}}" hint-placeholder-val="{{ false }}"><p class="muted" style="padding: 8px 0">{{s.emptyText}}</p></sc-if>
+              <sc-for list="{{s.items}}" as="it" hint-placeholder-count="6">
+                <div style="padding: 12px 0; border-top: 1px solid #F0F2F5; display: flex; flex-direction: column; gap: 8px">
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center">
+                    <span class="mono" style="width: 40px">{{it.ref}}</span>
+                    <span style="flex: 1 1 240px; font-weight: 500; font-size: 14px">{{it.title}}</span>
+                    <span style="font-size: 13px; font-weight: 500; {{it.stStyle}}">{{it.st}}</span>
+                  </div>
+                  <sc-if value="{{it.file}}" hint-placeholder-val="{{ false }}"><p style="font-size: 14px; padding-left: 52px"><a href="#">{{it.file}}</a> <span class="muted" style="font-size: 13px">· {{it.by}}</span></p></sc-if>
+                  <sc-if value="{{it.note}}" hint-placeholder-val="{{ false }}"><p style="font-size: 13px; color: #8A4B00; padding-left: 52px">You asked: {{it.note}}</p></sc-if>
+                  <sc-if value="{{it.canDecide}}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 8px; padding-left: 52px; flex-wrap: wrap"><button class="btn btn-p" type="button" onClick="{{it.approve}}">Approve</button><button class="btn btn-o" type="button" onClick="{{it.askOpen}}">Ask for changes</button></div></sc-if>
+                  <sc-if value="{{it.asking}}" hint-placeholder-val="{{ false }}">
+                    <div style="padding-left: 52px; display: flex; flex-direction: column; gap: 8px">
+                      <label for="ask-{{it.id}}" class="muted">What should they change? They'll see this message.</label>
+                      <textarea class="box" id="ask-{{it.id}}" rows="2" value="{{it.draft}}" onChange="{{it.onDraft}}"></textarea>
+                      <div style="display: flex; gap: 8px"><button class="btn btn-p" type="button" onClick="{{it.send}}" disabled="{{it.noDraft}}">Send to vendor</button><button class="btn btn-g" type="button" onClick="{{it.cancel}}">Cancel</button></div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{it.canAdd}}" hint-placeholder-val="{{ false }}"><div style="padding-left: 52px"><button class="btn btn-o" type="button" onClick="{{it.addOpen}}">Add a document we received</button></div></sc-if>
+                  <sc-if value="{{it.adding}}" hint-placeholder-val="{{ false }}">
+                    <div style="padding-left: 52px; display: flex; flex-direction: column; gap: 8px">
+                      <p style="font-size: 14px; display: flex; gap: 8px; align-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6577" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg>{{it.newFile}}</p>
+                      <label style="font-size: 14px; display: flex; gap: 8px; align-items: center"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #12284C">Tell the vendor we already have it</label>
+                      <div style="display: flex; gap: 8px"><button class="btn btn-p" type="button" onClick="{{it.saveAdd}}">Save</button><button class="btn btn-g" type="button" onClick="{{it.cancel}}">Cancel</button></div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </section>
+
+    <section class="card" style="padding: 20px 24px; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="font-size: 16px; font-weight: 600">Final decision</h2>
+      <p class="muted">Make this once all documents are reviewed. The vendor is told by email.</p>
+      <div role="radiogroup" aria-label="Final decision" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+        <label style="display: flex; gap: 8px; align-items: center"><input type="radio" name="out" style="accent-color: #12284C">Approved</label>
+        <label style="display: flex; gap: 8px; align-items: center"><input type="radio" name="out" style="accent-color: #12284C">Approved with conditions</label>
+        <label style="display: flex; gap: 8px; align-items: center"><input type="radio" name="out" style="accent-color: #12284C">Not approved</label>
+      </div>
+      <div><button class="btn btn-p" type="button" disabled="{{decisionBlocked}}">Save decision</button> <span class="muted" style="margin-left: 8px">{{decisionHint}}</span></div>
+    </section>
+
+    <section class="card" style="padding: 20px 24px; display: flex; flex-direction: column; gap: 8px">
+      <label for="note" style="font-size: 16px; font-weight: 600">Internal notes</label>
+      <p class="muted">Only TracTrac staff can see these.</p>
+      <textarea class="box" id="note" rows="3">3 Nov — Chidi: received the 2023 audited accounts and Certificate of Incorporation by email and added them.</textarea>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+const SECS = [['General Organizational Information', 'All answered'], ['Legal and Compliance', null], ['Financial Health', '14 documents to review'], ['Procurement and Vendor Management', '4 documents to review'], ['Organizational Capacity and Capability', '6 documents to review'], ['Donor Agreements and Programme Implementation', 'Not started'], ['Quality Assurance and Risk Management', '4 documents to review'], ['Ethical Standards and Policies', '6 documents approved'], ['Corporate Governance', 'Not started'], ['Stakeholder Engagement, CSR and Sustainability', '4 documents approved'], ['References and Past Performance', '1 document to review'], ['Documentation Checklist', 'Fills itself from sections 1–11']];
+const SEC2 = [
+  ['2.1.1', 'Certificate of Incorporation', 'tt', 'Certificate_of_Incorporation.pdf'],
+  ['2.1.2', 'Evidence of TIN', 'wait', 'TIN_Certificate_Northfield.pdf'],
+  ['2.1.3', 'Current Tax Clearance Certificate', 'chg', 'Tax_Clearance_2025.pdf', 'This certificate expired on 31 Dec 2025. Please add your 2026 certificate.'],
+  ['2.2.1', 'Memorandum and Articles of Association', 'ok', 'Memorandum_and_Articles_2014.pdf'],
+  ['2.3.1', 'CAC registration', 'wait', 'CAC_Certificate_RC1428817.pdf'],
+  ['2.4.1', 'Tax remittances', 'wait', 'PAYE_Remittances_2024.pdf + 1 more'],
+  ['2.4.2', 'Pension remittances', 'none'],
+  ['2.4.3', 'Other statutory certificates', 'wait', 'NSITF_and_ITF_Certificates_2026.pdf'],
+  ['2.5.2', 'Code of Conduct and Anti-Bribery Policy', 'wait', 'Code_of_Conduct_2025.pdf'],
+  ['2.6.1', 'Fraud Prevention and Detection Policy', 'wait', 'Fraud_Prevention_Policy.pdf'],
+  ['2.6.3', 'Related Party Transactions Policy', 'none'],
+  ['2.6.5', 'Insider Trading / Confidential information policy', 'na'],
+  ['2.7.2', 'Anti-money laundering and counter-terrorism financing', 'none']
+];
+const LABEL = { tt: ['Added by TracTrac', 'color:#1A54A6'], wait: ['Waiting for your review', 'color:#1A54A6'], chg: ['Waiting for vendor', 'color:#8A4B00'], ok: ['✓ Approved', 'color:#1A6B40'], none: ['Not uploaded yet', 'color:#5B6577'], na: ['Doesn’t apply: private company, not listed', 'color:#5B6577'] };
+class Component extends DCLogic {
+  constructor(props) { super(props); const st = {}; SEC2.forEach((x) => { st[x[0]] = { s: x[2], file: x[3] || '', note: x[4] || '' }; }); this.state = { open: { 2: true }, st, mode: {}, draft: {}, reminded: false }; }
+  renderVals() {
+    const { open, st, mode, draft } = this.state;
+    const set = (ref, patch) => this.setState({ st: Object.assign({}, st, { [ref]: Object.assign({}, st[ref], patch) }), mode: Object.assign({}, mode, { [ref]: null }) });
+    const setMode = (ref, m) => this.setState({ mode: Object.assign({}, mode, { [ref]: m }) });
+    const waiting2 = SEC2.filter((x) => st[x[0]].s === 'wait').length;
+    const items = SEC2.map(([ref, title]) => {
+      const e = st[ref], l = LABEL[e.s], m = mode[ref];
+      return { id: ref.replace(/\./g, '-'), ref, title, st: l[0], stStyle: l[1], file: e.file || false, by: e.s === 'tt' ? 'added by Chidi Okafor, 9 Oct' : 'uploaded by vendor',
+        note: e.s === 'chg' ? e.note : false,
+        canDecide: e.s === 'wait' && !m, asking: m === 'ask', canAdd: e.s === 'none' && !m, adding: m === 'add',
+        newFile: title.replace(/[^A-Za-z0-9]+/g, '_') + '_received.pdf',
+        draft: draft[ref] || '', noDraft: !(draft[ref] || '').trim(), onDraft: (ev) => this.setState({ draft: Object.assign({}, draft, { [ref]: ev.target.value }) }),
+        approve: () => set(ref, { s: 'ok' }), askOpen: () => setMode(ref, 'ask'), addOpen: () => setMode(ref, 'add'), cancel: () => setMode(ref, null),
+        send: () => set(ref, { s: 'chg', note: draft[ref] }),
+        saveAdd: () => set(ref, { s: 'tt', file: title.replace(/[^A-Za-z0-9]+/g, '_') + '_received.pdf' }) };
+    });
+    const waitingTotal = 28 + waiting2;
+    return {
+      waiting: waitingTotal, remind: () => this.setState({ reminded: true }), remindLabel: this.state.reminded ? 'Reminder sent' : 'Send reminder',
+      secs: SECS.map(([title, meta], k) => {
+        const n = k + 1, isOpen = !!open[n];
+        const m = n === 2 ? (waiting2 ? waiting2 + ' documents to review' : 'All reviewed') : meta;
+        return { n, title, meta: m, metaStyle: /review/.test(m) && !/All/.test(m) ? 'color:#1A54A6;font-weight:500' : 'color:#5B6577', open: isOpen, openStr: isOpen ? 'true' : 'false', chev: isOpen ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6',
+          toggle: () => this.setState({ open: Object.assign({}, open, { [n]: !isOpen }) }),
+          items: n === 2 ? items : [], empty: n !== 2, emptyText: n === 1 ? 'Written answers only. Open the vendor’s form to read them.' : meta };
+      }),
+      decisionBlocked: waitingTotal > 0, decisionHint: waitingTotal > 0 ? waitingTotal + ' documents still to review' : 'Ready'
+    };
+  }
+}
+</script>
+</body>
+</html>

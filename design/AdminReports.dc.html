@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reports and exports</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn:focus-visible,.inp:focus-visible,.rp-b:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.inp{min-height:40px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;color:inherit;background:#fff}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.bar{height:8px;background:#E7EAF0;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:#0F766E;border-radius:99px}
+.rp-b{width:100%;text-align:left;background:transparent;border:0;border-radius:8px;padding:10px 12px;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.rp-b:hover{background:#F4F5F7}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:0 14px;height:38px;border-bottom:1px solid #E1E4EA;background:#F8F9FB;white-space:nowrap}.tbl td{padding:10px 14px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="reports" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 640px; min-width: 0; padding: 28px clamp(16px, 3vw, 36px) 64px; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+      <div><p class="help" style="font-size: 14px">Figures as of 5 Nov 2026, 4:30 PM</p><h1 style="font-size: 24px; font-weight: 600">Reports</h1></div>
+      <select class="inp" aria-label="Assessment cycle"><option>2026 Partner Due Diligence · Cycle 2</option><option>2026 Partner Due Diligence · Cycle 1</option><option>2025 Partner Due Diligence</option></select>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+      <nav class="card" aria-label="Reports" style="flex: 1 1 240px; padding: 8px">
+        <sc-for list="{{reports}}" as="r" hint-placeholder-count="5">
+          <button class="rp-b" type="button" onClick="{{r.pick}}" aria-current="{{r.current}}" style="{{r.style}}"><span style="font-weight: 500">{{r.title}}</span><span class="help" style="font-size: 12px">{{r.sub}}</span></button>
+        </sc-for>
+      </nav>
+
+      <section class="card" style="flex: 999 1 560px; min-width: 0; overflow: hidden">
+        <div style="padding: 16px 20px; border-bottom: 1px solid #E1E4EA; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center">
+          <div><h2 style="font-size: 16px; font-weight: 600">{{title}}</h2><p class="help">{{desc}}</p></div>
+          <div style="display: flex; gap: 8px"><button class="btn btn-s" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"></path></svg>Excel</button><button class="btn btn-s" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"></path></svg>PDF</button></div>
+        </div>
+        <sc-if value="{{isRate}}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; gap: 32px; flex-wrap: wrap"><div><p class="help">Average completion</p><p style="font-size: 32px; font-weight: 600">52%</p></div><div><p class="help">Organisations fully submitted</p><p style="font-size: 32px; font-weight: 600">4 <span class="help" style="font-size: 15px">of 12</span></p></div></div>
+            <p style="font-weight: 600; font-size: 13px; margin-top: 4px">Completion by section, all organisations</p>
+            <sc-for list="{{secRates}}" as="s" hint-placeholder-count="12">
+              <div style="display: grid; grid-template-columns: minmax(160px, 320px) 1fr 44px; gap: 12px; align-items: center; font-size: 13px"><span>{{s.n}}. {{s.t}}</span><div class="bar"><span style="width: {{s.p}}"></span></div><span style="text-align: right">{{s.p}}</span></div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{isTable}}" hint-placeholder-val="{{ true }}">
+          <div style="overflow-x: auto">
+            <table class="tbl" style="min-width: 720px">
+              <thead><tr><sc-for list="{{cols}}" as="c" hint-placeholder-count="5"><th>{{c}}</th></sc-for></tr></thead>
+              <tbody><sc-for list="{{rows}}" as="r" hint-placeholder-count="10"><tr><sc-for list="{{r}}" as="cell" hint-placeholder-count="5"><td>{{cell}}</td></sc-for></tr></sc-for></tbody>
+            </table>
+          </div>
+        </sc-if>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+const R = [
+  { k: 'status', title: 'Submission status by organisation', sub: '12 organisations', desc: 'Completeness, documents received and review status.', cols: ['Organisation', 'Completion', 'Documents', 'Submission', 'Review'], rows: [['Northfield Agro Services Ltd', '47%', '52 / 121', 'Partial', 'Information requested'], ['Savannah Tillage Partners', '100%', '121 / 121', 'Complete', 'Under review'], ['Benue Valley Farmers Cooperative', '0%', '0 / 121', 'Defaulter', '—'], ['Harvest Bridge Foundation', '82%', '96 / 121', 'Partial', 'Awaiting review'], ['Lakeside Equipment & Spares Ltd', '100%', '118 / 118', 'Complete', 'Review completed'], ['Riverine Seeds Nigeria Ltd', '23%', '27 / 121', 'Partial', 'Awaiting review'], ['AgroReach Development Initiative', '100%', '121 / 121', 'Complete', 'Changes requested'], ['Plateau Fleet Maintenance Ltd', '0%', '0 / 121', 'Defaulter', '—'], ['Sahel Agri-Logistics Ltd', '64%', '71 / 121', 'Partial', 'Under review'], ['GreenRow Mechanisation Hub', '100%', '121 / 121', 'Complete', 'Review completed'], ['Kogi Smallholder Support Network', '9%', '6 / 121', 'Partial', 'Awaiting review'], ['Delta Tractor Services Ltd', '0%', '0 / 121', 'Not started', '—']] },
+  { k: 'rate', title: 'Overall completion rate', sub: '52% average', desc: 'Required questions and documents completed, across all assigned organisations.' },
+  { k: 'out', title: 'Outstanding documents', sub: '758 missing in total', desc: 'Requirements most often missing. Use this to chase common gaps.', cols: ['Ref', 'Requirement', 'Missing at', 'Section'], rows: [['9.2.4', 'Board and committee meeting records', '8 organisations', '9. Corporate Governance'], ['9.1.3', "Directors' files", '8 organisations', '9. Corporate Governance'], ['3.7.3', 'Timesheets / level of effort', '7 organisations', '3. Financial Health'], ['6.3.1', 'Beneficiary records', '7 organisations', '6. Donor Agreements and Programme Implementation'], ['2.7.2', 'Anti-money laundering and counter-terrorism financing', '6 organisations', '2. Legal and Compliance'], ['3.5.3', 'Bank reconciliation reports', '6 organisations', '3. Financial Health'], ['7.4.3', 'Internal audit', '6 organisations', '7. Quality Assurance and Risk Management'], ['5.7.1', 'Equipment logbooks', '5 organisations', '5. Organizational Capacity and Capability']] },
+  { k: 'rev', title: 'Review progress', sub: '61% of received documents reviewed', desc: 'Reviewer decisions on documents received so far.', cols: ['Organisation', 'Received', 'Approved', 'Changes requested', 'Awaiting review'], rows: [['Savannah Tillage Partners', '121', '74', '0', '47'], ['AgroReach Development Initiative', '121', '115', '6', '0'], ['Lakeside Equipment & Spares Ltd', '118', '118', '0', '0'], ['GreenRow Mechanisation Hub', '121', '121', '0', '0'], ['Harvest Bridge Foundation', '96', '0', '0', '96'], ['Sahel Agri-Logistics Ltd', '71', '38', '2', '31'], ['Northfield Agro Services Ltd', '52', '15', '3', '34'], ['Riverine Seeds Nigeria Ltd', '27', '0', '0', '27'], ['Kogi Smallholder Support Network', '6', '0', '0', '6']] },
+  { k: 'outcome', title: 'Compliance assessment outcomes', sub: '2 decided · 10 pending', desc: 'Outcomes set by reviewers after evidence review. Never derived from completeness.', cols: ['Organisation', 'Outcome', 'Decided', 'Decided by', 'Conditions'], rows: [['Lakeside Equipment & Spares Ltd', 'Compliant', '2 Nov 2026', 'Funmi Adeyemi', '—'], ['GreenRow Mechanisation Hub', 'Conditionally compliant', '4 Nov 2026', 'Funmi Adeyemi', 'Submit Board evaluation report by 31 Jan 2027'], ['10 other organisations', 'Pending', '—', '—', 'Review not complete']] }
+];
+const S = [['General Organizational Information', 71], ['Legal and Compliance', 62], ['Financial Health', 49], ['Procurement and Vendor Management', 58], ['Organizational Capacity and Capability', 51], ['Donor Agreements and Programme Implementation', 44], ['Quality Assurance and Risk Management', 47], ['Ethical Standards and Policies', 60], ['Corporate Governance', 39], ['Stakeholder Engagement, CSR and Sustainability', 55], ['References and Past Performance', 53], ['Documentation Checklist', 50]];
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { k: 'status' }; }
+  renderVals() {
+    const cur = R.find((r) => r.k === this.state.k);
+    return {
+      reports: R.map((r) => ({ title: r.title, sub: r.sub, current: r.k === cur.k ? 'true' : 'false', pick: () => this.setState({ k: r.k }), style: r.k === cur.k ? 'background:#EEF2F8;box-shadow:inset 3px 0 0 #12284C' : '' })),
+      title: cur.title, desc: cur.desc, isRate: cur.k === 'rate', isTable: cur.k !== 'rate',
+      cols: cur.cols || [], rows: cur.rows || [],
+      secRates: S.map(([t, p], i) => ({ n: i + 1, t, p: p + '%' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

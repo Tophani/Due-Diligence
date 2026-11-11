@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simple submitted and status</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F0F2F5;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:15px;line-height:1.55}
+*{box-sizing:border-box}h1,h2,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:8px}
+.muted{color:#5B6577;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:8px;font:500 15px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-o{background:#fff;color:#1D4E89;border-color:#C9CED8}.btn-o:hover{background:#F5F8FD}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed}
+.btn:focus-visible,a:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; padding: 32px 16px 64px">
+  <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px">
+      <a href="VendorSimpleStart.dc.html" style="display: flex; gap: 10px; align-items: center; text-decoration: none; color: #1B2433"><span style="width: 30px; height: 30px; border-radius: 7px; background: #12284C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">TracTrac</span></a>
+      <span class="muted" style="font-size: 13px">Amina Bello · <a href="#">Help</a></span>
+    </div>
+
+    <section class="card" style="border-top: 8px solid #12284C; padding: 24px 28px; display: flex; flex-direction: column; gap: 10px">
+      <h1 style="font-size: 24px; font-weight: 600">{{title}}</h1>
+      <p style="color: #3A4456">{{lead}}</p>
+      <p class="muted">Reference <span style="font-family: 'IBM Plex Mono', monospace; color: #1B2433">TDD-2026-C2-0147</span> · submitted 5 Nov 2026 · a copy was emailed to you</p>
+      <p style="font-size: 14px; background: #F5F8FD; border-radius: 6px; padding: 10px 12px">Submitting doesn't mean your organisation has been approved. TracTrac will let you know the outcome.</p>
+    </section>
+
+    <section class="card" style="padding: 20px 28px">
+      <ol style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+          <li style="display: flex; gap: 12px; align-items: center" aria-current="{{s.current}}"><span style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex: none; {{s.dot}}">{{s.mark}}</span><span style="{{s.text}}">{{s.label}}</span></li>
+        </sc-for>
+      </ol>
+    </section>
+
+    <sc-if value="{{hasRequests}}" hint-placeholder-val="{{ true }}">
+      <h2 style="font-size: 17px; font-weight: 600; padding: 10px 4px 0">TracTrac needs a few things from you</h2>
+      <p class="muted" style="padding: 0 4px">Please reply by 19 November 2026.</p>
+      <sc-for list="{{requests}}" as="r" hint-placeholder-count="3">
+        <div class="card" style="padding: 22px 28px; display: flex; flex-direction: column; gap: 10px; {{r.cardStyle}}">
+          <p style="font-weight: 500">{{r.title}}</p>
+          <p style="font-size: 14px; color: #B42318">{{r.ask}}</p>
+          <sc-if value="{{r.open}}" hint-placeholder-val="{{ true }}"><div><button class="btn btn-o" type="button" onClick="{{r.respond}}" style="min-height: 40px; padding: 0 16px; font-size: 14px">{{r.cta}}</button></div></sc-if>
+          <sc-if value="{{r.done}}" hint-placeholder-val="{{ false }}"><p style="font-size: 14px; color: #1A6B40">✓ {{r.doneText}} · <button type="button" onClick="{{r.undo}}" style="background: none; border: 0; padding: 0; font: inherit; color: #1D4E89; text-decoration: underline; cursor: pointer">Undo</button></p></sc-if>
+        </div>
+      </sc-for>
+      <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding-top: 4px"><button class="btn btn-p" type="button" disabled="{{cannotSend}}">Send to TracTrac</button><span class="muted">{{sendHint}}</span></div>
+    </sc-if>
+
+    <sc-if value="{{nothing}}" hint-placeholder-val="{{ false }}">
+      <section class="card" style="padding: 20px 28px"><p style="font-weight: 500">Nothing needed from you right now</p><p class="muted">We'll email you if TracTrac needs anything else.</p></section>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"stage":{"editor":"enum","options":["submitted","reviewing","needs-info","completed"],"default":"submitted"},"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { done: {} }; }
+  renderVals() {
+    const stage = this.props.stage ?? 'submitted';
+    const order = ['submitted', 'reviewing', 'needs-info', 'completed'];
+    const labels = ['Submitted', 'TracTrac is reviewing your documents', 'TracTrac asked for more information', 'Review finished'];
+    const si = order.indexOf(stage);
+    const steps = labels.map((label, i) => ({
+      label, current: i === si ? 'step' : 'false', mark: i < si || (i === si && stage === 'completed') || i === 0 ? '✓' : String(i + 1),
+      dot: i <= si ? 'background:#12284C;color:#fff' : 'background:#EEF0F3;color:#5B6577',
+      text: i === si ? 'font-weight:600' : i < si ? '' : 'color:#5B6577'
+    }));
+    const R = [
+      { id: 'a', title: 'Pension remittances', ask: 'Please add your monthly pension remittance schedules for January 2024 to June 2026.', cta: 'Add file', doneText: 'Pension_Schedules_2024-2026.pdf added' },
+      { id: 'b', title: 'General ledger', ask: 'The file is missing the cost-centre column. Please upload a new export that includes cost centres.', cta: 'Replace file', doneText: 'General_Ledger_FY2025_with_CC.xlsx uploaded' },
+      { id: 'c', title: 'Programs executed during the review period', ask: 'Please add the budget for each programme you listed.', cta: 'Edit answer', doneText: 'Answer updated' }
+    ];
+    const d = this.state.done;
+    const n = R.filter((r) => d[r.id]).length;
+    return {
+      title: stage === 'submitted' ? 'Thank you, your form has been submitted' : stage === 'completed' ? 'TracTrac has finished reviewing your form' : 'Your form is being reviewed',
+      lead: stage === 'completed' ? 'You’ll receive the outcome letter by email.' : 'TracTrac will check each document. You can’t change your answers while it’s being reviewed.',
+      steps, hasRequests: stage === 'needs-info', nothing: stage !== 'needs-info' && stage !== 'completed',
+      requests: R.map((r) => Object.assign({}, r, { open: !d[r.id], done: !!d[r.id], cardStyle: d[r.id] ? '' : 'border-color:#F3B8B2', respond: () => this.setState({ done: Object.assign({}, d, { [r.id]: true }) }), undo: () => this.setState({ done: Object.assign({}, d, { [r.id]: false }) }) })),
+      cannotSend: n < R.length, sendHint: n < R.length ? (R.length - n) + ' still to do' : 'Ready to send'
+    };
+  }
+}
+</script>
+</body>
+</html>

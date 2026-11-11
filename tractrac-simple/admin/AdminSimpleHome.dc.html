@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simple admin home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F0F2F5;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:15px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:8px}
+.muted{color:#5B6577;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-o{background:#fff;color:#1D4E89;border-color:#C9CED8}.btn-o:hover{background:#F5F8FD}
+.btn:focus-visible,a:focus-visible,.tile:focus-visible,.inp:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.tile{background:#fff;border:1px solid #E1E4EA;border-radius:8px;padding:16px 18px;text-align:left;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.inp{min-height:40px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;font-size:14px;background:#fff}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}.tbl th{text-align:left;font-weight:500;color:#5B6577;padding:10px 16px;border-bottom:1px solid #E1E4EA}.tbl td{padding:12px 16px;border-bottom:1px solid #F0F2F5;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+  <header style="background: #fff; border-bottom: 1px solid #E1E4EA; padding: 0 24px; min-height: 60px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
+    <span style="display: flex; gap: 10px; align-items: center"><span style="width: 30px; height: 30px; border-radius: 7px; background: #12284C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">TracTrac Admin</span></span>
+    <nav aria-label="Admin" style="display: flex; gap: 4px; flex: 1; font-size: 14px">
+      <a href="AdminSimpleHome.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; background: #EEF2F8; color: #12284C; font-weight: 600">Home</a>
+      <a href="AdminSimpleOrg.dc.html" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; color: #4E5768">Organisations</a>
+      <a href="AdminSimpleSetup.dc.html" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; color: #4E5768">Setup</a>
+    </nav>
+    <span class="muted" style="font-size: 13px">Funmi Adeyemi</span>
+  </header>
+
+  <main style="max-width: 1100px; margin: 0 auto; padding: 28px 16px 64px; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+      <div><h1 style="font-size: 22px; font-weight: 600">2026 Partner Due Diligence</h1><p class="muted">12 organisations · deadline 15 December 2026</p></div>
+      <button class="btn btn-o" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"></path></svg>Download Excel</button>
+    </div>
+
+    <div role="group" aria-label="Filter" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+      <sc-for list="{{tiles}}" as="t" hint-placeholder-count="4">
+        <button class="tile" type="button" aria-pressed="{{t.pressed}}" onClick="{{t.pick}}" style="{{t.style}}">
+          <span style="font-size: 28px; font-weight: 600; line-height: 1.2; {{t.numStyle}}">{{t.n}}</span>
+          <span style="font-weight: 500">{{t.label}}</span>
+          <span class="muted" style="font-size: 13px">{{t.sub}}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <section class="card" style="overflow: hidden">
+      <div style="padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center">
+        <p style="font-weight: 600">{{listTitle}}</p>
+        <input class="inp" type="search" placeholder="Search organisations" aria-label="Search organisations" value="{{q}}" onChange="{{onSearch}}" style="width: 260px">
+      </div>
+      <div style="overflow-x: auto">
+        <table class="tbl" style="min-width: 760px">
+          <thead><tr><th>Organisation</th><th>Progress</th><th>Status</th><th>To review</th><th>Last activity</th><th><span style="position: absolute; left: -9999px">Action</span></th></tr></thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+              <tr>
+                <td><a href="AdminSimpleOrg.dc.html" style="font-weight: 500; color: #1B2433; text-decoration: none">{{r.name}}</a></td>
+                <td><div style="display: flex; gap: 10px; align-items: center"><div style="width: 90px; height: 6px; background: #E7EAF0; border-radius: 99px; overflow: hidden"><div style="height: 100%; background: #0F766E; width: {{r.pctLabel}}"></div></div><span class="muted">{{r.pctLabel}}</span></div></td>
+                <td><span style="font-size: 14px; font-weight: 500; {{r.stStyle}}">{{r.st}}</span></td>
+                <td>{{r.toReview}}</td>
+                <td class="muted">{{r.last}}</td>
+                <td style="text-align: right"><sc-if value="{{r.remind}}" hint-placeholder-val="{{ false }}"><button class="btn btn-o" type="button" onClick="{{r.onRemind}}" style="min-height: 34px; font-size: 13px">{{r.remindLabel}}</button></sc-if><sc-if value="{{r.open}}" hint-placeholder-val="{{ true }}"><a class="btn btn-o" href="AdminSimpleOrg.dc.html" style="min-height: 34px; font-size: 13px">Open</a></sc-if></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+const ORGS = [
+  ['Northfield Agro Services Ltd', 47, 'P', 34, 'Today'], ['Savannah Tillage Partners', 100, 'S', 47, 'Yesterday'], ['Benue Valley Farmers Cooperative', 0, 'D', 0, '2 Oct'],
+  ['Harvest Bridge Foundation', 82, 'P', 96, '3 Nov'], ['Lakeside Equipment & Spares Ltd', 100, 'S', 0, '28 Oct'], ['Riverine Seeds Nigeria Ltd', 23, 'P', 27, '1 Nov'],
+  ['AgroReach Development Initiative', 100, 'S', 0, '4 Nov'], ['Plateau Fleet Maintenance Ltd', 0, 'D', 0, '14 Oct'], ['Sahel Agri-Logistics Ltd', 64, 'P', 31, '2 Nov'],
+  ['GreenRow Mechanisation Hub', 100, 'S', 0, '30 Oct'], ['Kogi Smallholder Support Network', 9, 'P', 6, '25 Oct'], ['Delta Tractor Services Ltd', 0, 'N', 0, 'Joined 3 Nov']
+];
+const ST = { D: ['No documents yet', 'color:#B42318'], N: ['Not started', 'color:#5B6577'], P: ['In progress', 'color:#8A4B00'], S: ['Submitted', 'color:#1A6B40'] };
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { f: null, q: '', reminded: {} }; }
+  renderVals() {
+    const { f, q, reminded } = this.state;
+    const F = { none: (o) => o[2] === 'D' || o[2] === 'N', prog: (o) => o[2] === 'P', sub: (o) => o[2] === 'S', rev: (o) => o[3] > 0 };
+    const defs = [['none', 'No documents yet', 'Send them a reminder', '#B42318'], ['prog', 'In progress', 'Filling in the form', '#8A4B00'], ['sub', 'Submitted', 'Everything uploaded', '#1A6B40'], ['rev', 'Waiting for your review', '241 documents', '#1A54A6']];
+    let list = ORGS.filter((o) => (f ? F[f](o) : true) && (!q || o[0].toLowerCase().indexOf(q.toLowerCase()) > -1));
+    return {
+      tiles: defs.map(([k, label, sub, c]) => ({ n: ORGS.filter(F[k]).length, label, sub, pressed: f === k ? 'true' : 'false', numStyle: 'color:' + c, style: f === k ? 'border-color:#12284C;box-shadow:inset 0 0 0 1px #12284C' : '', pick: () => this.setState({ f: f === k ? null : k }) })),
+      listTitle: f ? defs.find((d) => d[0] === f)[1] + ' · ' + list.length : 'All organisations · ' + list.length,
+      q, onSearch: (e) => this.setState({ q: e.target.value }),
+      rows: list.map((o) => {
+        const s = ST[o[2]], none = o[2] === 'D' || o[2] === 'N';
+        return { name: o[0], pctLabel: o[1] + '%', st: s[0], stStyle: s[1], toReview: o[3] ? o[3] + ' documents' : '—', last: o[4],
+          remind: none, open: !none, remindLabel: reminded[o[0]] ? 'Reminder sent' : 'Send reminder', onRemind: () => this.setState({ reminded: Object.assign({}, reminded, { [o[0]]: true }) }) };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

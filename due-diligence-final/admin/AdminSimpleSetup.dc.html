@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin setup</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F5F2EE;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#14110F;font-size:15px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,p{margin:0}
+a{color:#14110F}
+.card{background:#FFFFFF;border:1px solid #DCD6CD;border-radius:8px}
+.muted{color:#6E6A65;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:0 16px;border-radius:8px;font:600 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#F36A02;color:#14110F}.btn-p:hover{background:#F79A5B;color:#14110F}
+.btn-o{background:#FFFFFF;color:#14110F;border-color:#6E6A65}.btn-o:hover{background:#F5F2EE}
+.btn-g{background:transparent;color:#14110F;text-decoration:underline}
+.btn[disabled]{background:#DCD6CD;color:#6E6A65;cursor:not-allowed}
+.btn:focus-visible,a:focus-visible,.box:focus-visible{outline:3px solid #14110F;outline-offset:2px}
+.box{width:100%;min-height:40px;border:1px solid #6E6A65;border-radius:6px;padding:8px 10px;font:inherit;font-size:14px;color:inherit;background:#FFFFFF}
+.lbl{display:block;font-size:14px;font-weight:500;margin-bottom:4px}
+.row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:12px 0;border-top:1px solid #EFEBE6}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+  <header style="background: #FFFFFF; border-bottom: 1px solid #DCD6CD; padding: 0 24px; min-height: 60px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
+    <span style="display: flex; gap: 10px; align-items: center"><span style="width: 30px; height: 30px; border-radius: 7px; background: #14110F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">Due Diligence Portal <span class="muted" style="font-weight: 400">· Admin</span></span></span>
+    <nav aria-label="Admin" style="display: flex; gap: 4px; flex: 1; font-size: 14px">
+      <a href="AdminSimpleHome.dc.html" style="padding: 18px 12px; text-decoration: none; color: #6E6A65">Home</a>
+      <a href="AdminSimpleOrg.dc.html" style="padding: 18px 12px; text-decoration: none; color: #6E6A65">Organisations</a>
+      <a href="AdminSimpleSetup.dc.html" aria-current="page" style="padding: 18px 12px 15px; text-decoration: none; font-weight: 600; border-bottom: 3px solid #F36A02">Setup</a>
+    </nav>
+    <span class="muted" style="font-size: 13px">Funmi Adeyemi · <a href="VendorSimpleSignIn.dc.html">Sign out</a></span>
+  </header>
+
+  <main style="max-width: 900px; margin: 0 auto; padding: 28px 16px 64px; display: flex; flex-direction: column; gap: 16px">
+    <h1 style="font-size: 22px; font-weight: 600">Setup</h1>
+
+    <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center">
+        <h2 style="font-size: 17px; font-weight: 600">Organisations</h2>
+        <sc-if value="{{notAdding}}" hint-placeholder-val="{{ true }}"><button class="btn btn-p" type="button" onClick="{{startAdd}}">+ Add organisation</button></sc-if>
+      </div>
+      <p class="muted">The contact gets an email invitation and signs in with a code.</p>
+      <sc-if value="{{adding}}" hint-placeholder-val="{{ false }}">
+        <div style="border: 1px solid #DCD6CD; border-radius: 8px; padding: 16px; margin: 8px 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+            <div><label class="lbl" for="on">Organisation name</label><input class="box" id="on" value="{{newName}}" onChange="{{onName}}"></div>
+            <div><label class="lbl" for="cn">Contact name</label><input class="box" id="cn" value="Musa Abdullahi"></div>
+            <div><label class="lbl" for="ce">Contact email</label><input class="box" id="ce" type="email" value="m.abdullahi@kanoharvest.ng"></div>
+          </div>
+          <div style="display: flex; gap: 8px"><button class="btn btn-p" type="button" onClick="{{saveAdd}}" disabled="{{noName}}">Add and send invitation</button><button class="btn btn-g" type="button" onClick="{{cancelAdd}}">Cancel</button></div>
+        </div>
+      </sc-if>
+      <sc-for list="{{orgs}}" as="o" hint-placeholder-count="6">
+        <div class="row"><span style="flex: 1 1 240px; font-weight: 500">{{o.name}}</span><span class="muted">{{o.contact}}</span><span style="font-size: 13px; {{o.style}}">{{o.state}}</span></div>
+      </sc-for>
+    </section>
+
+    <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h2 style="font-size: 17px; font-weight: 600">TracTrac staff</h2><button class="btn btn-o" type="button">+ Invite staff</button></div>
+      <div class="row"><span style="flex: 1"><span style="font-weight: 500">Funmi Adeyemi</span> <span class="muted">· funmi.adeyemi@tractrac.test</span></span><select class="box" aria-label="Role for Funmi Adeyemi" style="width: 160px; min-height: 34px"><option>Full access</option><option>Reviewer</option></select></div>
+      <div class="row"><span style="flex: 1"><span style="font-weight: 500">Chidi Okafor</span> <span class="muted">· chidi.okafor@tractrac.test</span></span><select class="box" aria-label="Role for Chidi Okafor" style="width: 160px; min-height: 34px"><option>Reviewer</option><option>Full access</option></select></div>
+      <p class="muted" style="padding-top: 6px">Reviewers can download, upload and mark files as reviewed. Full access can also add organisations and staff.</p>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+const ORGS = [['Northfield Agro Services Ltd', 'Amina Bello', 'Active'], ['Savannah Tillage Partners', 'Ibrahim Musa', 'Active'], ['Benue Valley Farmers Cooperative', 'Ngozi Agu', 'Invited, not signed in yet'], ['Harvest Bridge Foundation', 'Kemi Adebayo', 'Active'], ['Plateau Fleet Maintenance Ltd', 'Joy Pam', 'Invited, not signed in yet'], ['Delta Tractor Services Ltd', 'Fatima Lawal', 'Active']];
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { adding: false, added: [], newName: 'Kano Harvest Logistics Ltd' }; }
+  renderVals() {
+    const { adding, added, newName } = this.state;
+    const list = added.map((n) => [n, 'Musa Abdullahi', 'Invitation sent just now']).concat(ORGS);
+    return {
+      adding, notAdding: !adding, newName, noName: !newName.trim(),
+      onName: (e) => this.setState({ newName: e.target.value }),
+      startAdd: () => this.setState({ adding: true }), cancelAdd: () => this.setState({ adding: false }),
+      saveAdd: () => this.setState({ adding: false, added: [newName].concat(added) }),
+      orgs: list.map(([name, contact, state]) => ({ name, contact, state, style: state === 'Active' ? '' : 'color:#6E6A65' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

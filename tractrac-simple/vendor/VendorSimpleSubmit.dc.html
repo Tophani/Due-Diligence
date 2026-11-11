@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simple review and submit</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F0F2F5;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:15px;line-height:1.55}
+*{box-sizing:border-box}h1,h2,p,ul{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:8px}
+.muted{color:#5B6577;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 26px;border-radius:8px;font:500 15px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-o{background:#fff;color:#1D4E89;border-color:#C9CED8}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed}
+.btn:focus-visible,a:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; padding: 32px 16px 64px">
+  <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px">
+      <a href="VendorSimpleStart.dc.html" style="display: flex; gap: 10px; align-items: center; text-decoration: none; color: #1B2433"><span style="width: 30px; height: 30px; border-radius: 7px; background: #12284C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">TracTrac</span></a>
+      <span class="muted" style="font-size: 13px">All changes saved</span>
+    </div>
+
+    <section class="card" style="border-top: 8px solid #12284C; padding: 24px 28px; display: flex; flex-direction: column; gap: 8px">
+      <p class="muted">Last step</p>
+      <h1 style="font-size: 24px; font-weight: 600">Check and submit</h1>
+      <p style="color: #3A4456">{{headline}}</p>
+    </section>
+
+    <sc-if value="{{missing}}" hint-placeholder-val="{{ true }}">
+      <section class="card" style="padding: 8px 0">
+        <h2 style="font-size: 16px; font-weight: 600; padding: 14px 28px 4px">Still needed</h2>
+        <p class="muted" style="padding: 0 28px 10px">Select a section to go straight to the missing items.</p>
+        <ul style="list-style: none; padding: 0">
+          <sc-for list="{{todo}}" as="t" hint-placeholder-count="8">
+            <li><a href="VendorSimpleForm.dc.html" style="display: flex; gap: 14px; align-items: center; padding: 12px 28px; border-top: 1px solid #F0F2F5; text-decoration: none; color: #1B2433">
+              <span style="flex: 1"><span style="display: block">{{t.n}}. {{t.title}}</span><span style="display: block; font-size: 13px; {{t.noteStyle}}">{{t.note}}</span></span>
+              <span style="color: #1D4E89; font-size: 14px">Go</span>
+            </a></li>
+          </sc-for>
+        </ul>
+      </section>
+    </sc-if>
+
+    <section class="card" style="padding: 22px 28px; display: flex; flex-direction: column; gap: 16px">
+      <label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer">
+        <input type="checkbox" checked="{{declared}}" onChange="{{toggle}}" style="width: 20px; height: 20px; margin-top: 2px; accent-color: #12284C; flex: none">
+        <span>I confirm the information and documents I've provided are accurate and complete, and that I'm authorised to submit them for <span style="font-weight: 600">Northfield Agro Services Limited</span>.</span>
+      </label>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+        <sc-if value="{{canSubmit}}" hint-placeholder-val="{{ false }}"><a class="btn btn-p" href="VendorSimpleStatus.dc.html">Submit</a></sc-if>
+        <sc-if value="{{cannotSubmit}}" hint-placeholder-val="{{ true }}"><button class="btn btn-p" type="button" disabled aria-describedby="why">Submit</button></sc-if>
+        <span class="muted" id="why">{{why}}</span>
+      </div>
+    </section>
+
+    <div style="padding-top: 4px"><a class="btn btn-o" href="VendorSimpleForm.dc.html">Back</a></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"scenario":{"editor":"enum","options":["outstanding","ready"],"default":"outstanding"},"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { declared: false }; }
+  renderVals() {
+    const ready = (this.props.scenario ?? 'outstanding') === 'ready';
+    const todo = [
+      [2, 'Legal and Compliance', '1 document to update · 5 documents missing', true],
+      [3, 'Financial Health', '1 document to update · 17 items missing', true],
+      [5, 'Organizational Capacity and Capability', '18 items missing', false],
+      [6, 'Donor Agreements and Programme Implementation', '10 items missing', false],
+      [7, 'Quality Assurance and Risk Management', '12 items missing', false],
+      [9, 'Corporate Governance', '19 items missing', false],
+      [11, 'References and Past Performance', '2 items missing', false],
+      [12, 'Documentation Checklist', '9 documents missing', false]
+    ].map(([n, title, note, red]) => ({ n, title, note, noteStyle: red ? 'color:#B42318' : 'color:#5B6577' }));
+    const d = this.state.declared;
+    return {
+      missing: !ready, todo,
+      headline: ready ? 'Everything is filled in. Tick the box below and submit.' : 'A few things are still missing. You can come back and finish any time before 15 December 2026.',
+      declared: d, toggle: () => this.setState({ declared: !d }),
+      canSubmit: ready && d, cannotSubmit: !(ready && d),
+      why: !ready ? 'You can submit once everything above is done' : d ? '' : 'Tick the box to submit'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vendor sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn:focus-visible,.inp:focus-visible,.lnk:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.inp{width:100%;min-height:44px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;color:inherit;background:#fff}
+.lbl{display:block;font-weight:500;margin-bottom:6px}
+.help{color:#5B6577;font-size:13px}
+.lnk{background:none;border:0;padding:0;font:inherit;color:#1D4E89;text-decoration:underline;cursor:pointer}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap">
+  <section style="flex: 1 1 420px; background: #12284C; color: #DCE4F2; padding: 48px clamp(24px, 5vw, 72px); display: flex; flex-direction: column; justify-content: space-between; gap: 40px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span style="width: 44px; height: 44px; border-radius: 10px; background: #fff; color: #12284C; display: flex; align-items: center; justify-content: center; font-weight: 600">TT</span>
+      <span style="display: flex; flex-direction: column; line-height: 1.25"><span style="font-weight: 600; font-size: 17px; color: #fff">TracTrac Mechanization Services Limited</span><span style="font-size: 13px; color: #A9B8D2">Due Diligence &amp; Compliance Portal</span></span>
+    </div>
+    <div style="max-width: 460px; display: flex; flex-direction: column; gap: 20px">
+      <h1 style="font-size: 30px; line-height: 1.25; font-weight: 600; color: #fff; letter-spacing: -.01em">Complete your organisational due diligence in one secure place.</h1>
+      <p style="font-size: 15px; color: #C8D3E6">This portal is for registered vendors, subcontractors and partners of TracTrac. Answer the questionnaire section by section, upload supporting evidence and track TracTrac's review.</p>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; font-size: 14px">
+        <li style="display: flex; gap: 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7DD3C0" stroke-width="1.75" aria-hidden="true" style="flex: none"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg><span>Documents are encrypted and visible only to your organisation's users and authorised TracTrac reviewers.</span></li>
+        <li style="display: flex; gap: 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7DD3C0" stroke-width="1.75" aria-hidden="true" style="flex: none"><path d="M12 8v4l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Your progress saves as you go — stop and continue at any time before the deadline.</span></li>
+        <li style="display: flex; gap: 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7DD3C0" stroke-width="1.75" aria-hidden="true" style="flex: none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1M9 11a4 4 0 100-8 4 4 0 000 8zM22 20v-1a4 4 0 00-3-3.9"></path></svg><span>Several colleagues can work on the same assessment.</span></li>
+      </ul>
+    </div>
+    <p style="font-size: 12px; color: #A9B8D2">Need help? Contact the TracTrac Partnership Manager at [partnerships@tractrac email] · <a href="#" style="color: #DCE4F2">Privacy notice</a></p>
+  </section>
+
+  <section style="flex: 999 1 480px; display: flex; align-items: center; justify-content: center; padding: 48px 24px">
+    <div style="width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 24px">
+
+      <sc-if value="{{isSignin}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 24px">
+          <div><h2 style="font-size: 24px; font-weight: 600">Welcome back</h2><p class="help" style="font-size: 14px; margin-top: 4px">Sign in to continue your organisation's assessment.</p></div>
+          <form style="display: flex; flex-direction: column; gap: 16px">
+            <div><label class="lbl" for="em">Work email address</label><input class="inp" id="em" type="email" autocomplete="email" value="amina.bello@northfieldagro.ng"></div>
+            <div><div style="display: flex; justify-content: space-between"><label class="lbl" for="pw">Password</label><button class="lnk" type="button" style="font-size: 13px" onClick="{{toForgot}}">Forgot password?</button></div><input class="inp" id="pw" type="password" autocomplete="current-password" value="••••••••••"></div>
+            <a class="btn btn-p" href="VendorDashboard.dc.html" style="width: 100%">Sign in</a>
+            <div style="display: flex; align-items: center; gap: 12px; color: #5B6577; font-size: 13px"><span style="flex: 1; height: 1px; background: #E1E4EA"></span>or<span style="flex: 1; height: 1px; background: #E1E4EA"></span></div>
+            <button class="btn btn-s" type="button" style="width: 100%" onClick="{{toCode}}">Email me a one-time sign-in code</button>
+          </form>
+          <p style="font-size: 14px">New to the portal? <button class="lnk" type="button" onClick="{{toRegister}}">Register your organisation</button></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isRegister}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <div><p class="help">Step 1 of 2 · Takes about 2 minutes</p><h2 style="font-size: 24px; font-weight: 600; margin-top: 4px">Register your organisation</h2><p class="help" style="font-size: 14px; margin-top: 4px">Only the basics now. You'll complete full organisation details inside the questionnaire.</p></div>
+          <form style="display: flex; flex-direction: column; gap: 14px">
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+              <div><label class="lbl" for="fn">First name</label><input class="inp" id="fn" autocomplete="given-name"></div>
+              <div><label class="lbl" for="ln">Last name</label><input class="inp" id="ln" autocomplete="family-name"></div>
+            </div>
+            <div><label class="lbl" for="rem">Work email address</label><input class="inp" id="rem" type="email" autocomplete="email"><p class="help" style="margin-top: 4px">We'll send a verification code to this address.</p></div>
+            <div><label class="lbl" for="ttl">Job title</label><input class="inp" id="ttl" placeholder="e.g. Finance Manager"></div>
+            <div><label class="lbl" for="org">Organisation's registered name</label><input class="inp" id="org" placeholder="As shown on your Certificate of Incorporation"></div>
+            <div><label class="lbl" for="rc">CAC / business registration number <span class="help" style="font-weight: 400">(optional)</span></label><input class="inp" id="rc" placeholder="e.g. RC 1428817"></div>
+            <label style="display: flex; gap: 10px; align-items: flex-start; font-size: 13px"><input type="checkbox" style="width: 18px; height: 18px; margin-top: 1px; accent-color: #12284C">I am authorised to provide information on behalf of this organisation, and I accept the <a href="#">privacy notice</a>.</label>
+            <button class="btn btn-p" type="button" style="width: 100%" onClick="{{toCode}}">Continue</button>
+          </form>
+          <div style="background: #F5F8FD; border: 1px solid #C7D7EE; border-radius: 8px; padding: 12px 14px; font-size: 13px">Is your organisation already registered? Ask a colleague who uses the portal to invite you, so you share the same assessment.</div>
+          <p style="font-size: 14px">Already have an account? <button class="lnk" type="button" onClick="{{toSignin}}">Sign in</button></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isCode}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <div><h2 style="font-size: 24px; font-weight: 600">Check your email</h2><p class="help" style="font-size: 14px; margin-top: 4px">We sent a 6-digit code to <span style="color: #1B2433; font-weight: 500">amina.bello@northfieldagro.ng</span>. It expires in 10 minutes.</p></div>
+          <div><label class="lbl" for="otp">Verification code</label><input class="inp" id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="482 913" style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; letter-spacing: .3em; text-align: center"></div>
+          <a class="btn btn-p" href="VendorDashboard.dc.html" style="width: 100%">Verify and continue</a>
+          <p style="font-size: 14px" class="help">Didn't get it? <button class="lnk" type="button">Resend code</button> · <button class="lnk" type="button" onClick="{{toSignin}}">Use a different email</button></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isForgot}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <div><h2 style="font-size: 24px; font-weight: 600">Reset your password</h2><p class="help" style="font-size: 14px; margin-top: 4px">Enter your work email and we'll send a reset link.</p></div>
+          <div><label class="lbl" for="fem">Work email address</label><input class="inp" id="fem" type="email" value="amina.bello@northfieldagro.ng"></div>
+          <button class="btn btn-p" type="button" style="width: 100%" onClick="{{toSignin}}">Send reset link</button>
+          <p style="font-size: 14px"><button class="lnk" type="button" onClick="{{toSignin}}">Back to sign in</button></p>
+        </div>
+      </sc-if>
+
+      <p class="help" style="font-size: 12px; border-top: 1px solid #E1E4EA; padding-top: 16px">For TracTrac staff: <a href="AdminDashboard.dc.html">sign in to the Admin Portal</a> with your company account.</p>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startScreen":{"editor":"enum","options":["signin","register","code","forgot"],"default":"signin"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { mode: null }; }
+  renderVals() {
+    const m = this.state.mode ?? this.props.startScreen ?? 'signin';
+    const go = (mode) => () => this.setState({ mode });
+    return {
+      isSignin: m === 'signin', isRegister: m === 'register', isCode: m === 'code', isForgot: m === 'forgot',
+      toSignin: go('signin'), toRegister: go('register'), toCode: go('code'), toForgot: go('forgot')
+    };
+  }
+}
+</script>
+</body>
+</html>

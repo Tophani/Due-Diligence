@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vendor dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5B6577}
+.bar{height:6px;background:#E7EAF0;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:#0F766E;border-radius:99px}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+<dc-import name="VendorHeader" active="dashboard" hint-size="100%,72px"></dc-import>
+<main style="max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-direction: column; gap: 24px">
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+    <div><p class="help" style="font-size: 14px">Northfield Agro Services Ltd</p><h1 style="font-size: 24px; font-weight: 600">Good afternoon, Amina</h1></div>
+    <p class="help">Last saved by Tunde Ojo · today, 3:48 PM</p>
+  </div>
+
+  <section class="card" style="padding: 24px; display: flex; flex-wrap: wrap; gap: 24px 40px; align-items: center">
+    <div style="flex: 999 1 420px; display: flex; flex-direction: column; gap: 14px; min-width: 0">
+      <div style="display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center"><h2 style="font-size: 18px; font-weight: 600">2026 Partner Due Diligence · Cycle 2</h2><span class="badge b-amber">In progress</span></div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px 24px" class="help"><span>Submission deadline <span style="color: #1B2433; font-weight: 600">15 Dec 2026</span> · 40 days left</span><span>Review period 1 Jan 2024 – 30 Jun 2026</span></div>
+      <div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px"><span style="font-weight: 500">Overall completion</span><span style="font-weight: 600">47%</span></div>
+        <div class="bar" style="height: 10px" role="progressbar" aria-valuenow="47" aria-valuemin="0" aria-valuemax="100" aria-label="Overall completion"><span style="width: 47%"></span></div>
+        <p class="help" style="margin-top: 6px">74 of 159 required questions and documents complete</p>
+      </div>
+    </div>
+    <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 10px; align-items: stretch">
+      <a class="btn btn-p" href="VendorWorkspace.dc.html" style="min-height: 48px; font-size: 15px">Continue assessment<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      <p class="help" style="text-align: center">Picks up at 2. Legal and Compliance</p>
+    </div>
+  </section>
+
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px" aria-label="Summary">
+    <div class="card" style="padding: 16px 18px"><p class="help">Sections complete</p><p style="font-size: 24px; font-weight: 600">4 <span class="help" style="font-size: 15px; font-weight: 400">of 12</span></p></div>
+    <div class="card" style="padding: 16px 18px"><p class="help">Outstanding requirements</p><p style="font-size: 24px; font-weight: 600">85</p></div>
+    <div class="card" style="padding: 16px 18px"><p class="help">Documents submitted</p><p style="font-size: 24px; font-weight: 600">52 <span class="help" style="font-size: 15px; font-weight: 400">of 121</span></p></div>
+    <div class="card" style="padding: 16px 18px; border-color: #F0D29A"><p class="help">Need your attention</p><p style="font-size: 24px; font-weight: 600; color: #8A4B00">2</p></div>
+  </section>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+    <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+
+      <section style="background: #FFFAF0; border: 1px solid #F0D29A; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; gap: 10px; align-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A4B00" stroke-width="1.75" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"></path></svg><h2 style="font-size: 15px; font-weight: 600">TracTrac has asked for changes on 2 documents</h2></div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; background: #fff; border: 1px solid #F3E2C0; border-radius: 8px; padding: 10px 14px"><span class="mono" style="color: #5B6577">2.1.3</span><span style="flex: 1 1 220px; font-weight: 500">Current Tax Clearance Certificate <span class="help" style="font-weight: 400">— 2025 certificate has expired</span></span><a class="btn btn-s btn-sm" href="VendorWorkspace.dc.html">Upload replacement</a></div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; background: #fff; border: 1px solid #F3E2C0; border-radius: 8px; padding: 10px 14px"><span class="mono" style="color: #5B6577">3.5.2</span><span style="flex: 1 1 220px; font-weight: 500">Bank statements <span class="help" style="font-weight: 400">— Jan–Mar 2025 missing for Zenith account</span></span><a class="btn btn-s btn-sm" href="VendorWorkspace.dc.html">Add missing files</a></div>
+        </div>
+      </section>
+
+      <section class="card" style="overflow: hidden">
+        <div style="padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid #E1E4EA"><h2 style="font-size: 16px; font-weight: 600">Questionnaire sections</h2><span class="help">12 sections · complete in any order</span></div>
+        <ol style="list-style: none; margin: 0; padding: 0">
+          <sc-for list="{{sections}}" as="s" hint-placeholder-count="12">
+            <li style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 14px 20px; border-bottom: 1px solid #EEF0F3">
+              <span style="width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; flex: none; {{s.numStyle}}">{{s.n}}</span>
+              <div style="flex: 1 1 240px; min-width: 0">
+                <p style="font-weight: 500">{{s.title}}</p>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px"><div class="bar" style="width: 120px; height: 4px"><span style="width: {{s.pct}}"></span></div><span class="help">{{s.meta}}</span></div>
+              </div>
+              <span class="badge {{s.badgeCls}}">{{s.badge}}</span>
+              <a class="btn btn-s btn-sm" href="VendorWorkspace.dc.html" style="min-width: 92px" aria-label="{{s.action}} section {{s.n}}">{{s.action}}</a>
+            </li>
+          </sc-for>
+        </ol>
+      </section>
+    </div>
+
+    <aside style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 16px">
+      <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+        <h2 style="font-size: 15px; font-weight: 600">Already provided by TracTrac</h2>
+        <p class="help">These were received outside the portal. You don't need to upload them again.</p>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px">
+          <li style="display: flex; gap: 10px; align-items: flex-start"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A54A6" stroke-width="2" aria-hidden="true" style="margin-top: 2px; flex: none"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg><span><span class="mono" style="color: #5B6577">2.1.1</span> Certificate of Incorporation</span></li>
+          <li style="display: flex; gap: 10px; align-items: flex-start"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A54A6" stroke-width="2" aria-hidden="true" style="margin-top: 2px; flex: none"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg><span><span class="mono" style="color: #5B6577">3.1.2</span> Audited Financial Statements 2023</span></li>
+          <li style="display: flex; gap: 10px; align-items: flex-start"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A54A6" stroke-width="2" aria-hidden="true" style="margin-top: 2px; flex: none"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg><span><span class="mono" style="color: #5B6577">5.1.2</span> Organisational Structure</span></li>
+        </ul>
+      </section>
+      <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: center"><h2 style="font-size: 15px; font-weight: 600">Your team</h2><a href="#" style="font-size: 13px">Invite colleague</a></div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px">
+          <li style="display: flex; gap: 10px; align-items: center"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 50%; background: #E2F3F1; color: #0B5E58; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">AB</span><span style="flex: 1; line-height: 1.3"><span style="display: block; font-weight: 500">Amina Bello (you)</span><span class="help">Head of Compliance · Owner</span></span></li>
+          <li style="display: flex; gap: 10px; align-items: center"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 50%; background: #EEF2F8; color: #1D4E89; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TO</span><span style="flex: 1; line-height: 1.3"><span style="display: block; font-weight: 500">Tunde Ojo</span><span class="help">Finance Manager · Editor</span></span></li>
+          <li style="display: flex; gap: 10px; align-items: center"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 50%; background: #EEF0F3; color: #4E5768; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">GE</span><span style="flex: 1; line-height: 1.3"><span style="display: block; font-weight: 500">Grace Eze</span><span class="help">HR Lead · Editor · invited</span></span></li>
+        </ul>
+      </section>
+      <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+        <h2 style="font-size: 15px; font-weight: 600">Need help?</h2>
+        <p class="help">Questions about what to provide? Message the TracTrac Partnership Manager. Replies usually arrive within one working day.</p>
+        <div><a class="btn btn-s btn-sm" href="#">Contact TracTrac</a></div>
+      </section>
+    </aside>
+  </div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const data = [
+      [1, 'General Organizational Information', 12, 12, 0],
+      [2, 'Legal and Compliance', 23, 17, 1],
+      [3, 'Financial Health', 32, 14, 1],
+      [4, 'Procurement and Vendor Management', 4, 4, 0],
+      [5, 'Organizational Capacity and Capability', 27, 9, 0],
+      [6, 'Donor Agreements and Programme Implementation', 10, 0, 0],
+      [7, 'Quality Assurance and Risk Management', 18, 6, 0],
+      [8, 'Ethical Standards and Policies', 7, 7, 0],
+      [9, 'Corporate Governance', 19, 0, 0],
+      [10, 'Stakeholder Engagement, CSR and Sustainability', 4, 4, 0],
+      [11, 'References and Past Performance', 3, 1, 0],
+      [12, 'Documentation Checklist', 22, 13, 0]
+    ];
+    return {
+      sections: data.map(([n, title, total, done, att]) => {
+        const complete = done === total, started = done > 0;
+        const left = total - done;
+        return {
+          n, title,
+          pct: Math.round((done / total) * 100) + '%',
+          meta: complete ? 'All ' + total + ' items complete' : (n === 12 ? left + ' checklist documents still missing' : left + ' of ' + total + ' outstanding') + (att ? ' · ' + att + ' needs attention' : ''),
+          badge: complete ? 'Complete' : att ? 'Needs attention' : started ? 'In progress' : 'Not started',
+          badgeCls: complete ? 'b-green' : started ? 'b-amber' : 'b-grey',
+          numStyle: complete ? 'background:#E6F4EC;color:#1A6B40' : started ? 'background:#FDF1DC;color:#8A4B00' : 'background:#EEF0F3;color:#4E5768',
+          action: complete ? 'Review' : started ? 'Continue' : 'Start'
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

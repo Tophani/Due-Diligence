@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vendor header</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<header style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1B2433; background: #fff; border-bottom: 1px solid #E1E4EA; box-sizing: border-box; width: 100%; min-height: 72px; padding: 0 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px">
+  <a href="VendorDashboard.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1B2433; min-height: 72px">
+    <span style="width: 34px; height: 34px; border-radius: 8px; background: #12284C; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px">TT</span>
+    <span style="display: flex; flex-direction: column; line-height: 1.2"><span style="font-weight: 600; font-size: 15px">TracTrac</span><span style="font-size: 12px; color: #5B6577">Due Diligence Portal</span></span>
+  </a>
+  <nav aria-label="Vendor" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1 1 520px; font-size: 14px">
+    <sc-for list="{{links}}" as="l" hint-placeholder-count="6">
+      <a href="{{l.href}}" aria-current="{{l.current}}" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 8px; text-decoration: none; {{l.style}}">{{l.label}}</a>
+    </sc-for>
+  </nav>
+  <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0">
+    <span style="display: flex; flex-direction: column; text-align: right; line-height: 1.25"><span style="font-size: 13px; font-weight: 500">Amina Bello</span><span style="font-size: 12px; color: #5B6577">Northfield Agro Services Ltd</span></span>
+    <span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; background: #E2F3F1; color: #0B5E58; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px">AB</span>
+  </div>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["dashboard","organisation","assessments","workspace","status","help"],"default":"dashboard"},"$preview":{"width":1440,"height":72}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const a = this.props.active ?? 'dashboard';
+    const base = 'display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;';
+    const items = [
+      ['dashboard', 'Dashboard', 'VendorDashboard.dc.html'],
+      ['organisation', 'My Organisation', '#'],
+      ['assessments', 'My Assessments', 'VendorDashboard.dc.html'],
+      ['workspace', 'Assessment Workspace', 'VendorWorkspace.dc.html'],
+      ['status', 'Submission Status', 'VendorStatus.dc.html'],
+      ['help', 'Help / Support', '#']
+    ];
+    return {
+      links: items.map(([k, label, href]) => ({
+        label, href,
+        current: k === a ? 'page' : 'false',
+        style: (k === a ? 'background:#EEF2F8;color:#12284C;font-weight:600' : 'color:#4E5768;font-weight:500')
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

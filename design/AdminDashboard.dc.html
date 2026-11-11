@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn:focus-visible,.inp:focus-visible,.th-b:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-blue{background:#E6EEFA;color:#1A54A6}.b-grey{background:#EEF0F3;color:#4E5768}.b-red{background:#FCE8E6;color:#A8201A}
+.inp{min-height:40px;padding:8px 12px;border:1px solid #C9CED8;border-radius:8px;font:inherit;color:inherit;background:#fff}
+.help{color:#5B6577;font-size:13px}
+.bar{height:6px;background:#E7EAF0;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:#0F766E;border-radius:99px}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:0 16px;height:40px;border-bottom:1px solid #E1E4EA;background:#F8F9FB;white-space:nowrap}.tbl td{padding:12px 16px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+.tbl tr:hover td{background:#FAFBFC}
+.th-b{background:none;border:0;font:inherit;color:inherit;cursor:pointer;padding:0;display:inline-flex;gap:4px;align-items:center}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="dashboard" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 640px; min-width: 0; padding: 28px clamp(16px, 3vw, 36px) 64px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+      <div><p class="help" style="font-size: 14px">2026 Partner Due Diligence · Cycle 2 · first-submission deadline passed 31 Oct · final deadline 15 Dec 2026</p><h1 style="font-size: 24px; font-weight: 600">Dashboard</h1></div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap"><a class="btn btn-s" href="AdminUpload.dc.html">Upload existing document</a><a class="btn btn-p" href="AdminReview.dc.html">Review documents (23)</a></div>
+    </div>
+
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px" aria-label="Cycle summary">
+      <sc-for list="{{tiles}}" as="t" hint-placeholder-count="6">
+        <button type="button" onClick="{{t.pick}}" class="card" style="padding: 14px 16px; text-align: left; font: inherit; color: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 4px; {{t.style}}">
+          <span style="display: flex; gap: 8px; align-items: center"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{t.dot}}"></span><span class="help">{{t.label}}</span></span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.2">{{t.value}}</span>
+          <span class="help" style="font-size: 12px">{{t.sub}}</span>
+        </button>
+      </sc-for>
+    </section>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px">
+      <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between"><h2 style="font-size: 15px; font-weight: 600">Submission completeness</h2><a href="AdminMonitoring.dc.html" style="font-size: 13px">Open monitoring</a></div>
+        <div style="display: flex; height: 28px; border-radius: 6px; overflow: hidden; gap: 2px" role="img" aria-label="2 defaulters, 1 not started, 5 partial, 4 complete of 12 organisations">
+          <span style="flex: 2; background: #C4321F"></span><span style="flex: 1; background: #AEB6C4"></span><span style="flex: 5; background: #D08A1E"></span><span style="flex: 4; background: #1A6B40"></span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px">
+          <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 2px; background: #C4321F"></span>Defaulter 2</span>
+          <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 2px; background: #AEB6C4"></span>Not started 1</span>
+          <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 2px; background: #D08A1E"></span>Partial 5</span>
+          <span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 2px; background: #1A6B40"></span>Complete 4</span>
+        </div>
+        <p class="help">Completeness only. Of the 4 complete submissions, 2 have finished review: 1 compliant, 1 conditionally compliant.</p>
+      </section>
+      <section class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between"><h2 style="font-size: 15px; font-weight: 600">Needs action this week</h2><span class="help">5 items</span></div>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+          <li style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #EEF0F3"><span class="badge b-red">Defaulter</span><span style="flex: 1">Benue Valley Farmers Cooperative — no documents</span><a href="AdminOrgDetail.dc.html" style="font-size: 13px">Send reminder</a></li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #EEF0F3"><span class="badge b-red">Defaulter</span><span style="flex: 1">Plateau Fleet Maintenance Ltd — no documents</span><a href="AdminOrgDetail.dc.html" style="font-size: 13px">Send reminder</a></li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #EEF0F3"><span class="badge b-blue">Review</span><span style="flex: 1">Savannah Tillage Partners — 14 documents awaiting review</span><a href="AdminReview.dc.html" style="font-size: 13px">Review</a></li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #EEF0F3"><span class="badge b-amber">Overdue reply</span><span style="flex: 1">AgroReach Development Initiative — 4 days past response date</span><a href="AdminOrgDetail.dc.html" style="font-size: 13px">Follow up</a></li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 8px 0"><span class="badge b-blue">Review</span><span style="flex: 1">Sahel Agri-Logistics Ltd — 9 documents awaiting review</span><a href="AdminReview.dc.html" style="font-size: 13px">Review</a></li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card" style="overflow: hidden">
+      <div style="padding: 16px 20px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; border-bottom: 1px solid #E1E4EA">
+        <h2 style="font-size: 15px; font-weight: 600">Vendor submissions <span class="help" style="font-weight: 400">· {{shown}}</span></h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <input class="inp" type="search" placeholder="Search organisation or contact" aria-label="Search organisations" value="{{q}}" onChange="{{onSearch}}" style="width: 260px">
+          <select class="inp" aria-label="Filter by submission status" value="{{filter}}" onChange="{{onFilter}}"><option value="all">All submission statuses</option><option value="Defaulter">Defaulter</option><option value="Not started">Not started</option><option value="Partial submission">Partial submission</option><option value="Submission complete">Submission complete</option></select>
+        </div>
+      </div>
+      <div style="overflow-x: auto">
+        <table class="tbl" style="min-width: 980px">
+          <thead><tr>
+            <th scope="col" aria-sort="{{sortName}}"><button class="th-b" type="button" onClick="{{byName}}">Organisation {{arrowName}}</button></th>
+            <th scope="col">Assessment cycle</th>
+            <th scope="col" aria-sort="{{sortProg}}"><button class="th-b" type="button" onClick="{{byProg}}">Submission progress {{arrowProg}}</button></th>
+            <th scope="col">Documents</th>
+            <th scope="col">Submission</th>
+            <th scope="col">Review status</th>
+            <th scope="col" aria-sort="{{sortAct}}"><button class="th-b" type="button" onClick="{{byAct}}">Last activity {{arrowAct}}</button></th>
+            <th scope="col"><span style="position: absolute; left: -9999px">Action</span></th>
+          </tr></thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+              <tr>
+                <td><a href="AdminOrgDetail.dc.html" style="font-weight: 500; color: #1B2433; text-decoration: none">{{r.name}}</a><div class="help" style="font-size: 12px">{{r.contact}}</div></td>
+                <td class="help">2026 Cycle 2</td>
+                <td><div style="display: flex; gap: 10px; align-items: center"><div class="bar" style="width: 100px"><span style="width: {{r.pctLabel}}"></span></div><span style="font-size: 13px; width: 36px">{{r.pctLabel}}</span></div></td>
+                <td>{{r.docs}} <span class="help">/ 121</span></td>
+                <td><span class="badge {{r.subCls}}"><span style="width: 7px; height: 7px; border-radius: 50%; background: currentColor"></span>{{r.sub}}</span></td>
+                <td><span class="badge {{r.revCls}}">{{r.rev}}</span></td>
+                <td class="help">{{r.last}}</td>
+                <td style="text-align: right"><a class="btn btn-s btn-sm" href="AdminOrgDetail.dc.html">Open</a></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px; text-align: center"><p style="font-weight: 600">No organisations match</p><p class="help">Try a different name or clear the status filter.</p></div></sc-if>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+const ORGS = [
+  ['Northfield Agro Services Ltd', 'Amina Bello', 47, 52, 'Partial submission', 'Information requested', 'Today, 3:48 PM', 100],
+  ['Savannah Tillage Partners', 'Ibrahim Musa', 100, 121, 'Submission complete', 'Under review', 'Yesterday', 99],
+  ['Benue Valley Farmers Cooperative', 'Ngozi Agu', 0, 0, 'Defaulter', '—', 'Registered 2 Oct', 10],
+  ['Harvest Bridge Foundation', 'Kemi Adebayo', 82, 96, 'Partial submission', 'Awaiting review', '3 Nov', 97],
+  ['Lakeside Equipment & Spares Ltd', 'Samuel Danjuma', 100, 118, 'Submission complete', 'Review completed', '28 Oct', 60],
+  ['Riverine Seeds Nigeria Ltd', 'Halima Yusuf', 23, 27, 'Partial submission', 'Awaiting review', '1 Nov', 95],
+  ['AgroReach Development Initiative', 'Peter Nwosu', 100, 121, 'Submission complete', 'Changes requested', '4 Nov', 98],
+  ['Plateau Fleet Maintenance Ltd', 'Joy Pam', 0, 0, 'Defaulter', '—', 'Registered 14 Oct', 20],
+  ['Sahel Agri-Logistics Ltd', 'Bello Garba', 64, 71, 'Partial submission', 'Under review', '2 Nov', 96],
+  ['GreenRow Mechanisation Hub', 'Esther Okon', 100, 121, 'Submission complete', 'Review completed', '30 Oct', 70],
+  ['Kogi Smallholder Support Network', 'Daniel Ojo', 9, 6, 'Partial submission', 'Awaiting review', '25 Oct', 50],
+  ['Delta Tractor Services Ltd', 'Fatima Lawal', 0, 0, 'Not started', '—', 'Assigned 3 Nov', 90]
+];
+const SUB = { 'Defaulter': 'b-red', 'Not started': 'b-grey', 'Partial submission': 'b-amber', 'Submission complete': 'b-green' };
+const REV = { 'Information requested': 'b-amber', 'Changes requested': 'b-amber', 'Under review': 'b-blue', 'Awaiting review': 'b-grey', 'Review completed': 'b-green', '—': 'b-grey' };
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { q: '', filter: 'all', sort: 'act', dir: -1 }; }
+  renderVals() {
+    const { q, filter, sort, dir } = this.state;
+    let list = ORGS.map((o) => ({ name: o[0], contact: o[1], pct: o[2], pctLabel: o[2] + '%', docs: o[3], sub: o[4], subCls: SUB[o[4]], rev: o[5], revCls: REV[o[5]], last: o[6], act: o[7] }));
+    if (q) list = list.filter((r) => (r.name + ' ' + r.contact).toLowerCase().indexOf(q.toLowerCase()) > -1);
+    if (filter !== 'all') list = list.filter((r) => r.sub === filter);
+    const key = { name: 'name', prog: 'pct', act: 'act' }[sort];
+    list.sort((a, b) => (a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0) * dir);
+    const by = (k) => () => this.setState({ sort: k, dir: sort === k ? -dir : (k === 'name' ? 1 : -1) });
+    const arrow = (k) => (sort === k ? (dir > 0 ? '↑' : '↓') : '');
+    const ariaS = (k) => (sort === k ? (dir > 0 ? 'ascending' : 'descending') : 'none');
+    const pick = (f) => () => this.setState({ filter: this.state.filter === f ? 'all' : f });
+    const tiles = [
+      { label: 'Registered organisations', value: '12', sub: 'Assigned to this cycle', dot: '#12284C', f: 'all' },
+      { label: 'No documents submitted', value: '3', sub: '2 defaulters · 1 not started', dot: '#C4321F', f: 'Defaulter' },
+      { label: 'Partial submissions', value: '5', sub: 'Avg. 45% complete', dot: '#D08A1E', f: 'Partial submission' },
+      { label: 'Complete submissions', value: '4', sub: 'All required items in', dot: '#1A6B40', f: 'Submission complete' },
+      { label: 'Under review', value: '2', sub: '23 documents in queue', dot: '#1A54A6', f: null },
+      { label: 'Outstanding review actions', value: '2', sub: 'Waiting on vendor reply', dot: '#8A4B00', f: null }
+    ].map((t) => Object.assign(t, { pick: t.f ? pick(t.f) : () => {}, style: t.f && t.f !== 'all' && filter === t.f ? 'border-color:#12284C;box-shadow:inset 0 0 0 1px #12284C' : '' }));
+    return {
+      tiles, rows: list, empty: list.length === 0, shown: list.length + ' of 12',
+      q, filter, onSearch: (e) => this.setState({ q: e.target.value }), onFilter: (e) => this.setState({ filter: e.target.value }),
+      byName: by('name'), byProg: by('prog'), byAct: by('act'),
+      arrowName: arrow('name'), arrowProg: arrow('prog'), arrowAct: arrow('act'),
+      sortName: ariaS('name'), sortProg: ariaS('prog'), sortAct: ariaS('act')
+    };
+  }
+}
+</script>
+</body>
+</html>

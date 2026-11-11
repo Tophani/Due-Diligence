@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questionnaire templates</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-g{background:transparent;color:#1D4E89}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-grey{background:#EEF0F3;color:#4E5768}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:12px;font-weight:500;color:#5B6577;padding:0 16px;height:40px;border-bottom:1px solid #E1E4EA;background:#F8F9FB;white-space:nowrap}.tbl td{padding:12px 16px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; position: relative">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="questionnaires" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 640px; min-width: 0; padding: 28px clamp(16px, 3vw, 36px) 64px; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-end">
+      <div><p class="help" style="font-size: 14px">Reusable templates. Published versions are locked; edits create a new draft version.</p><h1 style="font-size: 24px; font-weight: 600">Questionnaire management</h1></div>
+      <button class="btn btn-p" type="button" onClick="{{openUp}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"></path></svg>Upload questionnaire</button>
+    </div>
+
+    <section class="card" style="overflow: hidden">
+      <div style="overflow-x: auto">
+        <table class="tbl" style="min-width: 900px">
+          <thead><tr><th>Template</th><th>Version</th><th>Sections</th><th>Items</th><th>Last updated</th><th>Used by</th><th>Status</th><th><span style="position: absolute; left: -9999px">Actions</span></th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight: 500">Organizational Due Diligence Form</td><td class="mono">v2.1</td><td>12</td><td>183</td><td class="help">Today · Funmi Adeyemi</td><td class="help">—</td><td><span class="badge b-amber">Draft · in review</span></td><td style="text-align: right"><a class="btn btn-p btn-sm" href="AdminImport.dc.html">Continue review</a></td></tr>
+            <tr><td style="font-weight: 500">Organizational Due Diligence Form</td><td class="mono">v2.0</td><td>12</td><td>181</td><td class="help">1 Sep 2026</td><td>2026 Cycle 2 · 12 orgs</td><td><span class="badge b-green">Published</span></td><td style="text-align: right; white-space: nowrap"><button class="btn btn-g btn-sm" type="button">Preview</button><button class="btn btn-s btn-sm" type="button">New version</button></td></tr>
+            <tr><td style="font-weight: 500">Organizational Due Diligence Form</td><td class="mono">v1.4</td><td>12</td><td>142</td><td class="help">20 Feb 2025</td><td>2025 Partner Due Diligence · 9 orgs</td><td><span class="badge b-grey">Archived</span></td><td style="text-align: right"><button class="btn btn-g btn-sm" type="button">Preview</button></td></tr>
+            <tr><td style="font-weight: 500">Subcontractor Quick Screen</td><td class="mono">v1.0</td><td>4</td><td>26</td><td class="help">8 Jul 2026</td><td class="help">—</td><td><span class="badge b-green">Published</span></td><td style="text-align: right; white-space: nowrap"><button class="btn btn-g btn-sm" type="button">Preview</button><button class="btn btn-s btn-sm" type="button">New version</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <div style="background: #F5F8FD; border: 1px solid #C7D7EE; border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; max-width: 880px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A54A6" stroke-width="1.75" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M7 11V7a5 5 0 0110 0v4M5 11h14v10H5z"></path></svg>
+      <p style="font-size: 13px">Publishing v2.1 won't change the 2026 Cycle 2 assessment. Every cycle keeps the exact template version it was created from, so historical answers and evidence stay attached to the questions they were given against.</p>
+    </div>
+  </main>
+
+  <sc-if value="{{up}}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.35); display: flex; align-items: center; justify-content: center; padding: 16px">
+      <section role="dialog" aria-labelledby="upt" style="width: min(560px, 100%); background: #fff; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 12px 32px rgba(16,24,40,.16)">
+        <h2 id="upt" style="font-size: 18px; font-weight: 600">Upload questionnaire</h2>
+        <p class="help" style="font-size: 14px">We'll read the file and extract sections, questions, instructions and evidence requirements. Nothing is published until you've reviewed every item.</p>
+        <div style="border: 1.5px dashed #AEB6C4; border-radius: 10px; background: #FAFBFC; padding: 22px; text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center">
+          <p style="font-weight: 500">Drag an Excel or Word file here</p><p class="help">.xlsx or .docx · max 20 MB</p>
+        </div>
+        <div style="border: 1px solid #E1E4EA; border-radius: 8px; padding: 10px 12px; display: flex; gap: 12px; align-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B40" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg><span style="flex: 1"><span style="font-weight: 500">Due_Diligence_Questions.xlsx</span> <span class="help">· 2 sheets · 64 KB</span></span><span class="badge b-green">Ready</span></div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <div><label for="tn" style="font-weight: 500; display: block; margin-bottom: 6px">Add to template</label><select id="tn" style="width: 100%; min-height: 40px; border: 1px solid #C9CED8; border-radius: 8px; padding: 0 10px; font: inherit"><option>Organizational Due Diligence Form (new version)</option><option>Create new template</option></select></div>
+          <div><label for="vn" style="font-weight: 500; display: block; margin-bottom: 6px">Version</label><input id="vn" value="v2.1" style="width: 100%; min-height: 40px; border: 1px solid #C9CED8; border-radius: 8px; padding: 0 10px; font: inherit"></div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button class="btn btn-s" type="button" onClick="{{closeUp}}">Cancel</button><a class="btn btn-p" href="AdminImport.dc.html">Extract and review</a></div>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { up: false }; }
+  renderVals() { return { up: this.state.up, openUp: () => this.setState({ up: true }), closeUp: () => this.setState({ up: false }) }; }
+}
+</script>
+</body>
+</html>

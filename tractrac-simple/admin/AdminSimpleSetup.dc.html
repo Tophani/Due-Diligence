@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simple admin setup</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F0F2F5;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:15px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,p,ul{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:8px}
+.muted{color:#5B6577;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-o{background:#fff;color:#1D4E89;border-color:#C9CED8}.btn-o:hover{background:#F5F8FD}
+.btn-g{background:transparent;color:#1D4E89}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed;border-color:transparent}
+.btn:focus-visible,a:focus-visible,.box:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.box{width:100%;min-height:40px;border:1px solid #C9CED8;border-radius:6px;padding:8px 10px;font:inherit;font-size:14px;color:inherit;background:#fff}
+.lbl{display:block;font-size:14px;font-weight:500;margin-bottom:4px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5B6577}
+.row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:12px 0;border-top:1px solid #F0F2F5}
+</style>
+</helmet>
+<div style="min-height: 100vh">
+  <header style="background: #fff; border-bottom: 1px solid #E1E4EA; padding: 0 24px; min-height: 60px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
+    <span style="display: flex; gap: 10px; align-items: center"><span style="width: 30px; height: 30px; border-radius: 7px; background: #12284C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">TT</span><span style="font-weight: 600">TracTrac Admin</span></span>
+    <nav aria-label="Admin" style="display: flex; gap: 4px; flex: 1; font-size: 14px">
+      <a href="AdminSimpleHome.dc.html" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; color: #4E5768">Home</a>
+      <a href="AdminSimpleOrg.dc.html" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; color: #4E5768">Organisations</a>
+      <a href="AdminSimpleSetup.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 6px; text-decoration: none; background: #EEF2F8; color: #12284C; font-weight: 600">Setup</a>
+    </nav>
+    <span class="muted" style="font-size: 13px">Funmi Adeyemi</span>
+  </header>
+
+  <main style="max-width: 900px; margin: 0 auto; padding: 28px 16px 64px; display: flex; flex-direction: column; gap: 16px">
+    <h1 style="font-size: 22px; font-weight: 600">Setup</h1>
+
+    <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center">
+        <h2 style="font-size: 17px; font-weight: 600">Questionnaire</h2>
+        <button class="btn btn-o" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"></path></svg>Upload new version (.xlsx or .docx)</button>
+      </div>
+      <p class="muted">In use: <span style="color: #1B2433; font-weight: 500">Due Diligence Form v2.0</span> · 12 sections · 181 items · used by the 2026 cycle</p>
+      <div style="border: 1px solid #E1E4EA; border-radius: 8px; padding: 14px 16px; margin-top: 6px; display: flex; flex-direction: column; gap: 4px">
+        <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center">
+          <p style="font-weight: 500">New version v2.1 <span class="muted">· from Due_Diligence_Questions.xlsx · not published</span></p>
+          <span style="font-size: 14px; font-weight: 500; {{checkStyle}}">{{checkLabel}}</span>
+        </div>
+        <p class="muted">We read the file automatically. Please check these before publishing. Existing cycles keep v2.0.</p>
+        <ul style="list-style: none; padding: 0; margin-top: 4px">
+          <sc-for list="{{checks}}" as="c" hint-placeholder-count="4">
+            <li class="row">
+              <span class="mono" style="width: 40px">{{c.ref}}</span>
+              <span style="flex: 1 1 280px; font-size: 14px">{{c.text}}</span>
+              <sc-if value="{{c.open}}" hint-placeholder-val="{{ true }}"><span style="display: flex; gap: 6px"><button class="btn btn-o" type="button" onClick="{{c.fix}}" style="min-height: 34px; font-size: 13px">{{c.fixLabel}}</button><button class="btn btn-g" type="button" onClick="{{c.keep}}" style="min-height: 34px; font-size: 13px">Leave as is</button></span></sc-if>
+              <sc-if value="{{c.done}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #1A6B40">✓ {{c.doneText}}</span></sc-if>
+            </li>
+          </sc-for>
+        </ul>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid #F0F2F5"><a class="btn btn-o" href="VendorSimpleForm.dc.html">Preview as vendor</a><button class="btn btn-p" type="button" disabled="{{cannotPublish}}" onClick="{{publish}}">{{publishLabel}}</button></div>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center">
+        <h2 style="font-size: 17px; font-weight: 600">Assessment cycles</h2>
+        <sc-if value="{{notCreating}}" hint-placeholder-val="{{ true }}"><button class="btn btn-p" type="button" onClick="{{startNew}}">+ Start a new cycle</button></sc-if>
+      </div>
+      <sc-if value="{{created}}" hint-placeholder-val="{{ false }}"><div class="row"><span style="flex: 1; font-weight: 500">2027 Partner Due Diligence</span><span class="muted">Opens 5 Jan 2027 · due 31 Mar 2027 · {{count}} organisations</span><span style="font-size: 13px; font-weight: 500; color: #1A54A6">Starts 5 Jan</span></div></sc-if>
+      <div class="row"><span style="flex: 1; font-weight: 500">2026 Partner Due Diligence</span><span class="muted">Due 15 Dec 2026 · 12 organisations · v2.0</span><span style="font-size: 13px; font-weight: 500; color: #1A6B40">Open now</span></div>
+      <div class="row"><span style="flex: 1; font-weight: 500">2025 Partner Due Diligence</span><span class="muted">Closed 30 Jun 2025 · 9 organisations · v1.4</span><span style="font-size: 13px; color: #5B6577">Closed</span></div>
+
+      <sc-if value="{{creating}}" hint-placeholder-val="{{ false }}">
+        <div style="border: 1px solid #E1E4EA; border-radius: 8px; padding: 18px; margin-top: 10px; display: flex; flex-direction: column; gap: 14px">
+          <p style="font-weight: 600">New cycle</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+            <div><label class="lbl" for="nm">Name</label><input class="box" id="nm" value="2027 Partner Due Diligence"></div>
+            <div><label class="lbl" for="qv">Questionnaire</label><select class="box" id="qv"><option>{{latest}}</option><option>Due Diligence Form v2.0</option></select></div>
+            <div><label class="lbl" for="op">Opens</label><input class="box" id="op" type="date" value="2027-01-05"></div>
+            <div><label class="lbl" for="dl">Deadline</label><input class="box" id="dl" type="date" value="2027-03-31"></div>
+          </div>
+          <fieldset style="border: 0; padding: 0; margin: 0">
+            <legend class="lbl">Organisations <span class="muted" style="font-weight: 400">· {{count}} selected · <button type="button" onClick="{{selAll}}" style="background: none; border: 0; padding: 0; font: inherit; color: #1D4E89; text-decoration: underline; cursor: pointer">{{selAllLabel}}</button></span></legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2px 16px; max-height: 220px; overflow-y: auto">
+              <sc-for list="{{orgs}}" as="o" hint-placeholder-count="14"><label style="display: flex; gap: 10px; align-items: center; min-height: 36px; font-size: 14px"><input type="checkbox" checked="{{o.on}}" onChange="{{o.toggle}}" style="width: 16px; height: 16px; accent-color: #12284C">{{o.name}}</label></sc-for>
+            </div>
+          </fieldset>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap"><button class="btn btn-p" type="button" onClick="{{create}}" disabled="{{noneSel}}">Start cycle and email invitations</button><button class="btn btn-g" type="button" onClick="{{cancel}}">Cancel</button></div>
+        </div>
+      </sc-if>
+    </section>
+
+    <section class="card" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h2 style="font-size: 17px; font-weight: 600">TracTrac staff</h2><button class="btn btn-o" type="button">+ Invite staff</button></div>
+      <div class="row"><span style="flex: 1"><span style="font-weight: 500">Funmi Adeyemi</span> <span class="muted">· funmi.adeyemi@tractrac.test</span></span><select class="box" aria-label="Role for Funmi Adeyemi" style="width: 160px; min-height: 34px"><option>Full access</option><option>Reviewer</option></select></div>
+      <div class="row"><span style="flex: 1"><span style="font-weight: 500">Chidi Okafor</span> <span class="muted">· chidi.okafor@tractrac.test</span></span><select class="box" aria-label="Role for Chidi Okafor" style="width: 160px; min-height: 34px"><option>Reviewer</option><option>Full access</option></select></div>
+      <p class="muted" style="padding-top: 6px">Reviewers can review documents and add documents. Full access can also change the questionnaire, cycles and staff.</p>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1600}}'>
+const CHECKS = [
+  ['1.0.5', 'Organization type lists "Nonprofit / Private Firm / Other". Make it tick boxes?', 'Make tick boxes', 'Now tick boxes'],
+  ['1.1.2', 'Incorporation date looks like a date. Use a date picker?', 'Use date picker', 'Now a date picker'],
+  ['1.2.4', 'Starts with "If you selected YES". Only show it when 1.2.3 is Yes?', 'Only show if Yes', 'Shows only if 1.2.3 is Yes'],
+  ['2.8.1', 'One question with an "If yes, explain" part. Add an explanation box that appears on Yes?', 'Add explanation box', 'Explanation box added']
+];
+const ORGS = ['Northfield Agro Services Ltd', 'Savannah Tillage Partners', 'Benue Valley Farmers Cooperative', 'Harvest Bridge Foundation', 'Lakeside Equipment & Spares Ltd', 'Riverine Seeds Nigeria Ltd', 'AgroReach Development Initiative', 'Plateau Fleet Maintenance Ltd', 'Sahel Agri-Logistics Ltd', 'GreenRow Mechanisation Hub', 'Kogi Smallholder Support Network', 'Delta Tractor Services Ltd', 'Ogun Valley Implements Ltd', 'Northern Plains Agro Cooperative'];
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { res: {}, published: false, creating: false, created: false, sel: { 0: true, 3: true, 8: true, 12: true, 13: true } }; }
+  renderVals() {
+    const { res, published, creating, created, sel } = this.state;
+    const left = CHECKS.filter((c) => !res[c[0]]).length;
+    const n = Object.keys(sel).filter((k) => sel[k]).length;
+    const all = n === ORGS.length;
+    const setR = (ref, v) => this.setState({ res: Object.assign({}, res, { [ref]: v }) });
+    return {
+      checks: CHECKS.map(([ref, text, fixLabel, doneText]) => ({ ref, text, fixLabel, open: !res[ref], done: !!res[ref], doneText: res[ref] === 'keep' ? 'Left as is' : doneText, fix: () => setR(ref, 'fix'), keep: () => setR(ref, 'keep') })),
+      checkLabel: published ? '✓ Published' : left ? left + ' things to check' : 'Ready to publish', checkStyle: published || !left ? 'color:#1A6B40' : 'color:#8A4B00',
+      cannotPublish: left > 0 || published, publishLabel: published ? 'Published' : 'Publish v2.1', publish: () => this.setState({ published: true }),
+      latest: published ? 'Due Diligence Form v2.1' : 'Due Diligence Form v2.0',
+      creating, notCreating: !creating, created, count: n,
+      startNew: () => this.setState({ creating: true }), cancel: () => this.setState({ creating: false }), create: () => this.setState({ creating: false, created: true }),
+      orgs: ORGS.map((name, k) => ({ name, on: !!sel[k], toggle: () => this.setState({ sel: Object.assign({}, sel, { [k]: !sel[k] }) }) })),
+      noneSel: n === 0, selAllLabel: all ? 'Clear all' : 'Select all',
+      selAll: () => { const s = {}; if (!all) ORGS.forEach((o, k) => { s[k] = true; }); this.setState({ sel: s }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

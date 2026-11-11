@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Secrets: every .env file stays out of git (the template .env.example is kept)
+.env
+.env.*
+!.env.example
+
+# Uploaded files and generated output
+server/uploads/
+client/dist/
+
+# Logs and editor/OS files
+*.log
+.DS_Store
+Thumbs.db

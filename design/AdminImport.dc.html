@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questionnaire import review</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1B2433;font-size:14px;line-height:1.5}
+*{box-sizing:border-box}h1,h2,h3,p{margin:0}
+a{color:#1D4E89}a:hover{color:#12284C}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:8px;font:500 14px/1 'IBM Plex Sans',sans-serif;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-p{background:#12284C;color:#fff}.btn-p:hover{background:#0B1C38;color:#fff}
+.btn-s{background:#fff;color:#1B2433;border-color:#C9CED8}.btn-s:hover{background:#F4F5F7;color:#1B2433}
+.btn-g{background:transparent;color:#1D4E89}.btn-g:hover{background:#EEF2F8}
+.btn-sm{min-height:32px;padding:0 10px;font-size:13px}
+.btn[disabled]{background:#E4E7EC;color:#6B7486;cursor:not-allowed;border-color:transparent}
+.btn:focus-visible,.inp:focus-visible,.nav-b:focus-visible{outline:3px solid #7FA7E0;outline-offset:2px}
+.card{background:#fff;border:1px solid #E1E4EA;border-radius:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;line-height:1}
+.b-green{background:#E6F4EC;color:#1A6B40}.b-amber{background:#FDF1DC;color:#8A4B00}.b-grey{background:#EEF0F3;color:#4E5768}.b-blue{background:#E6EEFA;color:#1A54A6}
+.inp{width:100%;min-height:36px;padding:6px 10px;border:1px solid #C9CED8;border-radius:6px;font:inherit;color:inherit;background:#fff}
+.help{color:#5B6577;font-size:13px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.nav-b{width:100%;display:flex;gap:8px;align-items:center;text-align:left;background:transparent;border:0;border-radius:6px;padding:8px 10px;font:inherit;font-size:13px;color:inherit;cursor:pointer}
+.nav-b:hover{background:#F4F5F7}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 248px; background: #12284C"><dc-import name="AdminNav" active="questionnaires" hint-size="100%,900px"></dc-import></div>
+  <main style="flex: 999 1 700px; min-width: 0; padding: 24px clamp(16px, 3vw, 32px) 64px; display: flex; flex-direction: column; gap: 16px">
+    <nav aria-label="Breadcrumb" class="help"><a href="AdminQuestionnaires.dc.html">Questionnaire management</a> / Organizational Due Diligence Form / v2.1 draft</nav>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-start">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="font-size: 22px; font-weight: 600">Review imported questionnaire</h1>
+        <p class="help" style="font-size: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A6B40" stroke-width="1.75" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4"></path></svg>Source: <a href="#">Due_Diligence_Questions.xlsx</a> · sheets "Questions" (rows 6–165) and "Documentation Checklist" · uploaded today by Funmi Adeyemi</p>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap"><a class="btn btn-s" href="VendorWorkspace.dc.html">Preview as vendor</a><button class="btn btn-p" type="button" disabled="{{cannotPublish}}" onClick="{{publish}}">{{publishLabel}}</button></div>
+    </div>
+
+    <sc-if value="{{published}}" hint-placeholder-val="{{ false }}">
+      <div style="background: #F1F9F4; border: 1px solid #A9D8BC; border-radius: 10px; padding: 12px 16px">v2.1 published. It's now available when you <a href="AdminCycles.dc.html">create an assessment cycle</a>. 2026 Cycle 2 stays on v2.0.</div>
+    </sc-if>
+
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+      <div class="card" style="padding: 12px 16px"><p class="help">Sections</p><p style="font-size: 20px; font-weight: 600">12</p></div>
+      <div class="card" style="padding: 12px 16px"><p class="help">Subsections</p><p style="font-size: 20px; font-weight: 600">56</p></div>
+      <div class="card" style="padding: 12px 16px"><p class="help">Questions</p><p style="font-size: 20px; font-weight: 600">38</p></div>
+      <div class="card" style="padding: 12px 16px"><p class="help">Evidence requirements</p><p style="font-weight: 600; font-size: 20px">121 <span class="help" style="font-size: 13px; font-weight: 400">+ 22 checklist</span></p></div>
+      <div class="card" style="padding: 12px 16px; {{warnTileStyle}}"><p class="help">Warnings to resolve</p><p style="font-size: 20px; font-weight: 600; {{warnNumStyle}}">{{openWarn}}</p></div>
+    </section>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+      <nav class="card" aria-label="Extracted sections" style="flex: 1 1 250px; padding: 8px">
+        <p class="help" style="padding: 6px 10px">{{reviewedMeta}}</p>
+        <sc-for list="{{secs}}" as="s" hint-placeholder-count="12">
+          <button class="nav-b" type="button" onClick="{{s.go}}" aria-current="{{s.current}}" style="{{s.style}}">
+            <span class="mono" style="color: #5B6577; width: 20px">{{s.n}}</span><span style="flex: 1">{{s.title}}</span>
+            <sc-if value="{{s.warn}}" hint-placeholder-val="{{ false }}"><span class="badge b-amber" aria-label="{{s.warn}} warnings">{{s.warn}} !</span></sc-if>
+            <sc-if value="{{s.reviewed}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A6B40" stroke-width="2.5" aria-label="Reviewed" role="img"><path d="M5 12l5 5L20 7"></path></svg></sc-if>
+          </button>
+        </sc-for>
+      </nav>
+
+      <section class="card" style="flex: 999 1 560px; min-width: 0; overflow: hidden">
+        <div style="padding: 16px 20px; border-bottom: 1px solid #E1E4EA; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center">
+          <div style="flex: 1 1 300px"><label for="st" class="help" style="display: block">Section {{cur}} title</label><input class="inp" id="st" value="{{curTitle}}" style="font-weight: 600; font-size: 15px"></div>
+          <div style="display: flex; gap: 8px"><button class="btn btn-s btn-sm" type="button">+ Add question</button><button class="btn btn-sm {{revBtnCls}}" type="button" onClick="{{toggleReviewed}}" disabled="{{reviewBlocked}}">{{revBtnLabel}}</button></div>
+        </div>
+        <sc-if value="{{hasItems}}" hint-placeholder-val="{{ true }}">
+          <div>
+            <sc-for list="{{items}}" as="it" hint-placeholder-count="8">
+              <div style="padding: 12px 20px; border-bottom: 1px solid #EEF0F3; display: flex; flex-direction: column; gap: 8px; {{it.rowStyle}}">
+                <sc-if value="{{it.isSub}}" hint-placeholder-val="{{ false }}"><p style="font-weight: 600; font-size: 13px; color: #3A4456; padding-top: 6px">{{it.sub}}</p></sc-if>
+                <sc-if value="{{it.isItem}}" hint-placeholder-val="{{ true }}">
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center">
+                    <span class="mono" style="width: 44px; color: #5B6577">{{it.ref}}</span>
+                    <input class="inp" aria-label="Question text for {{it.ref}}" value="{{it.title}}" style="flex: 1 1 280px">
+                    <select class="inp" aria-label="Response type for {{it.ref}}" style="width: 190px" value="{{it.type}}"><option>Short text</option><option>Long text</option><option>Yes/No</option><option>Yes/No + details</option><option>Multiple choice</option><option>Date</option><option>Number</option><option>Table / repeating</option><option>File upload</option><option>Multiple files</option></select>
+                    <label style="display: inline-flex; gap: 6px; align-items: center; font-size: 13px"><input type="checkbox" checked="{{it.req}}" style="accent-color: #12284C">Required</label>
+                    <span class="help" style="font-size: 12px; width: 56px">Row {{it.row}}</span>
+                    <button class="btn btn-g btn-sm" type="button" aria-label="Remove {{it.ref}}">Remove</button>
+                  </div>
+                  <sc-if value="{{it.warn}}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-left: 56px; background: #FFFAF0; border: 1px solid #F0D29A; border-radius: 8px; padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A4B00" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"></path></svg>
+                      <span style="flex: 1 1 260px; font-size: 13px; color: #6B3A00"><span style="font-weight: 600">Not confidently identified.</span> {{it.warnText}}</span>
+                      <button class="btn btn-s btn-sm" type="button" onClick="{{it.accept}}">{{it.fix}}</button>
+                      <button class="btn btn-g btn-sm" type="button" onClick="{{it.keep}}">Keep as extracted</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{it.resolved}}" hint-placeholder-val="{{ false }}"><p style="margin-left: 56px; font-size: 13px; color: #1A6B40">✓ {{it.resolvedText}}</p></sc-if>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{noItems}}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 24px 20px; display: flex; flex-direction: column; gap: 6px"><p style="font-weight: 600">{{collapsedTitle}}</p><p class="help">{{collapsedText}}</p><div style="display: flex; gap: 8px; flex-wrap: wrap"><sc-if value="{{cHasWarn}}" hint-placeholder-val="{{ false }}"><button class="btn btn-s btn-sm" type="button" onClick="{{cFix}}">{{cFixLabel}}</button><button class="btn btn-g btn-sm" type="button" onClick="{{cKeep}}">Keep as extracted</button></sc-if><button class="btn btn-s btn-sm" type="button">Expand all items</button></div></div>
+        </sc-if>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1600}}'>
+const SECS = [['General Organizational Information', 12], ['Legal and Compliance', 23], ['Financial Health', 32], ['Procurement and Vendor Management', 4], ['Organizational Capacity and Capability', 27], ['Donor Agreements and Programme Implementation', 10], ['Quality Assurance and Risk Management', 18], ['Ethical Standards and Policies', 7], ['Corporate Governance', 19], ['Stakeholder Engagement, CSR and Sustainability', 4], ['References and Past Performance', 3], ['Documentation Checklist', 22]];
+const ITEMS = {
+  1: [['1.0', 'General Information'], ['1.0.1', 'Official Organization Name', 'Short text', 6], ['1.0.2', 'Acronym', 'Short text', 7], ['1.0.3', 'Organization Address', 'Long text', 8], ['1.0.4', 'Organization Contact Information', 'Short text', 9], ['1.0.5', 'Organization Type', 'Long text', 10, 'w1'], ['1.1', 'Registration Details'], ['1.1.1', 'Business Registration Number', 'Short text', 11], ['1.1.2', 'Incorporation Date', 'Short text', 12, 'w2'], ['1.1.3', 'Country of Registration', 'Short text', 13], ['1.2', 'Authorized Representatives'], ['1.2.1', "Authorized Representatives' Contact Information", 'Long text', 14], ['1.2.2', 'Organizational Background, Nature of Business/Services Provided', 'Long text', 15], ['1.2.3', 'Previous experience in international development projects', 'Yes/No', 16], ['1.2.4', 'If you selected YES, please list…', 'Long text', 17, 'w3']],
+  2: [['2.1', 'Legal Status of the Organization'], ['2.1.1', 'Copy of the Certificate of Incorporation', 'File upload', 18], ['2.1.2', 'Evidence of Tax Identification Number (TIN)', 'File upload', 19], ['2.1.3', 'Current Tax Clearance Certificate', 'File upload', 20], ['2.2', 'Constitutional Documents'], ['2.2.1', 'Memorandum and Articles of Association (or Constitution)', 'File upload', 21], ['2.3', 'Compliance with Local Laws and Regulations'], ['2.3.1', 'Corporate Affairs Commission (CAC) registration (for Nigeria)', 'File upload', 22], ['2.3.2', 'Compliance with Nigerian labour and tax laws', 'Long text', 23], ['2.4', 'Statutory Remittances and Permits'], ['2.4.1', 'Tax remittances', 'Multiple files', 24], ['2.4.2', 'Pension remittances', 'Multiple files', 25], ['2.8', 'Litigation Status'], ['2.8.1', 'Litigation status', 'Yes/No', 52, 'w4']]
+};
+const WARN = {
+  w1: ['1.0.5', 'Cell lists options "Nonprofit / Private Firm / Other". Convert to a multiple-choice question with an "Other" explanation?', 'Convert to multiple choice', 'Converted to multiple choice with 3 options'],
+  w2: ['1.1.2', 'Answer looks like a date but the source type is "Written response".', 'Use date input', 'Changed to date input'],
+  w3: ['1.2.4', 'Starts with "If you selected YES" — probably conditional on 1.2.3.', 'Show only when 1.2.3 = Yes', 'Shown only when 1.2.3 = Yes'],
+  w4: ['2.8.1', 'One cell holds a Yes/No question and a follow-up ("If you chose yes, please list and explain").', 'Split into Yes/No + details', 'Split into Yes/No with conditional details'],
+  w5: ['3.1.2', 'Starts with "If you chose yes" — probably conditional on 3.1.1.', 'Show only when 3.1.1 = Yes', ''],
+  w6: ['4.2.1', 'Numbered list (i. Tax ID, ii. Vendor name, iii. Vendor code…) found inside the request.', 'Keep as guidance text', '']
+};
+const SECWARN = { 1: ['w1', 'w2', 'w3'], 2: ['w4'], 3: ['w5'], 4: ['w6'] };
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { cur: 1, res: {}, rev: { 8: true, 10: true, 11: true }, published: false }; }
+  renderVals() {
+    const { cur, res, rev } = this.state;
+    const open = (s) => (SECWARN[s] || []).filter((w) => !res[w]).length;
+    const total = Object.keys(WARN).filter((w) => !res[w]).length;
+    const nRev = Object.keys(rev).filter((k) => rev[k]).length;
+    const set = (w, v) => this.setState({ res: Object.assign({}, res, { [w]: v }) });
+    const list = ITEMS[cur] || [];
+    const items = list.map((x) => {
+      if (x.length === 2) return { isSub: true, isItem: false, sub: x[0] + ' ' + x[1] };
+      const w = x[4], r = w ? res[w] : null;
+      return { isSub: false, isItem: true, ref: x[0], title: x[1], type: r === 'fix' && w === 'w2' ? 'Date' : r === 'fix' && w === 'w1' ? 'Multiple choice' : r === 'fix' && w === 'w4' ? 'Yes/No + details' : x[2], row: x[3], req: true,
+        warn: !!w && !r, warnText: w ? WARN[w][1] : '', fix: w ? WARN[w][2] : '',
+        resolved: !!r, resolvedText: r === 'fix' ? WARN[w][3] : 'Kept as extracted',
+        accept: () => set(w, 'fix'), keep: () => set(w, 'keep'), rowStyle: w && !r ? 'background:#FFFDF8' : '' };
+    });
+    const ready = total === 0 && nRev === 12;
+    return {
+      secs: SECS.map(([t, c], k) => ({ n: k + 1, title: t, warn: open(k + 1) || false, reviewed: !!rev[k + 1], current: k + 1 === cur ? 'true' : 'false', go: () => this.setState({ cur: k + 1 }), style: k + 1 === cur ? 'background:#EEF2F8;font-weight:600' : '' })),
+      cur, curTitle: SECS[cur - 1][0], items, hasItems: list.length > 0, noItems: list.length === 0,
+      collapsedTitle: SECS[cur - 1][1] + ' items extracted' + (open(cur) ? '' : ' without warnings'),
+      collapsedText: open(cur) ? 'Resolve the warning on ' + WARN[SECWARN[cur][0]][0] + ' before marking this section reviewed: ' + WARN[SECWARN[cur][0]][1] : 'Expand to edit wording, response types, required flags and evidence requirements.',
+      openWarn: total, warnTileStyle: total ? 'border-color:#F0D29A' : 'border-color:#A9D8BC', warnNumStyle: total ? 'color:#8A4B00' : 'color:#1A6B40',
+      reviewedMeta: nRev + ' of 12 sections reviewed',
+      reviewBlocked: open(cur) > 0, revBtnCls: rev[cur] ? 'btn-s' : 'btn-p', revBtnLabel: rev[cur] ? '✓ Reviewed — undo' : open(cur) ? 'Resolve warnings to review' : 'Mark section reviewed',
+      toggleReviewed: () => this.setState({ rev: Object.assign({}, rev, { [cur]: !rev[cur] }) }),
+      cannotPublish: !ready || this.state.published, publishLabel: this.state.published ? 'Published' : ready ? 'Publish v2.1' : 'Publish (' + (12 - nRev) + ' sections, ' + total + ' warnings left)',
+      publish: () => this.setState({ published: true }), published: this.state.published,
+      cHasWarn: list.length === 0 && open(cur) > 0, cFixLabel: open(cur) ? WARN[SECWARN[cur][0]][2] : '',
+      cFix: () => { if (SECWARN[cur]) set(SECWARN[cur][0], 'fix'); }, cKeep: () => { if (SECWARN[cur]) set(SECWARN[cur][0], 'keep'); }
+    };
+  }
+}
+</script>
+</body>
+</html>
